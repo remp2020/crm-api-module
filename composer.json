@@ -1,0 +1,16 @@
+{
+  "name": "remp/api-module",
+  "description": "CRM Api Module",
+  "version": "0.0.1",
+  "type": "library",
+  "require": {
+    "php": "^7.1"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Crm\\ApiModule\\": "src/"
+    },
+    "classmap": ["src/"]
+  }
+}

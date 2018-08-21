@@ -1,0 +1,66 @@
+{block #title}{_api.admin.access.title}{/block}
+
+{block #content}
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <h1>{_api.admin.access.default.calls} <small>/ {_api.admin.access.default.total} {$accessCount}</small></h1>
+
+            {if $accessCount > 0}
+                <table class="table table-striped table-hover table-bordered"">
+                    <thead>
+                    <tr>
+                        <th>{_api.admin.access.default.resource}</th>
+                        <th>{_api.admin.access.default.allowed_tokens_count}</th>
+                        <th>{_api.admin.access.default.actions}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr n:foreach="$apiAccesses as $apiAccess">
+                        <td>{$apiAccess->resource}</td>
+                        <td>{$apiAccess->related('api_access_tokens')->count('*')}</td>
+                        <td>
+                            <p class="text-nowrap">
+                                <a n:href="editAccess $apiAccess->id" class="btn btn-sm btn-primary" title="Uprav"><i class="fa fa-pencil"></i> </a>
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            {else}
+                <p>{_api.admin.access.default.no_api_calls}</p>
+            {/if}
+        </div>
+
+        <div class="col-md-6">
+            <h1>{_api.admin.access.default.tokens} <small>/ {_api.admin.access.default.total} {$tokenCount}</small></h1>
+
+            {if $tokenCount > 0}
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>{_api.admin.access.default.token}</th>
+                    <th>{_api.admin.access.default.allowed_resource_count}</th>
+                    <th>{_api.admin.access.default.actions}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr n:foreach="$apiTokens as $apiToken">
+                    <td>{$apiToken->name} <code>{$apiToken->token}</code></td>
+                    <td>{$apiToken->related('api_access_tokens')->count('*')}</td>
+                    <td>
+                        <p class="text-nowrap">
+                            <a n:href="editToken $apiToken->id" class="btn btn-sm btn-primary" title="Uprav"><i class="fa fa-pencil"></i> </a>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            {else}
+                <p>{_api.admin.access.default.no_api_tokens}</p>
+            {/if}
+        </div>
+    </div>
+
+{/block}

@@ -1,0 +1,28 @@
+menu:
+	api_tokens: Api tokens
+	api_calls: Api calls
+	api_logs: Api logs
+	api_access: Api access
+
+admin:
+	access:
+		title: API Access
+
+		form:
+			update_success: Access rights were updated.
+			check_all: Check all
+			tokens: API tokens
+			resources: Resources
+			save: Save
+
+		default:
+			resource: Resource
+			token: API token
+			allowed_tokens_count: Allowed tokens count
+			allowed_resource_count: Allowed resources count
+			calls: API calls
+			tokens: API tokens
+			no_api_calls: No API calls were found
+			no_api_tokens: No API tokens were found
+			actions: Actions
+			total: Total

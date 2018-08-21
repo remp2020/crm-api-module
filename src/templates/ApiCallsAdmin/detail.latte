@@ -1,0 +1,33 @@
+{block #title}Api volanie - {$apiIdentifier->getApiPath()}{/block}
+
+{block #content}
+
+ <div class="row">
+
+  <div class="col-md-12">
+    <a n:href="default"><i class="fa fa-angle-left"></i> späť na záznamy</a>
+    <h1>
+      Api volanie <code>{$apiIdentifier->getApiPath()}</code>
+    </h1>
+    <hr>
+  </div>
+
+  <div class="col-md-12">
+
+    {ifset $callResult}
+      <pre>{$callResult}</pre>
+      <hr>
+    {/ifset}
+
+    {control apiTestCallForm}
+  </div>
+
+  <script>
+      if ($('#frm-apiTestCallForm-token_csfr')) {
+          $('#frm-apiTestCallForm-token_csfr').val($("input[name='_token_']").val());
+      }
+  </script>
+
+ </div>
+
+{/block}

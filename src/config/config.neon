@@ -1,0 +1,24 @@
+services:
+	moduleManager:
+		setup:
+			- addModule(Crm\ApiModule\ApiModule())
+
+	- Crm\ApiModule\Router\ApiRoutesContainer
+	- Crm\ApiModule\Authorization\BearerTokenAuthorization
+	- Crm\ApiModule\Authorization\NoAuthorization
+	- Crm\ApiModule\Authorization\CsrfAuthorization
+	- Crm\ApiModule\Authorization\AdminLoggedAuthorization
+	- Crm\ApiModule\Authorization\Permissions
+	- Crm\ApiModule\Repository\ApiTokensRepository
+	- Crm\ApiModule\Repository\ApiAccessTokensRepository
+	- Crm\ApiModule\Repository\ApiTokenStatsRepository
+	- Crm\ApiModule\Repository\ApiLogsRepository
+	- Crm\ApiModule\Repository\ApiAccessRepository
+	- Crm\ApiModule\Repository\UserSourceAccessesRepository
+	- Crm\ApiModule\Forms\ApiTokenFormFactory
+	- Crm\ApiModule\Forms\ApiAccessResourceFormFactory
+	- Crm\ApiModule\Forms\ApiAccessTokenFormFactory
+	- Crm\ApiModule\Forms\ApiTestCallFormFactory
+	- Crm\ApiModule\Commands\GenerateAccessCommand
+	- Crm\ApiModule\Api\TokenCheckHandler
+	- Crm\ApiModule\Seeders\ConfigsSeeder

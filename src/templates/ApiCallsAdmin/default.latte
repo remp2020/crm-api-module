@@ -1,0 +1,39 @@
+{block #title}Api volania{/block}
+
+{block #content}
+
+ <div class="row">
+
+  <div class="col-md-12">
+    <h1>
+      Api volania
+    </h1>
+    <hr>
+  </div>
+
+
+  <div class="col-md-12">
+    <table class="table table-striped table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>Api</th>
+          <th>Handler</th>
+          <th>Authorization</th>
+        </tr>
+      </thead>
+      <tbody>
+        {foreach $routers as $router}
+          <tr>
+            {var $identifier = $router->getApiIdentifier()}
+            <td><a n:href="detail $identifier->getVersion(), $identifier->getCategory(), $identifier->getApiCall()">{$identifier->getApiPath()}</a></td>
+            <td>{$router->getHandlerClassName()}</td>
+            <td>{$router->getAuthorizationClassName()}</td>
+          </tr>
+        {/foreach}
+      </tbody>
+    </table>
+  </div>
+
+ </div>
+
+{/block}

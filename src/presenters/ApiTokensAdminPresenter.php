@@ -33,7 +33,7 @@ class ApiTokensAdminPresenter extends AdminPresenter
     {
         $apiToken = $this->apiTokensRepository->find($id);
         $this->apiTokensRepository->delete($apiToken);
-        $this->flashMessage('Api kľúč bol vymazaný');
+        $this->flashMessage($this->translator->translate('api.admin.api_tokens.message.removed'));
         $this->redirect('default');
     }
 
@@ -46,11 +46,11 @@ class ApiTokensAdminPresenter extends AdminPresenter
 
         $form = $this->apiTokenFormfactory->create($id);
         $this->apiTokenFormfactory->onSave = function ($form, $apiKey) {
-            $this->flashMessage('API kľúč bol vytvorený.');
+            $this->flashMessage($this->translator->translate('api.admin.api_tokens.message.saved'));
             $this->redirect('ApiTokensAdmin:default');
         };
         $this->apiTokenFormfactory->onUpdate = function ($form, $apiKey) {
-            $this->flashMessage('API kľúč bol aktualizovný.');
+            $this->flashMessage($this->translator->translate('api.admin.api_tokens.message.updated'));
             $this->redirect('ApiTokensAdmin:default');
         };
         return $form;

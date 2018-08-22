@@ -13,12 +13,12 @@ use Crm\ApplicationModule\Api\ApiHandlerInterface;
 use Crm\ApplicationModule\Api\ApiRouteInterface;
 use Nette\Application\UI\Form;
 use Nette\Http\Request;
+use Nette\Localization\ITranslator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 use Tracy\Debugger;
 
 class ApiTestCallFormFactory
 {
-    /** @var ApiRoutesContainer */
     protected $apiRoutesContainer;
 
     /** @var ApiRouteInterface */
@@ -32,12 +32,18 @@ class ApiTestCallFormFactory
 
     private $request;
 
+    private $translator;
+
     public $onSubmit;
 
-    public function __construct(ApiRoutesContainer $apiRoutesContainer, Request $request)
-    {
+    public function __construct(
+        ApiRoutesContainer $apiRoutesContainer,
+        Request $request,
+        ITranslator $translator
+    ) {
         $this->apiRoutesContainer = $apiRoutesContainer;
         $this->request = $request;
+        $this->translator = $translator;
     }
 
     /**
@@ -60,22 +66,22 @@ class ApiTestCallFormFactory
         }
 
         $url = $identifier->getApiPath();
-        $form->addText('api_url', 'Api Url')
-            ->setValue($url)
+        $form->addText('api_url', $this->translator->translate('api.admin.api_test_call_form.api_url.title'))
+            ->setDefaultValue($url)
             ->setDisabled(true);
 
         $defaults['api_url'] = $url;
 
         if ($this->authorization instanceof BearerTokenAuthorization) {
-            $form->addText('token', 'Token:')
-                ->setAttribute('placeholder', 'napište token');
+            $form->addText('token', $this->translator->translate('api.admin.api_test_call_form.token.title'))
+                ->setAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token.placeholder'));
         } elseif ($this->authorization instanceof CsrfAuthorization) {
-            $form->addText('token_csfr', 'Token CSRF:')
-                ->setAttribute('placeholder', 'napište token');
+            $form->addText('token_csfr', $this->translator->translate('api.admin.api_test_call_form.token_csfr.title'))
+                ->setAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token_csfr.placeholder'));
         } elseif ($this->authorization instanceof NoAuthorization) {
-            $form->addText('authorization', 'Authorization')
+            $form->addText('authorization', $this->translator->translate('api.admin.api_test_call_form.authorization.title'))
                 ->setDisabled(true);
-            $defaults['authorization'] = 'No authorization - global access';
+            $defaults['authorization'] = $this->translator->translate('api.admin.api_test_call_form.authorization.value');
         }
 
         $params = $this->handler->params();
@@ -88,15 +94,15 @@ class ApiTestCallFormFactory
                 }
                 $c = $form->addText($key, $param->getKey());
                 if ($param->getAvailableValues()) {
-                    $c->setOption('description', 'available values: ' . implode(' | ', $param->getAvailableValues()));
+                    $c->setOption('description', $this->translator->translate('api.admin.api_test_call_form.available_values') . ': ' . implode(' | ', $param->getAvailableValues()));
                 }
             }
         }
 
-        $form->addSubmit('send', 'Otestuj')
+        $form->addSubmit('send', $this->translator->translate('api.admin.api_test_call_form.submit'))
             ->getControlPrototype()
             ->setName('button')
-            ->setHtml('<i class="fa fa-cloud-upload"></i> Otestuj');
+            ->setHtml('<i class="fa fa-cloud-upload"></i> ' . $this->translator->translate('api.admin.api_test_call_form.submit'));
 
         $form->setDefaults($defaults);
 

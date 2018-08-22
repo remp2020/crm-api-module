@@ -1,13 +1,9 @@
-{block #title}Api volania{/block}
-
 {block #content}
 
  <div class="row">
 
   <div class="col-md-12">
-    <h1>
-      Api volania
-    </h1>
+    <h1 n:block="title">{_api.admin.api_calls.default.title}</h1>
     <hr>
   </div>
 
@@ -16,9 +12,9 @@
     <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
-          <th>Api</th>
-          <th>Handler</th>
-          <th>Authorization</th>
+          <th>{_api.admin.api_calls.fields.url}</th>
+          <th>{_api.admin.api_calls.fields.handler}</th>
+          <th>{_api.admin.api_calls.fields.authorization}</th>
         </tr>
       </thead>
       <tbody>

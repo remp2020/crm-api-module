@@ -1,19 +1,15 @@
-{block #title}Api kľúče{/block}
-
 {block #content}
 
  <div class="row">
 
   <div class="col-md-12">
     <h1>
-      Api kľúče
+        <span n:block="title">{_api.admin.api_tokens.default.title}</span>
       <small>
         / celkovo {$apiTokens->count('*')}
       </small>
-      <a n:href="ApiTokensAdmin:new" class="btn btn-success btn-lg pull-right"><i class="fa fa-chain"></i>  Nový kľúč</a>
-
+      <a n:href="ApiTokensAdmin:new" class="btn btn-success btn-lg pull-right"><i class="fa fa-chain"></i> {_api.admin.api_tokens.default.new_token}</a>
     </h1>
-
     <hr>
   </div>
 
@@ -23,13 +19,13 @@
       <table class="table table-striped table-hover table-bordered">
         <thead>
           <tr>
-            <th>Meno</th>
-            <th>Token</th>
-            <th>IP reštrikcie</th>
-            <th>Vytvorené</th>
-            <th>Použité</th>
-            <th>Aktívny</th>
-            <th>Actions</th>
+            <th>{_api.admin.api_tokens.fields.name.title}</th>
+            <th>{_api.admin.api_tokens.fields.token}</th>
+            <th>{_api.admin.api_tokens.fields.ip_restrictions.title}</th>
+            <th>{_api.admin.api_tokens.fields.created_at}</th>
+            <th>{_api.admin.api_tokens.fields.used}</th>
+            <th>{_api.admin.api_tokens.fields.active.title}</th>
+            <th>{_system.actions}</th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +43,7 @@
                 {var $stats = $apiToken->related('api_token_stats', 'token_id')}
                 {if $stats}
                     {foreach $stats as $stat}
-                        Naposledy: {$stat->last_call}, Celkovo: {$stat->calls}
+                        {_api.admin.api_tokens.default.last_time}: {$stat->last_call}, {_api.admin.api_tokens.default.total}: {$stat->calls}
                     {/foreach}
                 {/if}
               </td>
@@ -56,8 +52,8 @@
               </td>
               <td>
                 <p class="text-nowrap">
-                  <a n:href="ApiTokensAdmin:edit $apiToken->id" class="btn btn-sm btn-primary" title="Uprav"><i class="fa fa-pencil"></i> </a>
-                  <a n:href="ApiTokensAdmin:delete $apiToken->id" class="btn btn-sm btn-danger" title="Zmaž"><i class="fa fa-trash"></i> </a>
+                  <a n:href="ApiTokensAdmin:edit $apiToken->id" class="btn btn-sm btn-primary" title="{_system.edit}"><i class="fa fa-pencil"></i> </a>
+                  <a n:href="ApiTokensAdmin:delete $apiToken->id" class="btn btn-sm btn-danger" title="{_system.delete}"><i class="fa fa-trash"></i> </a>
               	<p>
               </td>
             </tr>
@@ -65,9 +61,8 @@
         </tbody>
       </table>
 
-
     {else}
-     <p>Nenasli sa ziadne api kľúče</p>
+     <p>{_api.admin.api_tokens.default.no_records}</p>
     {/if}
   </div>
 

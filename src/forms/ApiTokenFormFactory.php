@@ -4,20 +4,25 @@ namespace Crm\ApiModule\Forms;
 
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Nette\Application\UI\Form;
+use Nette\Localization\ITranslator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class ApiTokenFormFactory
 {
-    /** @var ApiTokensRepository */
     protected $apiTokensRepository;
+
+    private $translator;
 
     public $onSave;
 
     public $onUpdate;
 
-    public function __construct(ApiTokensRepository $apiTokensRepository)
-    {
+    public function __construct(
+        ApiTokensRepository $apiTokensRepository,
+        ITranslator $translator
+    ) {
         $this->apiTokensRepository = $apiTokensRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -37,21 +42,21 @@ class ApiTokenFormFactory
         $form->setRenderer(new BootstrapRenderer());
         $form->addProtection();
 
-        $form->addText('name', 'Názov*:')
-            ->setRequired('Názov musí byť vyplnený')
-            ->setAttribute('placeholder', 'napište názov')
-            ->setOption('description', 'nemá vplyv na funkčnosť, vhodné pre ľahšiu orientáciu');
+        $form->addText('name', $this->translator->translate('api.admin.api_tokens.fields.name.title'))
+            ->setRequired($this->translator->translate('api.admin.api_tokens.fields.name.required'))
+            ->setAttribute('placeholder', $this->translator->translate('api.admin.api_tokens.fields.name.placeholder'))
+            ->setOption('description', $this->translator->translate('api.admin.api_tokens.fields.name.description'));
 
-        $form->addTextArea('ip_restrictions', 'IP reštrikcie:')
-            ->setAttribute('placeholder', 'napríklad 132.42.88.33')
-            ->setOption('description', 'napíšte zoznam ip oddelených čiarkov alebo použite znak *');
+        $form->addTextArea('ip_restrictions', $this->translator->translate('api.admin.api_tokens.fields.ip_restrictions.title'))
+            ->setAttribute('placeholder', $this->translator->translate('api.admin.api_tokens.fields.ip_restrictions.placeholder'))
+            ->setOption('description', $this->translator->translate('api.admin.api_tokens.fields.ip_restrictions.description'));
 
-        $form->addCheckbox('active', 'Aktivovaný');
+        $form->addCheckbox('active', $this->translator->translate('api.admin.api_tokens.fields.active.title'));
 
-        $form->addSubmit('send', 'Ulož')
+        $form->addSubmit('send', $this->translator->translate('api.admin.api_tokens.form.submit'))
             ->getControlPrototype()
             ->setName('button')
-            ->setHtml('<i class="fa fa-save"></i> Ulož');
+            ->setHtml('<i class="fa fa-save"></i> ' . $this->translator->translate('api.admin.api_tokens.form.submit'));
 
         if ($apiTokenId) {
             $form->addHidden('api_token_id', $apiTokenId);

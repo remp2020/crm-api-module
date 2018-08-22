@@ -22,7 +22,7 @@
                         <td>{$apiAccess->related('api_access_tokens')->count('*')}</td>
                         <td>
                             <p class="text-nowrap">
-                                <a n:href="editAccess $apiAccess->id" class="btn btn-sm btn-primary" title="Uprav"><i class="fa fa-pencil"></i> </a>
+                                <a n:href="editAccess $apiAccess->id" class="btn btn-sm btn-primary" title="{_system.edit}"><i class="fa fa-pencil"></i> </a>
                             </p>
                         </td>
                     </tr>
@@ -51,7 +51,7 @@
                     <td>{$apiToken->related('api_access_tokens')->count('*')}</td>
                     <td>
                         <p class="text-nowrap">
-                            <a n:href="editToken $apiToken->id" class="btn btn-sm btn-primary" title="Uprav"><i class="fa fa-pencil"></i> </a>
+                            <a n:href="editToken $apiToken->id" class="btn btn-sm btn-primary" title="{_system.edit}"><i class="fa fa-pencil"></i> </a>
                         </p>
                     </td>
                 </tr>

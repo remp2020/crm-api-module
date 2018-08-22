@@ -1,10 +1,23 @@
 menu:
-	api_tokens: Api tokens
-	api_calls: Api calls
-	api_logs: Api logs
-	api_access: Api access
+	api_tokens: API tokens
+	api_calls: API calls
+	api_logs: API logs
+	api_access: API access
 
 admin:
+	api_calls:
+		default:
+			title: API calls
+
+		detail:
+			title: API call
+			back: back to list of API calls
+
+		fields:
+			url: API URL
+			handler: Handler
+			authorization: Authorization
+
 	access:
 		title: API Access
 
@@ -26,3 +39,81 @@ admin:
 			no_api_tokens: No API tokens were found
 			actions: Actions
 			total: Total
+
+	api_logs:
+		default:
+			title: API logs
+			no_records: No API calls were found
+
+		fields:
+			api_token: API token
+			api_url: API URL
+			response: Response
+			request: Request
+			client: Client
+			created_at: Created at
+
+		graph:
+			api_calls:
+				title: API logs
+				tooltip: Count of API calls over time
+				total: All API calls
+				not_200_response: Response diffrent than HTTP code 200
+			response_times:
+				title: API response times
+				tooltip: 'API response times (ms) over time'
+				response_times: Response times
+
+	api_tokens:
+		default:
+			title: API tokens
+			new_token: New API token
+			no_records: No API tokens were found
+			last_time: Last time
+			total: Total
+
+		new:
+			title: New API token
+			back: back to list of API tokens
+		edit:
+			title: Edit API token
+			back: back to list of API tokens
+
+		fields:
+			name:
+				title: Title
+				required: Title is required field
+				placeholder: eg. Testing API Token
+				description: "doesn't affect functionality, serves only as label"
+			ip_restrictions:
+				title: IP restrictions
+				placeholder: eg. 132.42.88.33
+				description: "provide IP addresses divided by comma ',' or use '*' (allows access from everywhere)"
+			active:
+				title: Active
+			token: API token
+			created_at: Created at
+			used: Used
+
+		form:
+			submit: Submit
+
+		message:
+			saved: 'API token was created.'
+			updated: 'API token was updated.'
+			removed: 'API token was removed.'
+
+	api_test_call_form:
+		api_url:
+			title: API URL
+		token:
+			title: API Token
+			placeholder: provide token
+		token_csfr:
+			title: CSRF Token
+			placeholder: provide token
+		authorization:
+			title: Authorization
+			value: No authorization - global access
+		available_values: available values
+		submit: Test

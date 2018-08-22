@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Api;
 
-use \Nette\Application\Responses\JsonResponse as NetteJsonResponse;
 use Crm\ApiModule\Response\ApiResponseInterface;
+use Nette\Application\Responses\JsonResponse as NetteJsonResponse;
 
 class JsonResponse extends NetteJsonResponse implements ApiResponseInterface
 {

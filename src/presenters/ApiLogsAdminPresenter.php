@@ -26,7 +26,7 @@ class ApiLogsAdminPresenter extends AdminPresenter
             ->setTimeField('created_at')
             ->setValueField('COUNT(*)')
             ->setStart('-1 month'))
-            ->setName('Api calls');
+            ->setName($this->translator->translate('api.admin.api_logs.graph.api_calls.total'));
 
         $graphDataItem2 = new GraphDataItem();
         $graphDataItem2->setCriteria((new Criteria())
@@ -35,11 +35,11 @@ class ApiLogsAdminPresenter extends AdminPresenter
             ->setValueField('COUNT(*)')
             ->setWhere('AND response_code != 200')
             ->setStart('-1 month'))
-            ->setName('Not 200 response');
+            ->setName($this->translator->translate('api.admin.api_logs.graph.api_calls.not_200_response'));
 
         $control = $factory->create()
-            ->setGraphTitle('Api calls')
-            ->setGraphHelp('All api calls')
+            ->setGraphTitle($this->translator->translate('api.admin.api_logs.graph.api_calls.title'))
+            ->setGraphHelp($this->translator->translate('api.admin.api_logs.graph.api_calls.tooltip'))
             ->addGraphDataItem($graphDataItem1)
             ->addGraphDataItem($graphDataItem2);
 
@@ -54,11 +54,11 @@ class ApiLogsAdminPresenter extends AdminPresenter
             ->setTimeField('created_at')
             ->setValueField('AVG(response_time)')
             ->setStart('-1 month'))
-            ->setName('Response times');
+            ->setName($this->translator->translate('api.admin.api_logs.graph.response_times.response_times'));
 
         $control = $factory->create()
-            ->setGraphTitle('Api response times')
-            ->setGraphHelp('Api response times over time')
+            ->setGraphTitle($this->translator->translate('api.admin.api_logs.graph.response_times.title'))
+            ->setGraphHelp($this->translator->translate('api.admin.api_logs.graph.response_times.tooltip'))
             ->addGraphDataItem($graphDataItem1);
 
         return $control;

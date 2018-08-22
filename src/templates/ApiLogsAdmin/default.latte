@@ -1,12 +1,10 @@
-{block #title}Api záznamy{/block}
-
 {block #content}
 
  <div class="row">
 
   <div class="col-md-12">
     <h1>
-      Api záznamy
+        <span n:block="title">{_api.admin.api_logs.default.title}</span>
 
       <a n:href="ApiLogsAdmin:default"><span class="fa fa-refresh"></span></a>
     </h1>
@@ -25,12 +23,12 @@
       <table class="table table-striped table-hover table-bordered">
         <thead>
           <tr>
-            <th>Token</th>
-            <th>Path</th>
-            <th>Response</th>
-            <th>Input</th>
-            <th>From</th>
-            <th>Vytvorené</th>
+            <th>{_api.admin.api_logs.fields.api_token}</th>
+            <th>{_api.admin.api_logs.fields.api_url}</th>
+            <th>{_api.admin.api_logs.fields.response}</th>
+            <th>{_api.admin.api_logs.fields.request}</th>
+            <th>{_api.admin.api_logs.fields.client}</th>
+            <th>{_api.admin.api_logs.fields.created_at}</th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +64,7 @@
         </tbody>
       </table>
     {else}
-     <p>Nenasli sa ziadne api volania</p>
+     <p>{_api.admin.api_logs.default.no_records}</p>
     {/if}
   </div>
 

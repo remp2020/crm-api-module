@@ -87,6 +87,7 @@ class ApiPresenter extends BasePresenter
             $token = $tokenParser->getToken();
             $this->apiTokenStatsRepository->updateStats($token);
         }
+        // TODO: [users_module] try to refactor this so ApiModule doesn't have dependency on UsersModule
         if ($authorization instanceof LoggedUserTokenAuthorization) {
             $tokenParser = new TokenParser();
             $token = $tokenParser->getToken();

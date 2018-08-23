@@ -8,6 +8,7 @@ use Detection\MobileDetect;
 use Tomaj\Hermes\Handler\HandlerInterface;
 use Tomaj\Hermes\MessageInterface;
 
+// TODO: [users_module] move to users module? find out who is using this (check UserLastAccessHandler, remove it if not needed)
 class ApiUsersLoginHandler implements HandlerInterface
 {
     private $usersRepository;

@@ -1,0 +1,22 @@
+<?php
+
+namespace Crm\ApiModule\Api;
+
+abstract class ApiHandler implements ApiHandlerInterface
+{
+    public function resource(): string
+    {
+        return self::resourceFromClass(static::class);
+    }
+
+    public static function resourceFromClass($className): string
+    {
+        $parts = explode('\\', $className);
+        $handler = str_replace('Handler', '', array_pop($parts));
+        do {
+            $module = array_pop($parts);
+        } while (strpos($module, 'Module') === false);
+        $module = str_replace('Module', '', $module);
+        return "{$module}:{$handler}";
+    }
+}

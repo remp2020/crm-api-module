@@ -32,7 +32,7 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
     }
 
     /**
-     * @return array(\Crm\ApplicationModule\Api\ApiHandlerInterface)
+     * @return array(\Crm\ApiModule\Api\ApiHandlerInterface)
      */
     public function getHandlers()
     {
@@ -45,7 +45,7 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
 
     /**
      * @param ApiIdentifier $identifier
-     * @return \Crm\ApplicationModule\Api\ApiHandlerInterface
+     * @return \Crm\ApiModule\Api\ApiHandlerInterface
      */
     public function getHandler(ApiIdentifier $identifier)
     {

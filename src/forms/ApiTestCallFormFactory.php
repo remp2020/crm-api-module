@@ -9,7 +9,7 @@ use Crm\ApiModule\Authorization\NoAuthorization;
 use Crm\ApiModule\Params\InputParam;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
-use Crm\ApplicationModule\Api\ApiHandlerInterface;
+use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApplicationModule\Api\ApiRouteInterface;
 use Nette\Application\UI\Form;
 use Nette\Http\Request;

@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Router;
 
-use Crm\ApplicationModule\Api\ApiRouteInterface;
-use Crm\ApplicationModule\Api\ApiRoutersContainerInterface;
+use Crm\ApiModule\Api\ApiRouteInterface;
+use Crm\ApiModule\Api\ApiRoutersContainerInterface;
 use Nette\DI\Container;
 
 class ApiRoutesContainer implements ApiRoutersContainerInterface
@@ -58,7 +58,7 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
 
     /**
      * @param ApiIdentifier $identifier
-     * @return \Crm\ApplicationModule\Api\ApiRouteInterface
+     * @return \Crm\ApiModule\Api\ApiRouteInterface
      */
     public function getRouter(ApiIdentifier $identifier)
     {
@@ -71,7 +71,7 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
     }
 
     /**
-     * @return array(\Crm\ApplicationModule\Api\ApiRouteInterface)
+     * @return array(\Crm\ApiModule\Api\ApiRouteInterface)
      */
     public function getRouters()
     {

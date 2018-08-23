@@ -10,7 +10,7 @@ use Crm\ApiModule\Params\InputParam;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Crm\ApiModule\Api\ApiHandlerInterface;
-use Crm\ApplicationModule\Api\ApiRouteInterface;
+use Crm\ApiModule\Api\ApiRouteInterface;
 use Nette\Application\UI\Form;
 use Nette\Http\Request;
 use Nette\Localization\ITranslator;

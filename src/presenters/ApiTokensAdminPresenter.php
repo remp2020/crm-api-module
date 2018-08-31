@@ -20,6 +20,10 @@ class ApiTokensAdminPresenter extends AdminPresenter
         $this->template->apiTokens = $this->apiTokensRepository->all();
     }
 
+    public function renderNew()
+    {
+    }
+
     public function renderEdit($id)
     {
         $apiToken = $this->apiTokensRepository->find($id);

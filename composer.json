@@ -3,6 +3,8 @@
   "description": "CRM Api Module",
   "version": "0.0.1",
   "type": "library",
+  "homepage": "https://remp2020.com",
+  "license": "MIT",
   "require": {
     "php": "^7.1"
   },

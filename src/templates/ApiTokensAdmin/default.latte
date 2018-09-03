@@ -6,7 +6,7 @@
     <h1>
         <span n:block="title">{_api.admin.api_tokens.default.title}</span>
       <small>
-        / celkovo {$apiTokens->count('*')}
+        / {_system.total} {$apiTokens->count('*')}
       </small>
       <a n:href="ApiTokensAdmin:new" class="btn btn-success btn-lg pull-right"><i class="fa fa-chain"></i> {_api.admin.api_tokens.default.new_token}</a>
     </h1>

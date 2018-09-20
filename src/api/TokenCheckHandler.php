@@ -3,7 +3,6 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
-use Crm\ApiModule\Api\ApiHandler;
 use Nette\Http\Response;
 
 class TokenCheckHandler extends ApiHandler

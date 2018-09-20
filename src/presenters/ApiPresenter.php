@@ -4,7 +4,6 @@ namespace Crm\ApiModule\Presenters;
 
 use Crm\ApiModule\Api\JsonResponse;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
-use Crm\UsersModule\Auth\LoggedUserTokenAuthorization;
 use Crm\ApiModule\Authorization\TokenParser;
 use Crm\ApiModule\Repository\ApiLogsRepository;
 use Crm\ApiModule\Repository\ApiTokenStatsRepository;
@@ -12,6 +11,7 @@ use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Crm\ApplicationModule\Presenters\BasePresenter;
 use Crm\ApplicationModule\Request;
+use Crm\UsersModule\Auth\LoggedUserTokenAuthorization;
 use Nette\Http\Response;
 use Tomaj\Hermes\Dispatcher;
 use Tracy\Debugger;

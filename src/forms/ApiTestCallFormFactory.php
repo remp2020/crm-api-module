@@ -2,6 +2,8 @@
 
 namespace Crm\ApiModule\Forms;
 
+use Crm\ApiModule\Api\ApiHandlerInterface;
+use Crm\ApiModule\Api\ApiRouteInterface;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\CsrfAuthorization;
@@ -9,8 +11,6 @@ use Crm\ApiModule\Authorization\NoAuthorization;
 use Crm\ApiModule\Params\InputParam;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
-use Crm\ApiModule\Api\ApiHandlerInterface;
-use Crm\ApiModule\Api\ApiRouteInterface;
 use Nette\Application\UI\Form;
 use Nette\Http\Request;
 use Nette\Localization\ITranslator;

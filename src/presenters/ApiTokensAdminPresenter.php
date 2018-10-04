@@ -2,9 +2,9 @@
 
 namespace Crm\ApiModule\Presenters;
 
+use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApiModule\Forms\ApiTokenFormFactory;
 use Crm\ApiModule\Repository\ApiTokensRepository;
-use Crm\AdminModule\Presenters\AdminPresenter;
 use Nette\Application\BadRequestException;
 
 class ApiTokensAdminPresenter extends AdminPresenter
@@ -18,6 +18,10 @@ class ApiTokensAdminPresenter extends AdminPresenter
     public function renderDefault()
     {
         $this->template->apiTokens = $this->apiTokensRepository->all();
+    }
+
+    public function renderNew()
+    {
     }
 
     public function renderEdit($id)

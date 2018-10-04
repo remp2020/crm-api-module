@@ -1,0 +1,25 @@
+menu:
+	api_tokens: Api klíče
+	api_calls: Api volání
+	api_logs: Api záznamy
+	api_access: API práva
+admin:
+	access:
+		title: API práva
+		form:
+			update_success: Práva byla aktualizována.
+			check_all: Označit vše
+			tokens: API klíče
+			resources: Zdroje
+			save: Uložit
+		default:
+			resource: Zdroj
+			token: API klíč
+			allowed_tokens_count: Počet API klíčů
+			allowed_resource_count: Počet zdrojů
+			calls: API volání
+			tokens: API tokeny
+			no_api_calls: Nenalezena žádná API volání
+			no_api_tokens: Nenalezeny žádné API tokeny
+			actions: Akce
+			total: Celkem

@@ -1,7 +1,7 @@
 services:
 	moduleManager:
 		setup:
-			- addModule(Crm\ApiModule\ApiModule())
+			- addModule(Crm\ApiModule\ApiModule(), 100)
 
 	- Crm\ApiModule\Router\ApiRoutesContainer
 	- Crm\ApiModule\Authorization\BearerTokenAuthorization

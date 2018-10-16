@@ -11,7 +11,7 @@ use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Crm\ApplicationModule\Presenters\BasePresenter;
 use Crm\ApplicationModule\Request;
-use Crm\UsersModule\Auth\LoggedUserTokenAuthorization;
+use Crm\UsersModule\Auth\UserTokenAuthorization;
 use Nette\Http\Response;
 use Tomaj\Hermes\Dispatcher;
 use Tracy\Debugger;
@@ -88,7 +88,7 @@ class ApiPresenter extends BasePresenter
             $this->apiTokenStatsRepository->updateStats($token);
         }
         // TODO: [users_module] try to refactor this so ApiModule doesn't have dependency on UsersModule
-        if ($authorization instanceof LoggedUserTokenAuthorization) {
+        if ($authorization instanceof UserTokenAuthorization) {
             $tokenParser = new TokenParser();
             $token = $tokenParser->getToken();
         }

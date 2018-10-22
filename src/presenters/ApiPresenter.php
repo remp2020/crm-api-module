@@ -35,6 +35,7 @@ class ApiPresenter extends BasePresenter
         Dispatcher $dispatcher,
         Response $response
     ) {
+        parent::__construct();
         $this->apiRoutersContainer = $apiRoutesContainer;
         $this->apiLogsRepository = $apiLogsRepository;
         $this->apiTokenStatsRepository = $apiTokenStatsRepository;

@@ -79,7 +79,7 @@ class InputParam implements ParamInterface
         }
 
         if ($this->required) {
-            if ($value == null || $value = '') {
+            if ($value == null || $value == '') {
                 return false;
             }
             if (is_string($this->availableValues)) {

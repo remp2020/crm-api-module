@@ -20,9 +20,9 @@ class ApiModule extends CrmModule
 {
     public function registerAdminMenuItems(MenuContainerInterface $menuContainer)
     {
-        $mainMenu = new MenuItem('', '#', 'fa fa-chain', 800);
+        $mainMenu = new MenuItem('', '#', 'fa fa-link', 800);
 
-        $menuItem = new MenuItem($this->translator->translate('api.menu.api_tokens'), ':Api:ApiTokensAdmin:', 'fa fa-chain-broken', 200);
+        $menuItem = new MenuItem($this->translator->translate('api.menu.api_tokens'), ':Api:ApiTokensAdmin:', 'fa fa-unlink', 200);
         $mainMenu->addChild($menuItem);
 
         $menuItem = new MenuItem($this->translator->translate('api.menu.api_calls'), ':Api:ApiCallsAdmin:', 'fa fa-terminal', 300);

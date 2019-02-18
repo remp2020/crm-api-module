@@ -2,29 +2,60 @@
 
 namespace Crm\ApiModule\Authorization;
 
+use Crm\UsersModule\Repository\AccessTokensRepository;
+use Crm\UsersModule\Repository\UsersRepository;
 use Nette\Security\IAuthorizator;
 use Nette\Security\User;
 
 class AdminLoggedAuthorization implements ApiAuthorizationInterface
 {
-    /** @var User  */
+    private $accessTokensRepository;
+
+    private $usersRepository;
+
     private $user;
 
     private $errorMessage = false;
 
-    public function __construct(User $user)
-    {
+    protected $authorizedData = [];
+
+    public function __construct(
+        User $user,
+        AccessTokensRepository $accessTokensRepository,
+        UsersRepository $usersRepository
+    ) {
         $this->user = $user;
+        $this->accessTokensRepository = $accessTokensRepository;
+        $this->usersRepository = $usersRepository;
     }
 
     public function authorized($resource = IAuthorizator::ALL)
     {
+        $userId = null;
         if ($this->user->isLoggedIn()) {
-            return true;
+            $userId = $this->user->getId();
+        } else {
+            $tokenParser = new TokenParser();
+            if (!$tokenParser->isOk()) {
+                $this->errorMessage = $tokenParser->errorMessage();
+                return false;
+            }
+
+            $token = $this->accessTokensRepository->loadToken($tokenParser->getToken());
+            if (!$token) {
+                $this->errorMessage = "Token doesn't exists";
+                return false;
+            }
+
+            $userId = $token->user_id;
         }
 
-        $this->errorMessage = 'User not logged';
-        return false;
+        if (!$this->usersRepository->isRole($userId, UsersRepository::ROLE_ADMIN)) {
+            $this->errorMessage = 'User not admin';
+            return false;
+        }
+
+        return true;
     }
 
     public function getErrorMessage()

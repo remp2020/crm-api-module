@@ -5,6 +5,7 @@ namespace Crm\ApiModule\Authorization;
 use Crm\UsersModule\Repository\AccessTokensRepository;
 use Crm\UsersModule\Repository\UsersRepository;
 use Nette\Security\IAuthorizator;
+use Nette\Security\User;
 
 class AdminLoggedAuthorization implements ApiAuthorizationInterface
 {
@@ -12,38 +13,48 @@ class AdminLoggedAuthorization implements ApiAuthorizationInterface
 
     private $usersRepository;
 
+    private $user;
+
     private $errorMessage = false;
 
     protected $authorizedData = [];
 
     public function __construct(
+        User $user,
         AccessTokensRepository $accessTokensRepository,
         UsersRepository $usersRepository
     ) {
+        $this->user = $user;
         $this->accessTokensRepository = $accessTokensRepository;
         $this->usersRepository = $usersRepository;
     }
 
     public function authorized($resource = IAuthorizator::ALL)
     {
-        $tokenParser = new TokenParser();
-        if (!$tokenParser->isOk()) {
-            $this->errorMessage = $tokenParser->errorMessage();
-            return false;
+        $userId = null;
+        if ($this->user->isLoggedIn()) {
+            $userId = $this->user->getId();
+        } else {
+            $tokenParser = new TokenParser();
+            if (!$tokenParser->isOk()) {
+                $this->errorMessage = $tokenParser->errorMessage();
+                return false;
+            }
+
+            $token = $this->accessTokensRepository->loadToken($tokenParser->getToken());
+            if (!$token) {
+                $this->errorMessage = "Token doesn't exists";
+                return false;
+            }
+
+            $userId = $token->user_id;
         }
 
-        $token = $this->accessTokensRepository->loadToken($tokenParser->getToken());
-        if (!$token) {
-            $this->errorMessage = "Token doesn't exists";
-            return false;
-        }
-
-        if (!$this->usersRepository->isRole($token->user_id, UsersRepository::ROLE_ADMIN)) {
+        if (!$this->usersRepository->isRole($userId, UsersRepository::ROLE_ADMIN)) {
             $this->errorMessage = 'User not admin';
             return false;
         }
 
-        $this->authorizedData['token'] = $token;
         return true;
     }
 

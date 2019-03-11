@@ -22,8 +22,14 @@ before executing the examples.
 All examples use `XXX` as a default value for authorization token, please replace it with the
 real tokens:
 
-* TODO: how to get Bearer tokens
-* TODO: how to get User tokens
+* *API tokens.* Standard API keys for server-server communication. It identifies the calling application as a whole.
+They can be generated in CRM Admin (`/api/api-tokens-admin/`) and each API key has to be whitelisted to access
+specific API endpoints. By default the API key has access to no endpoint. 
+* *User tokens.* Generated for each user during the login process, token identify single user when communicating between
+different parts of the system. The token can be read:
+    * From `n_token` cookie if the user was logged in via CRM.
+    * From the response of [`/api/v1/users/login` endpoint](https://github.com/remp2020/crm-users-module#post-apiv1userslogin) -
+    you're free to store the response into your own cookie/local storage/session.
 
 API responses can contain following HTTP codes:
 

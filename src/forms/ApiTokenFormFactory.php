@@ -32,7 +32,7 @@ class ApiTokenFormFactory
     public function create($apiTokenId)
     {
         $defaults = [];
-        if (isset($apiTokenId)) {
+        if ($apiTokenId) {
             $apiToken = $this->apiTokensRepository->find($apiTokenId);
             $defaults = $apiToken->toArray();
         }

@@ -23,11 +23,14 @@ class InputParam implements ParamInterface
 
     private $multi;
 
-    public function __construct($type, $key, $required = self::OPTIONAL, $availableValues = null, $multi = false)
+    public function __construct($type, $key, $required = self::OPTIONAL, ?array $availableValues = null, bool $multi = false)
     {
         $this->type = $type;
         $this->key = $key;
         $this->required = $required;
+        if ($availableValues !== null && !is_array($availableValues)) {
+            throw new Exception("Available values must be array or null. Got [{$availableValues}]");
+        }
         $this->availableValues = $availableValues;
         $this->multi = $multi;
     }
@@ -72,21 +75,21 @@ class InputParam implements ParamInterface
     public function isValid()
     {
         $value = $this->getValue();
-        if ($this->availableValues !== null) {
-            if (is_array($this->availableValues)) {
-                return in_array($value, $this->availableValues);
-            }
-        }
 
-        if ($this->required) {
-            if ($value === null || $value === '') {
+        if (is_array($value) && $this->isMulti()) {
+            // required input, got empty array => invalid input
+            if (empty($value) && $this->isRequired()) {
                 return false;
             }
-            if (is_string($this->availableValues)) {
-                return $value == $this->availableValues;
+            foreach ($value as $val) {
+                if (!$this->validateValue($val)) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+
+        return $this->validateValue($value);
     }
 
     public function getValue()
@@ -105,5 +108,28 @@ class InputParam implements ParamInterface
         }
 
         throw new Exception('Invalid type');
+    }
+
+    private function validateValue($value): bool
+    {
+        // no support for arrays on this level of parameter's value
+        if (is_array($value)) {
+            return false;
+        }
+
+        if ($value === null || trim($value) === '') {
+            if ($this->isRequired()) {
+                return false;
+            } else {
+                // optional value is missing, input is still valid
+                return true;
+            }
+        }
+
+        if ($this->getAvailableValues() !== null) {
+            return in_array($value, $this->getAvailableValues());
+        }
+
+        return true;
     }
 }

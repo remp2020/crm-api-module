@@ -117,7 +117,7 @@ class InputParam implements ParamInterface
             return false;
         }
 
-        if ($value === null || trim($value) === '') {
+        if ($value === null || (is_string($value) && trim($value) === '')) {
             if ($this->isRequired()) {
                 return false;
             } else {

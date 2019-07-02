@@ -31,7 +31,6 @@ class InternalToken
         $this->configsRepository = $configsRepository;
     }
 
-
     /**
      * Give internal token access to all api resources
      * @throws \Exception thrown if internal token is missing in configs or api_tokens tables

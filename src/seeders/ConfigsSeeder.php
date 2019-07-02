@@ -85,7 +85,7 @@ class ConfigsSeeder implements ISeeder
 
             $this->apiTokensRepository->insert([
                 'name' => 'Internal token',
-                'active' => 0,
+                'active' => 1,
                 'token' => $tokenValue,
                 'ip_restrictions' => '*',
                 'created_at' => new DateTime(),

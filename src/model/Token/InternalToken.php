@@ -47,7 +47,7 @@ class InternalToken
         }
     }
 
-    private function tokenValue(): string
+    public function tokenValue(): string
     {
         $tokenConfig = $this->configsRepository->loadByName(self::CONFIG_NAME);
         if (!$tokenConfig) {

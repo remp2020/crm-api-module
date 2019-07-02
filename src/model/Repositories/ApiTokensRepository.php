@@ -3,6 +3,7 @@
 namespace Crm\ApiModule\Repository;
 
 use Crm\ApplicationModule\Repository;
+use Crm\UsersModule\Auth\Access\TokenGenerator;
 use DateTime;
 use Nette\Database\Table\IRow;
 
@@ -17,7 +18,7 @@ class ApiTokensRepository extends Repository
 
     public function generate($name, $ipRestrictions = '*', $active = true)
     {
-        $token = md5(rand(0, 100000) . 'asdihasf' . time() . time() . rand(1320, 1240930925));
+        $token = TokenGenerator::generate();
         return $this->insert([
             'name' => $name,
             'token' => $token,

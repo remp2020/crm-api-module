@@ -15,6 +15,7 @@ services:
 	- Crm\ApiModule\Repository\ApiLogsRepository
 	- Crm\ApiModule\Repository\ApiAccessRepository
 	- Crm\ApiModule\Repository\UserSourceAccessesRepository
+	- Crm\ApiModule\Token\InternalToken
 	- Crm\ApiModule\Forms\ApiTokenFormFactory
 	- Crm\ApiModule\Forms\ApiAccessResourceFormFactory
 	- Crm\ApiModule\Forms\ApiAccessTokenFormFactory

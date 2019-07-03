@@ -3,6 +3,7 @@
 namespace Crm\ApiModule\Populator;
 
 use Crm\ApplicationModule\Populator\AbstractPopulator;
+use Crm\UsersModule\Auth\Access\TokenGenerator;
 
 class ApiTokensPopulator extends AbstractPopulator
 {
@@ -18,7 +19,7 @@ class ApiTokensPopulator extends AbstractPopulator
         for ($i = 0; $i < $this->count; $i++) {
             $data = [
                 'name' => $this->faker->name,
-                'token' => md5($this->faker->name . rand(1000, 10000) . time()),
+                'token' => TokenGenerator::generate(),
                 'ip_restrictions' => $this->getIpRestriction(),
                 'created_at' => $this->faker->dateTimeBetween('-1 years'),
                 'updated_at' => $this->faker->dateTimeBetween('-1 years'),

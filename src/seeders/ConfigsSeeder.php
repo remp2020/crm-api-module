@@ -2,11 +2,15 @@
 
 namespace Crm\ApiModule\Seeders;
 
+use Crm\ApiModule\Repository\ApiTokensRepository;
+use Crm\ApiModule\Token\InternalToken;
 use Crm\ApplicationModule\Builder\ConfigBuilder;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Config\Repository\ConfigCategoriesRepository;
 use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
 use Crm\ApplicationModule\Seeders\ISeeder;
+use Crm\UsersModule\Auth\Access\TokenGenerator;
+use Nette\Utils\DateTime;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ConfigsSeeder implements ISeeder
@@ -17,14 +21,22 @@ class ConfigsSeeder implements ISeeder
 
     private $configBuilder;
 
+    private $apiTokensRepository;
+
+    private $internalToken;
+
     public function __construct(
         ConfigCategoriesRepository $configCategoriesRepository,
         ConfigsRepository $configsRepository,
-        ConfigBuilder $configBuilder
+        ApiTokensRepository $apiTokensRepository,
+        ConfigBuilder $configBuilder,
+        InternalToken $internalToken
     ) {
         $this->configCategoriesRepository = $configCategoriesRepository;
         $this->configsRepository = $configsRepository;
         $this->configBuilder = $configBuilder;
+        $this->apiTokensRepository = $apiTokensRepository;
+        $this->internalToken = $internalToken;
     }
 
     public function seed(OutputInterface $output)
@@ -54,5 +66,33 @@ class ConfigsSeeder implements ISeeder
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
         }
+
+        $name = InternalToken::CONFIG_NAME;
+        $apiToken = $this->configsRepository->loadByName($name);
+        if (!$apiToken) {
+            $tokenValue = TokenGenerator::generate();
+            $this->configBuilder->createNew()
+                ->setName($name)
+                ->setDisplayName('Internal API token')
+                ->setDescription('Token used for internal API calls')
+                ->setType(ApplicationConfig::TYPE_STRING)
+                ->setAutoload(true)
+                ->setConfigCategory($category)
+                ->setSorting(500)
+                ->setValue($tokenValue)
+                ->save();
+            $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
+
+            $this->apiTokensRepository->insert([
+                'name' => 'Internal token',
+                'active' => 1,
+                'token' => $tokenValue,
+                'ip_restrictions' => '*',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ]);
+        }
+
+        $this->internalToken->addAccessToAllApiResources();
     }
 }

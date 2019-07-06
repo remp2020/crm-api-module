@@ -7,6 +7,7 @@ use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\TokenParser;
 use Crm\ApiModule\Repository\ApiLogsRepository;
 use Crm\ApiModule\Repository\ApiTokenStatsRepository;
+use Crm\ApiModule\Repository\IdempotentKeysRepository;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Crm\ApplicationModule\Presenters\BasePresenter;
@@ -24,6 +25,8 @@ class ApiPresenter extends BasePresenter
 
     private $apiTokenStatsRepository;
 
+    private $idempotentKeysRepository;
+
     private $dispatcher;
 
     private $response;
@@ -32,6 +35,7 @@ class ApiPresenter extends BasePresenter
         ApiRoutesContainer $apiRoutesContainer,
         ApiLogsRepository $apiLogsRepository,
         ApiTokenStatsRepository $apiTokenStatsRepository,
+        IdempotentKeysRepository $idempotentKeysRepository,
         Dispatcher $dispatcher,
         Response $response
     ) {
@@ -39,6 +43,7 @@ class ApiPresenter extends BasePresenter
         $this->apiRoutersContainer = $apiRoutesContainer;
         $this->apiLogsRepository = $apiLogsRepository;
         $this->apiTokenStatsRepository = $apiTokenStatsRepository;
+        $this->idempotentKeysRepository = $idempotentKeysRepository;
         $this->dispatcher = $dispatcher;
         $this->response = $response;
     }
@@ -77,7 +82,21 @@ class ApiPresenter extends BasePresenter
                 ]);
                 $this->response->setCode(Response::S403_FORBIDDEN);
             } else {
-                $result = $handler->handle($authorization);
+                $path = $this->getHttpRequest()->getUrl()->path;
+                $headerIdempotentKey = $this->getHttpRequest()->getHeader('Idempotency-Key');
+                $idempotentKey = false;
+                if ($headerIdempotentKey && !$this->request->isMethod('GET')) {
+                    $idempotentKey = $this->idempotentKeysRepository->findKey($path, $headerIdempotentKey);
+                }
+                if ($idempotentKey) {
+                    $result = new JsonResponse(['status' => 'ok', 'idempotent' => true, 'idempotency-key' => $headerIdempotentKey]);
+                    $result->setHttpCode(Response::S200_OK);
+                } else {
+                    $result = $handler->handle($authorization);
+                    if ($headerIdempotentKey && $result->getHttpCode() == Response::S200_OK) {
+                        $this->idempotentKeysRepository->add($path, $headerIdempotentKey);
+                    }
+                }
                 $this->response->setCode($result->getHttpCode());
             }
         }

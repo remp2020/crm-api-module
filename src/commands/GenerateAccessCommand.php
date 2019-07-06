@@ -4,10 +4,8 @@ namespace Crm\ApiModule\Commands;
 
 use Crm\ApiModule\Api\ApiHandler;
 use Crm\ApiModule\Repository\ApiAccessRepository;
-use Crm\ApiModule\Repository\ApiTokensRepository;
 use Crm\ApiModule\Router\ApiRoute;
 use Crm\ApiModule\Router\ApiRoutesContainer;
-use Crm\ApiModule\Token\InternalToken;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,17 +16,13 @@ class GenerateAccessCommand extends Command
 
     private $apiAccessRepository;
 
-    private $internalToken;
-
     public function __construct(
         ApiRoutesContainer $apiRoutesContainer,
-        ApiAccessRepository $apiAccessRepository,
-        InternalToken $internalToken
+        ApiAccessRepository $apiAccessRepository
     ) {
         parent::__construct();
         $this->apiRoutesContainer = $apiRoutesContainer;
         $this->apiAccessRepository = $apiAccessRepository;
-        $this->internalToken = $internalToken;
     }
 
     protected function configure()

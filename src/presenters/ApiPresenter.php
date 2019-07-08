@@ -2,6 +2,7 @@
 
 namespace Crm\ApiModule\Presenters;
 
+use Crm\ApiModule\Api\IdempotentHandlerInterface;
 use Crm\ApiModule\Api\JsonResponse;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\TokenParser;
@@ -88,12 +89,11 @@ class ApiPresenter extends BasePresenter
                 if ($headerIdempotentKey && !$this->request->isMethod('GET')) {
                     $idempotentKey = $this->idempotentKeysRepository->findKey($path, $headerIdempotentKey);
                 }
-                if ($idempotentKey) {
-                    $result = new JsonResponse(['status' => 'ok', 'idempotent' => true, 'idempotency-key' => $headerIdempotentKey]);
-                    $result->setHttpCode(Response::S200_OK);
+                if ($idempotentKey && $handler instanceof IdempotentHandlerInterface) {
+                    $result = $handler->idempotentHandle($authorization);
                 } else {
                     $result = $handler->handle($authorization);
-                    if ($headerIdempotentKey && $result->getHttpCode() == Response::S200_OK) {
+                    if ($headerIdempotentKey && $result->getHttpCode() == Response::S200_OK && $handler instanceof IdempotentHandlerInterface) {
                         $this->idempotentKeysRepository->add($path, $headerIdempotentKey);
                     }
                 }

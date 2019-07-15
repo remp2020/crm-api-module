@@ -13,4 +13,6 @@ interface ApiHandlerInterface
     public function params();
 
     public function resource(): string;
+
+    public function setIdempotentKey(string $idempotentKey): void;
 }

@@ -89,6 +89,9 @@ class ApiPresenter extends BasePresenter
                 if ($headerIdempotentKey && !$this->request->isMethod('GET')) {
                     $idempotentKey = $this->idempotentKeysRepository->findKey($path, $headerIdempotentKey);
                 }
+                if ($headerIdempotentKey) {
+                    $handler->setIdempotentKey($headerIdempotentKey);
+                }
                 if ($idempotentKey && $handler instanceof IdempotentHandlerInterface) {
                     $result = $handler->idempotentHandle($authorization);
                 } else {

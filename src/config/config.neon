@@ -24,3 +24,4 @@ services:
 	- Crm\ApiModule\Commands\GenerateAccessCommand
 	- Crm\ApiModule\Api\TokenCheckHandler
 	- Crm\ApiModule\Seeders\ConfigsSeeder
+	- Crm\ApiModule\Hermes\ApiLogHandler

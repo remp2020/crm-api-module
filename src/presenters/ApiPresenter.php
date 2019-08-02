@@ -11,11 +11,12 @@ use Crm\ApiModule\Repository\ApiTokenStatsRepository;
 use Crm\ApiModule\Repository\IdempotentKeysRepository;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
+use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Presenters\BasePresenter;
 use Crm\ApplicationModule\Request;
 use Crm\UsersModule\Auth\UserTokenAuthorization;
 use Nette\Http\Response;
-use Tomaj\Hermes\Dispatcher;
+use Tomaj\Hermes\Emitter;
 use Tracy\Debugger;
 
 class ApiPresenter extends BasePresenter
@@ -28,7 +29,7 @@ class ApiPresenter extends BasePresenter
 
     private $idempotentKeysRepository;
 
-    private $dispatcher;
+    private $hermesEmitter;
 
     private $response;
 
@@ -37,7 +38,7 @@ class ApiPresenter extends BasePresenter
         ApiLogsRepository $apiLogsRepository,
         ApiTokenStatsRepository $apiTokenStatsRepository,
         IdempotentKeysRepository $idempotentKeysRepository,
-        Dispatcher $dispatcher,
+        Emitter $hermesEmitter,
         Response $response
     ) {
         parent::__construct();
@@ -45,7 +46,7 @@ class ApiPresenter extends BasePresenter
         $this->apiLogsRepository = $apiLogsRepository;
         $this->apiTokenStatsRepository = $apiTokenStatsRepository;
         $this->idempotentKeysRepository = $idempotentKeysRepository;
-        $this->dispatcher = $dispatcher;
+        $this->hermesEmitter = $hermesEmitter;
         $this->response = $response;
     }
 
@@ -132,17 +133,16 @@ class ApiPresenter extends BasePresenter
         $ipAddress = Request::getIp();
         $userAgent = Request::getUserAgent();
 
-
         if ($this->applicationConfig->get('enable_api_log')) {
-            $this->apiLogsRepository->add(
-                $token,
-                $path,
-                $jsonInput,
-                $responseCode,
-                $elapsed,
-                $ipAddress,
-                $userAgent
-            );
+            $this->hermesEmitter->emit(new HermesMessage('api-log', [
+                'token' => $token,
+                'path' => $path,
+                'jsonInput' => $jsonInput,
+                'responseCode' => $responseCode,
+                'elapsed' => $elapsed,
+                'ipAddress' => $ipAddress,
+                'userAgent' => $userAgent,
+            ]));
         }
 
         $this->sendResponse($result);

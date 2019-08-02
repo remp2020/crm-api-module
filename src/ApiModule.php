@@ -15,6 +15,7 @@ use Crm\ApplicationModule\SeederManager;
 use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
 use Nette\DI\Container;
+use Tomaj\Hermes\Dispatcher;
 
 class ApiModule extends CrmModule
 {
@@ -65,5 +66,13 @@ class ApiModule extends CrmModule
     public function registerSeeders(SeederManager $seederManager)
     {
         $seederManager->addSeeder($this->getInstance(ConfigsSeeder::class));
+    }
+
+    public function registerHermesHandlers(Dispatcher $dispatcher)
+    {
+        $dispatcher->registerHandler(
+            'api-log',
+            $this->getInstance(\Crm\ApiModule\Hermes\ApiLogHandler::class)
+        );
     }
 }

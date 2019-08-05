@@ -23,3 +23,12 @@ admin:
 			no_api_tokens: Nenalezeny žádné API tokeny
 			actions: Akce
 			total: Celkem
+
+config:
+	category: API
+	enable_api_log:
+		name: API logy
+		description: Povolit ukládání API logů do databáze
+	internal_api_token:
+		name: Interní API klíč
+		description: 'API klíč používán pro interní volání (<a href="/api/api-tokens-admin/">seznam</a>)'

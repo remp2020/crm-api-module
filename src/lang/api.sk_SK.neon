@@ -117,3 +117,12 @@ admin:
 			value: Žiadna autorizácia - globalny prístup
 		available_values: dostupné hodnoty
 		submit: Otestuj
+
+config:
+	category: API
+	enable_api_log:
+		name: API logy
+		description: Povoliť API logy v databáze
+	internal_api_token:
+		name: Interný API kľúč
+		description: 'API kľúč používaný pre interné volania (<a href="/api/api-tokens-admin/">zoznam</a>)'

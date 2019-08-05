@@ -41,12 +41,13 @@ class ConfigsSeeder implements ISeeder
 
     public function seed(OutputInterface $output)
     {
-        $category = $this->configCategoriesRepository->loadByName('Other');
+        $categoryName = 'api.config.category';
+        $category = $this->configCategoriesRepository->loadByName($categoryName);
         if (!$category) {
-            $category = $this->configCategoriesRepository->add('Other', 'fa fa-tag', 900);
-            $output->writeln('  <comment>* config category <info>Other</info> created</comment>');
+            $category = $this->configCategoriesRepository->add($categoryName, 'fa fa-tag', 900);
+            $output->writeln('  <comment>* config category <info>API</info> created</comment>');
         } else {
-            $output->writeln(' * config category <info>Other</info> exists');
+            $output->writeln(' * config category <info>API</info> exists');
         }
 
         $name = 'enable_api_log';
@@ -54,8 +55,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('API logs')
-                ->setDescription('Enable API logs in database')
+                ->setDisplayName('api.config.enable_api_log.name')
+                ->setDescription('api.config.enable_api_log.description')
                 ->setType(ApplicationConfig::TYPE_BOOLEAN)
                 ->setAutoload(true)
                 ->setConfigCategory($category)
@@ -65,6 +66,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = InternalToken::CONFIG_NAME;
@@ -73,8 +81,8 @@ class ConfigsSeeder implements ISeeder
             $tokenValue = TokenGenerator::generate();
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Internal API token')
-                ->setDescription('Token used for internal API calls')
+                ->setDisplayName('api.config.internal_api_token.name')
+                ->setDescription('api.config.internal_api_token.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(true)
                 ->setConfigCategory($category)
@@ -91,6 +99,15 @@ class ConfigsSeeder implements ISeeder
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
             ]);
+        } else {
+            $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($apiToken->category->name != $categoryName) {
+                $this->configsRepository->update($apiToken, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $this->internalToken->addAccessToAllApiResources();

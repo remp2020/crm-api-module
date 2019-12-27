@@ -42,6 +42,8 @@ class GenerateAccessCommand extends Command
             $created = $this->processPresenterClass($className);
             $output->writeln($created ? 'Created' : 'OK');
         }
+
+        return 0;
     }
 
     private function processPresenterClass($presenterClass)

@@ -10,10 +10,11 @@ use Tracy\Debugger;
 
 trait JsonValidationTrait
 {
-    public function validateInput($jsonSchemaPath): JsonValidationResult
+    public function validateInput(string $jsonSchemaPath, ?string $request = null): JsonValidationResult
     {
-        $request = file_get_contents('php://input');
-
+        if (empty($request)) {
+            $request = file_get_contents('php://input');
+        }
         if (empty($request)) {
             $response = new JsonResponse(['status' => 'error', 'message' => 'Empty request']);
             $response->setHttpCode(Response::S400_BAD_REQUEST);

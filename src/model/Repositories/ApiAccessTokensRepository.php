@@ -9,7 +9,7 @@ class ApiAccessTokensRepository extends Repository
 {
     protected $tableName = 'api_access_tokens';
 
-    public function assignAccess(IRow $token, IRow $apiAccess)
+    final public function assignAccess(IRow $token, IRow $apiAccess)
     {
         $row = $this->getTable()->where([
             'api_access_id' => $apiAccess->id,

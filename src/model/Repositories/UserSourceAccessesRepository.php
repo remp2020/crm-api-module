@@ -8,7 +8,7 @@ class UserSourceAccessesRepository extends Repository
 {
     protected $tableName = 'user_source_accesses';
 
-    public function getLast($limit = 200)
+    final public function getLast($limit = 200)
     {
         return $this->getTable()->order('created_at DESC')->limit($limit);
     }
@@ -18,7 +18,7 @@ class UserSourceAccessesRepository extends Repository
      * @param $source
      * @param \DateTime $lastAccessedDate
      */
-    public function upsert($userId, $source, $lastAccessedDate)
+    final public function upsert($userId, $source, $lastAccessedDate)
     {
         $datetime = $lastAccessedDate->format('Y-m-d H:i:s');
 
@@ -33,7 +33,7 @@ SQL
         );
     }
 
-    public function getByUser($userId)
+    final public function getByUser($userId)
     {
         return $this->getTable()->where([
             'user_id' => $userId,

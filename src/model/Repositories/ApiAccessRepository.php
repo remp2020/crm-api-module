@@ -9,7 +9,7 @@ class ApiAccessRepository extends Repository
 {
     protected $tableName = 'api_access';
 
-    public function add($resource)
+    final public function add($resource)
     {
         return $this->insert([
             'resource' => $resource,
@@ -17,12 +17,12 @@ class ApiAccessRepository extends Repository
         ]);
     }
 
-    public function exists($resource)
+    final public function exists($resource)
     {
         return $this->getTable()->where(['resource' => $resource])->count('*') > 0;
     }
 
-    public function all()
+    final public function all()
     {
         return $this->getTable()->order('resource ASC');
     }

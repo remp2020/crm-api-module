@@ -17,7 +17,7 @@ class ApiTokenStatsRepository extends Repository
         $this->tokenRepository = $tokenRepository;
     }
 
-    public function updateStats($token)
+    final public function updateStats($token)
     {
         $tokenId = $this->tokenRepository->findToken($token);
         if ($tokenId) {

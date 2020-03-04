@@ -11,12 +11,12 @@ class ApiTokensRepository extends Repository
 {
     protected $tableName = 'api_tokens';
 
-    public function all()
+    final public function all()
     {
         return $this->getTable()->order('created_at DESC');
     }
 
-    public function generate($name, $ipRestrictions = '*', $active = true)
+    final public function generate($name, $ipRestrictions = '*', $active = true)
     {
         $token = TokenGenerator::generate();
         return $this->insert([
@@ -29,13 +29,13 @@ class ApiTokensRepository extends Repository
         ]);
     }
 
-    public function update(IRow &$row, $data)
+    final public function update(IRow &$row, $data)
     {
         $data['updated_at'] = new DateTime();
         return parent::update($row, $data);
     }
 
-    public function findToken($token)
+    final public function findToken($token)
     {
         $tokenRow = $this->getTable()->where('token', $token)->fetch();
         if (!$tokenRow) {

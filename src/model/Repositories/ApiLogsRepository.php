@@ -12,12 +12,12 @@ class ApiLogsRepository extends Repository
 
     protected $tableName = 'api_logs';
 
-    public function getLast($limit = 200)
+    final public function getLast($limit = 200)
     {
         return $this->getTable()->order('created_at DESC')->limit($limit);
     }
 
-    public function add($token, $path, $input, $responseCode, $responseTime, $ip, $userAgent)
+    final public function add($token, $path, $input, $responseCode, $responseTime, $ip, $userAgent)
     {
         return $this->insert([
             'token' => $token,

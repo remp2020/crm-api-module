@@ -9,7 +9,7 @@ class IdempotentKeysRepository extends Repository
 {
     protected $tableName = 'idempotent_keys';
 
-    public function add(string $path, string $key)
+    final public function add(string $path, string $key)
     {
         return $this->getTable()->insert([
             'path' => $path,
@@ -18,7 +18,7 @@ class IdempotentKeysRepository extends Repository
         ]);
     }
 
-    public function findKey(string $path, string $key)
+    final public function findKey(string $path, string $key)
     {
         return $this->getTable()->where(['path' => $path, 'key' => $key])->limit(1)->fetch();
     }

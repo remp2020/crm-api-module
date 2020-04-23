@@ -6,7 +6,8 @@
   "license": "MIT",
   "require": {
     "php": "^7.1",
-    "remp/crm-application-module": "~0.2"
+    "remp/crm-application-module": "~0.2",
+    "spatie/array-to-xml": "^2.11"
   },
   "minimum-stability": "dev",
   "autoload": {

@@ -8,7 +8,7 @@ abstract class ApiHandler implements ApiHandlerInterface
 {
     private $idempotentKey = null;
 
-    private $mockedRawPayloadsQueue = [];
+    private $rawPayload = null;
 
     public function resource(): string
     {
@@ -16,32 +16,26 @@ abstract class ApiHandler implements ApiHandlerInterface
     }
 
     /**
-     * Push mocked 'php://input' payload into payload queue. Useful for testing
+     * Set mocked 'php://input' payload. Useful for testing
      * @param $content
      */
-    public function mockRawPayload($content)
+    public function setRawPayload($content)
     {
-        $this->mockedRawPayloadsQueue[] = $content;
+        $this->rawPayload = $content;
     }
 
     /**
-     * Retrieve raw payload from 'php://input' (or mocked content in case of tests)
+     * Retrieve raw payload from 'php://input'
      * @return false|mixed|string
      */
     public function rawPayload()
     {
-        if ($this->mockedRawPayloadsQueue) {
-            return array_shift($this->mockedRawPayloadsQueue);
+        if ($this->rawPayload) {
+            $toReturn = $this->rawPayload;
+            $this->rawPayload = null;
+            return $toReturn;
         }
         return file_get_contents('php://input');
-    }
-
-    /**
-     * Handle to call in tests
-     */
-    public function handleInTest()
-    {
-        return $this->handle(new NoAuthorization());
     }
 
     public static function resourceFromClass($className): string

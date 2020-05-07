@@ -2,8 +2,6 @@
 
 namespace Crm\ApiModule\Api;
 
-use Crm\ApiModule\Authorization\NoAuthorization;
-
 abstract class ApiHandler implements ApiHandlerInterface
 {
     private $idempotentKey = null;

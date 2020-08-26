@@ -3,6 +3,7 @@
 namespace Crm\ApiModule;
 
 use Crm\ApiModule\Api\ApiRoutersContainerInterface;
+use Crm\ApiModule\Repository\ApiLogsRepository;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoute;
 use Crm\ApiModule\Seeders\ConfigsSeeder;
@@ -40,8 +41,8 @@ class ApiModule extends CrmModule
 
     public function registerCleanupFunction(CallbackManagerInterface $cleanUpManager)
     {
-        $cleanUpManager->add(function (Container $container) {
-            $apiLogsRepository = $container->getByType('Crm\ApiModule\Repository\ApiLogsRepository');
+        $cleanUpManager->add(ApiLogsRepository::class, function (Container $container) {
+            $apiLogsRepository = $container->getByType(ApiLogsRepository::class);
             $apiLogsRepository->removeOldData();
         });
     }

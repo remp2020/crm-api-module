@@ -2,7 +2,6 @@
 
 namespace Crm\ApiModule\Authorization;
 
-use Crm\ApiModule\Repository\ApiAccessRepository;
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Crm\ApplicationModule\Request;
 use Nette\Security\IAuthorizator;
@@ -10,8 +9,6 @@ use Nette\Security\IAuthorizator;
 class BearerTokenAuthorization implements ApiAuthorizationInterface
 {
     private $apiTokenRepository;
-
-    private $apiAccessRepository;
 
     private $permissions;
 
@@ -21,11 +18,9 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
 
     public function __construct(
         ApiTokensRepository $apiTokenRepository,
-        ApiAccessRepository $apiAccessRepository,
         Permissions $permissions
     ) {
         $this->apiTokenRepository = $apiTokenRepository;
-        $this->apiAccessRepository = $apiAccessRepository;
         $this->permissions = $permissions;
     }
 

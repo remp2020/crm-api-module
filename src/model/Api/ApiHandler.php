@@ -42,7 +42,7 @@ abstract class ApiHandler implements ApiHandlerInterface
         $handler = str_replace('Handler', '', array_pop($parts));
         do {
             $module = array_pop($parts);
-        } while (strpos($module, 'Module') === false);
+        } while (strpos($module, 'Module') === false && $module !== null);
         $module = str_replace('Module', '', $module);
         return "{$module}:{$handler}";
     }

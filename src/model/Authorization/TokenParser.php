@@ -30,7 +30,7 @@ class TokenParser
             return;
         }
         if (!strtolower($parts[0]) == 'bearer') {
-            $this->errorMessage = 'Authorization header doesn\'t contains bearer token';
+            $this->errorMessage = 'Authorization header doesn\'t contain bearer token';
             return;
         }
         $this->isOk = true;

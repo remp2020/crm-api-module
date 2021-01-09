@@ -14,8 +14,8 @@ class UserSourceAccessesRepository extends Repository
     }
 
     /**
-     * @param $userId
-     * @param $source
+     * @param integer $userId
+     * @param string $source
      * @param \DateTime $lastAccessedDate
      */
     final public function upsert($userId, $source, $lastAccessedDate)

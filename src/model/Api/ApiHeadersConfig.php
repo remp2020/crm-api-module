@@ -10,8 +10,11 @@ class ApiHeadersConfig
 
     protected $allowedHeaders = [];
 
-    public function isOriginAllowed(string $origin): bool
+    public function isOriginAllowed(?string $origin): bool
     {
+        if ($origin === null) {
+            return true;
+        }
         if (empty($this->allowedOrigins)) {
             return false;
         }

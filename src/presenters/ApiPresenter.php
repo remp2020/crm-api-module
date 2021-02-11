@@ -60,19 +60,18 @@ class ApiPresenter extends BasePresenter
     {
         Debugger::timer();
 
+        $origin = $_SERVER['HTTP_ORIGIN'];
+
+        if (!$this->apiHeadersConfig->isOriginAllowed($origin)) {
+            $this->error(Json::encode([
+                'error' => 'origin_not_allowed',
+                'message' => 'Origin is not allowed: ' . $origin,
+            ]), Response::S403_FORBIDDEN);
+        }
+        $this->getHttpResponse()->addHeader('Access-Control-Allow-Origin', $origin);
+
         // handle preflight request
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            $origin = $_SERVER['HTTP_ORIGIN'];
-
-            if (!$this->apiHeadersConfig->isOriginAllowed($origin)) {
-                $this->error(Json::encode([
-                    'error' => 'origin_not_allowed',
-                    'message' => 'Origin is not allowed: ' . $origin,
-                ]), Response::S403_FORBIDDEN);
-            }
-
-            $this->getHttpResponse()->addHeader('Access-Control-Allow-Origin', $origin);
-
             // set allowed headers
             $this->response->addHeader(
                 'Access-Control-Allow-Headers',

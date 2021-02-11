@@ -14,6 +14,26 @@ extensions:
 	- Crm\ApiModule\DI\ApiModuleExtension
 ```
 
+### Configuration
+
+Module allows you to configure preflight request handling. Add following snippet to your `config.neon` file:
+
+```neon
+services:
+	# ...
+	apiHeadersConfig:
+		setup:
+			- setAllowedOrigins('*')
+			- setAllowedHeaders('Content-Type', 'Authorization', 'X-Requested-With')
+			- setAllowedHttpMethods('*')
+```
+
+You can configure allowed origins by explicitly stating them or by using wildcards. Following configurations are valid:
+
+- `setAllowedOrigins("*")`. Matches everything
+- `setAllowedOrigins("foo.bar", "*.foo.bar")`. Matches `foo.bar` and all of its subdomains.
+- `setAllowedOrigins("foo.bar", "1.foo.bar")`. Matches `foo.bar`, `1.foo.bar`, but nothing else (nor any other subdomain).
+
 ## API documentation
 
 All examples use `http://crm.press` as a base domain. Please change the host to the one you use

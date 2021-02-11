@@ -2,6 +2,7 @@
 
 namespace Crm\ApiModule\Presenters;
 
+use Crm\ApiModule\Api\ApiHeadersConfig;
 use Crm\ApiModule\Api\IdempotentHandlerInterface;
 use Crm\ApiModule\Api\JsonResponse;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
@@ -16,6 +17,7 @@ use Crm\ApplicationModule\Presenters\BasePresenter;
 use Crm\ApplicationModule\Request;
 use Crm\UsersModule\Auth\UserTokenAuthorization;
 use Nette\Http\Response;
+use Nette\Utils\Json;
 use Tomaj\Hermes\Emitter;
 use Tracy\Debugger;
 
@@ -29,6 +31,8 @@ class ApiPresenter extends BasePresenter
 
     private $idempotentKeysRepository;
 
+    private $apiHeadersConfig;
+
     private $hermesEmitter;
 
     private $response;
@@ -38,6 +42,7 @@ class ApiPresenter extends BasePresenter
         ApiLogsRepository $apiLogsRepository,
         ApiTokenStatsRepository $apiTokenStatsRepository,
         IdempotentKeysRepository $idempotentKeysRepository,
+        ApiHeadersConfig $apiHeadersConfig,
         Emitter $hermesEmitter,
         Response $response
     ) {
@@ -46,6 +51,7 @@ class ApiPresenter extends BasePresenter
         $this->apiLogsRepository = $apiLogsRepository;
         $this->apiTokenStatsRepository = $apiTokenStatsRepository;
         $this->idempotentKeysRepository = $idempotentKeysRepository;
+        $this->apiHeadersConfig = $apiHeadersConfig;
         $this->hermesEmitter = $hermesEmitter;
         $this->response = $response;
     }
@@ -54,12 +60,31 @@ class ApiPresenter extends BasePresenter
     {
         Debugger::timer();
 
-        $this->getHttpResponse()->addHeader('Access-Control-Allow-Origin', '*');
+        // handle preflight request
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            $origin = $_SERVER['HTTP_ORIGIN'];
 
-        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-            $this->response->addHeader('Access-Control-Allow-Headers', 'Authorization');
-            $this->response->addHeader('Access-Control-Allow-Headers', 'X-Requested-With');
-            $this->response->addHeader('Access-Control-Allow-Headers', 'Content-Type');
+            if (!$this->apiHeadersConfig->isOriginAllowed($origin)) {
+                $this->error(Json::encode([
+                    'error' => 'origin_not_allowed',
+                    'message' => 'Origin is not allowed: ' . $origin,
+                ]), Response::S403_FORBIDDEN);
+            }
+
+            $this->getHttpResponse()->addHeader('Access-Control-Allow-Origin', $origin);
+
+            // set allowed headers
+            $this->response->addHeader(
+                'Access-Control-Allow-Headers',
+                $this->apiHeadersConfig->getAllowedHeaders()
+            );
+
+            // set allowed methods
+            $this->response->addHeader(
+                'Access-Control-Allow-Methods',
+                $this->apiHeadersConfig->getAllowedHttpMethods()
+            );
+
             $this->sendResponse(new JsonResponse(['options' => 'ok']));
         }
 

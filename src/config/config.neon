@@ -11,6 +11,13 @@ services:
 	idempotentKeysRepository: Crm\ApiModule\Repository\IdempotentKeysRepository
 	userSourceAccessesRepository: Crm\ApiModule\Repository\UserSourceAccessesRepository
 
+	apiHeadersConfig:
+		class: Crm\ApiModule\Api\ApiHeadersConfig
+		setup:
+			- setAllowedOrigins('*')
+			- setAllowedHeaders('Content-Type', 'Authorization', 'X-Requested-With')
+			- setAllowedHttpMethods('*')
+
 	- Crm\ApiModule\Router\ApiRoutesContainer
 	- Crm\ApiModule\Authorization\BearerTokenAuthorization
 	- Crm\ApiModule\Authorization\NoAuthorization

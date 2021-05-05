@@ -13,6 +13,9 @@ class ApiLogsAdminPresenter extends AdminPresenter
     /** @var ApiLogsRepository @inject */
     public $apiLogsRepository;
 
+    /**
+     * @admin-access-level read
+     */
     public function renderDefault()
     {
         $this->template->apiLogs = $this->apiLogsRepository->getLast();

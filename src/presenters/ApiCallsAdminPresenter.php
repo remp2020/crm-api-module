@@ -15,12 +15,18 @@ class ApiCallsAdminPresenter extends AdminPresenter
     /** @var ApiTestCallFormFactory @inject */
     public $apiTestCallFormFactory;
 
+    /**
+     * @admin-access-level read
+     */
     public function renderDefault()
     {
         $routers = $this->apiRoutesContainer->getRouters();
         $this->template->routers = $routers;
     }
 
+    /**
+     * @admin-access-level read
+     */
     public function renderDetail($version, $category, $apiAction)
     {
         $identifier = new ApiIdentifier($version, $category, $apiAction);

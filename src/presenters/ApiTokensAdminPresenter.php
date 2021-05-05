@@ -15,15 +15,24 @@ class ApiTokensAdminPresenter extends AdminPresenter
     /** @var  ApiTokenFormFactory @inject */
     public $apiTokenFormfactory;
 
+    /**
+     * @admin-access-level read
+     */
     public function renderDefault()
     {
         $this->template->apiTokens = $this->apiTokensRepository->all();
     }
 
+    /**
+     * @admin-access-level write
+     */
     public function renderNew()
     {
     }
 
+    /**
+     * @admin-access-level write
+     */
     public function renderEdit($id)
     {
         $apiToken = $this->apiTokensRepository->find($id);
@@ -33,6 +42,9 @@ class ApiTokensAdminPresenter extends AdminPresenter
         $this->template->apiToken = $apiToken;
     }
 
+    /**
+     * @admin-access-level write
+     */
     public function renderDelete($id)
     {
         $apiToken = $this->apiTokensRepository->find($id);

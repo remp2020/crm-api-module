@@ -26,6 +26,9 @@ class ApiAccessAdminPresenter extends AdminPresenter
     /** @var ApiAccessTokenFormFactory @inject */
     public $apiAccessTokenFormFactory;
 
+    /**
+     * @admin-access-level read
+     */
     public function renderDefault()
     {
         $this->template->accessCount = $this->apiAccessRepository->all()->count('*');
@@ -34,11 +37,17 @@ class ApiAccessAdminPresenter extends AdminPresenter
         $this->template->apiTokens = $this->apiTokensRepository->all();
     }
 
+    /**
+     * @admin-access-level write
+     */
     public function renderEditAccess($id)
     {
         $this->template->apiAccess = $this->apiAccessRepository->find($id);
     }
 
+    /**
+     * @admin-access-level write
+     */
     public function renderEditToken($id)
     {
         $this->template->apiToken = $this->apiTokensRepository->find($id);

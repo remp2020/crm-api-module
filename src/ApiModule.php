@@ -42,6 +42,7 @@ class ApiModule extends CrmModule
     public function registerCleanupFunction(CallbackManagerInterface $cleanUpManager)
     {
         $cleanUpManager->add(ApiLogsRepository::class, function (Container $container) {
+            /** @var ApiLogsRepository $apiLogsRepository */
             $apiLogsRepository = $container->getByType(ApiLogsRepository::class);
             $apiLogsRepository->removeOldData();
         });

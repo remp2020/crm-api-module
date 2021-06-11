@@ -34,6 +34,16 @@ You can configure allowed origins by explicitly stating them or by using wildcar
 - `setAllowedOrigins("foo.bar", "*.foo.bar")`. Matches `foo.bar` and all of its subdomains.
 - `setAllowedOrigins("foo.bar", "1.foo.bar")`. Matches `foo.bar`, `1.foo.bar`, but nothing else (nor any other subdomain).
 
+#### Data retention configuration
+
+You can configure time before which `application:cleanup` deletes old repository data and column which it uses by using (in your project configuration file):
+
+```neon
+apiLogsRepository:
+	setup:
+		- setRetentionThreshold('-2 months', 'created_at')
+```
+
 ## API documentation
 
 All examples use `http://crm.press` as a base domain. Please change the host to the one you use

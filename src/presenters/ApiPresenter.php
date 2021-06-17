@@ -167,7 +167,7 @@ class ApiPresenter extends BasePresenter
                 'elapsed' => $elapsed,
                 'ipAddress' => $ipAddress,
                 'userAgent' => $userAgent,
-            ]));
+            ]), HermesMessage::PRIORITY_LOW);
         }
 
         $this->sendResponse($result);

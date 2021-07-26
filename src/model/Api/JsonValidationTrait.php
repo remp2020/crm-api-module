@@ -46,4 +46,14 @@ trait JsonValidationTrait
             return JsonValidationResult::error($response);
         }
     }
+
+    public function getErrorsFromErrorResponse(JsonResponse $jsonResponse): array
+    {
+        $payload = $jsonResponse->getPayload();
+        if (!isset($payload['errors']) || count($payload['errors']) < 1) {
+            throw new \Exception("No errors found.");
+        }
+
+        return $payload['errors'];
+    }
 }

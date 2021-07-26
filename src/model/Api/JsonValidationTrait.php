@@ -33,7 +33,7 @@ trait JsonValidationTrait
                 foreach ($validator->getErrors() as $error) {
                     $data['errors'][] = $error['message'];
                 }
-                Debugger::log('Cannot parse - ' . $request . ' -> ' . implode(', ', $data['errors']));
+                Debugger::log('Cannot parse request. Errors: ' . implode(', ', $data['errors']) . '. Request: [' . $request . ']');
                 $response = new JsonResponse($data);
                 $response->setHttpCode(Response::S400_BAD_REQUEST);
                 return JsonValidationResult::error($response);

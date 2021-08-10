@@ -41,19 +41,9 @@ trait JsonValidationTrait
 
             return JsonValidationResult::json($json);
         } catch (JsonException $e) {
-            $response = new JsonResponse(['status' => 'error', 'message' => 'Malformed JSON. (error: ' . $e->getMessage() . ')']);
+            $response = new JsonResponse(['status' => 'error', 'message' => 'Malformed JSON', 'errors' => [$e->getMessage()]]);
             $response->setHttpCode(Response::S400_BAD_REQUEST);
             return JsonValidationResult::error($response);
         }
-    }
-
-    public function getErrorsFromErrorResponse(JsonResponse $jsonResponse): array
-    {
-        $payload = $jsonResponse->getPayload();
-        if (!isset($payload['errors']) || count($payload['errors']) < 1) {
-            throw new \Exception("No errors found.");
-        }
-
-        return $payload['errors'];
     }
 }

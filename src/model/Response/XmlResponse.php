@@ -33,7 +33,7 @@ class XmlResponse implements ApiResponseInterface
         $this->httpCode = $httpCode;
     }
 
-    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
     {
         $httpResponse->setContentType('application/xml', 'utf-8');
         echo ArrayToXml::convert($this->payload, [

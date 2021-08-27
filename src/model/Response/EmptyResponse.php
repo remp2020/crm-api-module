@@ -20,7 +20,7 @@ class EmptyResponse implements ApiResponseInterface
         return $this->httpCode;
     }
 
-    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
     {
         // nothing, void, emptiness...
     }

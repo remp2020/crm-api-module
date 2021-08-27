@@ -74,10 +74,10 @@ class ApiTestCallFormFactory
 
         if ($this->authorization instanceof BearerTokenAuthorization) {
             $form->addText('token', $this->translator->translate('api.admin.api_test_call_form.token.title'))
-                ->setAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token.placeholder'));
+                ->setHtmlAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token.placeholder'));
         } elseif ($this->authorization instanceof CsrfAuthorization) {
             $form->addText('token_csfr', $this->translator->translate('api.admin.api_test_call_form.token_csfr.title'))
-                ->setAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token_csfr.placeholder'));
+                ->setHtmlAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token_csfr.placeholder'));
         } elseif ($this->authorization instanceof NoAuthorization) {
             $form->addText('authorization', $this->translator->translate('api.admin.api_test_call_form.authorization.title'))
                 ->setDisabled(true);

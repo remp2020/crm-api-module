@@ -44,11 +44,11 @@ class ApiTokenFormFactory
 
         $form->addText('name', $this->translator->translate('api.admin.api_tokens.fields.name.title'))
             ->setRequired($this->translator->translate('api.admin.api_tokens.fields.name.required'))
-            ->setAttribute('placeholder', $this->translator->translate('api.admin.api_tokens.fields.name.placeholder'))
+            ->setHtmlAttribute('placeholder', $this->translator->translate('api.admin.api_tokens.fields.name.placeholder'))
             ->setOption('description', $this->translator->translate('api.admin.api_tokens.fields.name.description'));
 
         $form->addTextArea('ip_restrictions', $this->translator->translate('api.admin.api_tokens.fields.ip_restrictions.title'))
-            ->setAttribute('placeholder', $this->translator->translate('api.admin.api_tokens.fields.ip_restrictions.placeholder'))
+            ->setHtmlAttribute('placeholder', $this->translator->translate('api.admin.api_tokens.fields.ip_restrictions.placeholder'))
             ->setOption('description', $this->translator->translate('api.admin.api_tokens.fields.ip_restrictions.description'));
 
         $form->addCheckbox('active', $this->translator->translate('api.admin.api_tokens.fields.active.title'));

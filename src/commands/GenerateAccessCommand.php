@@ -43,7 +43,7 @@ class GenerateAccessCommand extends Command
             $output->writeln($created ? 'Created' : 'OK');
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function processPresenterClass($presenterClass)

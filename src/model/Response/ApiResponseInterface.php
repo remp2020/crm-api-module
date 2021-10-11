@@ -2,9 +2,9 @@
 
 namespace Crm\ApiModule\Response;
 
-use Nette\Application\IResponse;
+use Nette\Application\Response;
 
-interface ApiResponseInterface extends IResponse
+interface ApiResponseInterface extends Response
 {
     public function getHttpCode();
 

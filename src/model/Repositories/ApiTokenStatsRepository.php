@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Repository;
 
 use Crm\ApplicationModule\Repository;
-use Nette\Database\Context;
+use Nette\Database\Explorer;
 
 class ApiTokenStatsRepository extends Repository
 {
@@ -11,7 +11,7 @@ class ApiTokenStatsRepository extends Repository
 
     private $tokenRepository;
 
-    public function __construct(Context $database, ApiTokensRepository $tokenRepository)
+    public function __construct(Explorer $database, ApiTokensRepository $tokenRepository)
     {
         parent::__construct($database);
         $this->tokenRepository = $tokenRepository;

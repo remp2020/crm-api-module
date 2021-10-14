@@ -20,17 +20,17 @@ class ApiRoute implements ApiRouteInterface
         $this->authorizationClassName = $authorizationClassName;
     }
 
-    public function getHandlerClassName()
+    public function getHandlerClassName(): string
     {
         return $this->handlerClassName;
     }
 
-    public function getApiIdentifier()
+    public function getApiIdentifier(): ApiIdentifier
     {
         return $this->apiIdentifier;
     }
 
-    public function getAuthorizationClassName()
+    public function getAuthorizationClassName(): string
     {
         return $this->authorizationClassName;
     }

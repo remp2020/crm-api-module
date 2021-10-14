@@ -2,11 +2,13 @@
 
 namespace Crm\ApiModule\Api;
 
+use Crm\ApiModule\Router\ApiIdentifier;
+
 interface ApiRouteInterface
 {
-    public function getApiIdentifier();
+    public function getApiIdentifier(): ApiIdentifier;
 
-    public function getHandlerClassName();
+    public function getHandlerClassName(): string;
 
-    public function getAuthorizationClassName();
+    public function getAuthorizationClassName(): string;
 }

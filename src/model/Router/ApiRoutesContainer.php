@@ -2,13 +2,15 @@
 
 namespace Crm\ApiModule\Router;
 
+use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApiModule\Api\ApiRouteInterface;
 use Crm\ApiModule\Api\ApiRoutersContainerInterface;
+use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Nette\DI\Container;
 
 class ApiRoutesContainer implements ApiRoutersContainerInterface
 {
-    /** @var array(ApiRouteInterface) */
+    /** @var ApiRouteInterface[] */
     private $routers = [];
 
     /** @var Container  */
@@ -19,20 +21,13 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
         $this->container = $container;
     }
 
-    public function attachRouter(ApiRouteInterface $router)
+    public function attachRouter(ApiRouteInterface $router): void
     {
-        $newRouters = [];
-        foreach ($this->routers as $r) {
-            if (!$router->getApiIdentifier()->equals($r->getApiIdentifier())) {
-                $newRouters[] = $r;
-            }
-        }
-        $newRouters[] = $router;
-        $this->routers = $newRouters;
+        $this->routers[$router->getApiIdentifier()->getApiPath()] = $router;
     }
 
     /**
-     * @return array(\Crm\ApiModule\Api\ApiHandlerInterface)
+     * @return ApiHandlerInterface[]
      */
     public function getHandlers()
     {
@@ -43,50 +38,38 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
         return $instances;
     }
 
-    /**
-     * @param ApiIdentifier $identifier
-     * @return \Crm\ApiModule\Api\ApiHandlerInterface
-     */
-    public function getHandler(ApiIdentifier $identifier)
+    public function getHandler(ApiIdentifier $identifier): ?ApiHandlerInterface
     {
         $router = $this->getRouter($identifier);
         if (!$router) {
-            return false;
+            return null;
         }
         return $this->container->getByType($router->getHandlerClassName());
     }
 
-    /**
-     * @param ApiIdentifier $identifier
-     * @return \Crm\ApiModule\Api\ApiRouteInterface
-     */
-    public function getRouter(ApiIdentifier $identifier)
+    public function getRouter(ApiIdentifier $identifier): ?ApiRouteInterface
     {
         foreach ($this->routers as $router) {
             if ($identifier->equals($router->getApiIdentifier())) {
                 return $router;
             }
         }
-        return false;
+        return null;
     }
 
     /**
-     * @return array(\Crm\ApiModule\Api\ApiRouteInterface)
+     * @return ApiRouteInterface[]
      */
-    public function getRouters()
+    public function getRouters(): array
     {
-        return $this->routers;
+        return array_values($this->routers);
     }
 
-    /**
-     * @param ApiIdentifier $identifier
-     * @return \Crm\ApiModule\Authorization\ApiAuthorizationInterface
-     */
-    public function getAuthorization(ApiIdentifier $identifier)
+    public function getAuthorization(ApiIdentifier $identifier): ?ApiAuthorizationInterface
     {
         $router = $this->getRouter($identifier);
         if (!$router) {
-            return false;
+            return null;
         }
         return $this->container->getByType($router->getAuthorizationClassName());
     }

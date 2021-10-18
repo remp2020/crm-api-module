@@ -7,25 +7,23 @@ use Crm\ApiModule\Api\IdempotentHandlerInterface;
 use Crm\ApiModule\Api\JsonResponse;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\TokenParser;
-use Crm\ApiModule\Repository\ApiLogsRepository;
 use Crm\ApiModule\Repository\ApiTokenStatsRepository;
 use Crm\ApiModule\Repository\IdempotentKeysRepository;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
+use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
-use Crm\ApplicationModule\Presenters\BasePresenter;
 use Crm\ApplicationModule\Request;
 use Crm\UsersModule\Auth\UserTokenAuthorization;
+use Nette\Application\UI\Presenter;
 use Nette\Http\Response;
 use Nette\Utils\Json;
 use Tomaj\Hermes\Emitter;
 use Tracy\Debugger;
 
-class ApiPresenter extends BasePresenter
+class ApiPresenter extends Presenter
 {
     private $apiRoutersContainer;
-
-    private $apiLogsRepository;
 
     private $apiTokenStatsRepository;
 
@@ -37,9 +35,11 @@ class ApiPresenter extends BasePresenter
 
     private $response;
 
+    private $applicationConfig;
+
     public function __construct(
+        ApplicationConfig $applicationConfig,
         ApiRoutesContainer $apiRoutesContainer,
-        ApiLogsRepository $apiLogsRepository,
         ApiTokenStatsRepository $apiTokenStatsRepository,
         IdempotentKeysRepository $idempotentKeysRepository,
         ApiHeadersConfig $apiHeadersConfig,
@@ -48,15 +48,15 @@ class ApiPresenter extends BasePresenter
     ) {
         parent::__construct();
         $this->apiRoutersContainer = $apiRoutesContainer;
-        $this->apiLogsRepository = $apiLogsRepository;
         $this->apiTokenStatsRepository = $apiTokenStatsRepository;
         $this->idempotentKeysRepository = $idempotentKeysRepository;
         $this->apiHeadersConfig = $apiHeadersConfig;
         $this->hermesEmitter = $hermesEmitter;
         $this->response = $response;
+        $this->applicationConfig = $applicationConfig;
     }
 
-    public function renderApi()
+    public function actionApi()
     {
         Debugger::timer();
 
@@ -130,11 +130,15 @@ class ApiPresenter extends BasePresenter
             }
         }
 
+        $apiLogEnabled = $this->applicationConfig->get('enable_api_log');
         $token = '';
         if ($authorization instanceof BearerTokenAuthorization) {
             $tokenParser = new TokenParser();
             $token = $tokenParser->getToken();
-            $this->apiTokenStatsRepository->updateStats($token);
+            if (!$apiLogEnabled) {
+                // If we don't log API calls, update token stats directly. Otherwise we'll update it asynchronously.
+                $this->apiTokenStatsRepository->updateStats($token);
+            }
         }
         // TODO: [users_module] try to refactor this so ApiModule doesn't have dependency on UsersModule
         if ($authorization instanceof UserTokenAuthorization) {
@@ -158,7 +162,7 @@ class ApiPresenter extends BasePresenter
         $ipAddress = Request::getIp();
         $userAgent = Request::getUserAgent();
 
-        if ($this->applicationConfig->get('enable_api_log')) {
+        if ($apiLogEnabled) {
             $this->hermesEmitter->emit(new HermesMessage('api-log', [
                 'token' => $token,
                 'path' => $path,

@@ -3,13 +3,13 @@
 namespace Crm\ApiModule\Repository;
 
 use Crm\ApplicationModule\Repository;
-use Nette\Database\Table\IRow;
+use Nette\Database\Table\ActiveRow;
 
 class ApiAccessTokensRepository extends Repository
 {
     protected $tableName = 'api_access_tokens';
 
-    final public function assignAccess(IRow $token, IRow $apiAccess)
+    final public function assignAccess(ActiveRow $token, ActiveRow $apiAccess)
     {
         $row = $this->getTable()->where([
             'api_access_id' => $apiAccess->id,

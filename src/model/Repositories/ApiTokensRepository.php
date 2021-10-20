@@ -5,7 +5,7 @@ namespace Crm\ApiModule\Repository;
 use Crm\ApplicationModule\Repository;
 use Crm\UsersModule\Auth\Access\TokenGenerator;
 use DateTime;
-use Nette\Database\Table\IRow;
+use Nette\Database\Table\ActiveRow;
 
 class ApiTokensRepository extends Repository
 {
@@ -29,7 +29,7 @@ class ApiTokensRepository extends Repository
         ]);
     }
 
-    final public function update(IRow &$row, $data)
+    final public function update(ActiveRow &$row, $data)
     {
         $data['updated_at'] = new DateTime();
         return parent::update($row, $data);

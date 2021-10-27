@@ -4,7 +4,7 @@ namespace Crm\ApiModule\Forms;
 
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Nette\Application\UI\Form;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class ApiTokenFormFactory
@@ -19,7 +19,7 @@ class ApiTokenFormFactory
 
     public function __construct(
         ApiTokensRepository $apiTokensRepository,
-        ITranslator $translator
+        Translator $translator
     ) {
         $this->apiTokensRepository = $apiTokensRepository;
         $this->translator = $translator;

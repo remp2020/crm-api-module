@@ -6,7 +6,7 @@ use Crm\ApiModule\Repository\ApiAccessTokensRepository;
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class ApiAccessResourceFormFactory
@@ -22,7 +22,7 @@ class ApiAccessResourceFormFactory
     public function __construct(
         ApiTokensRepository $apiTokensRepository,
         ApiAccessTokensRepository $apiAccessTokensRepository,
-        ITranslator $translator
+        Translator $translator
     ) {
         $this->apiTokensRepository = $apiTokensRepository;
         $this->apiAccessTokensRepository = $apiAccessTokensRepository;

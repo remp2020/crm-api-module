@@ -13,7 +13,7 @@ use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Nette\Application\UI\Form;
 use Nette\Http\Request;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 use Tracy\Debugger;
 
@@ -39,7 +39,7 @@ class ApiTestCallFormFactory
     public function __construct(
         ApiRoutesContainer $apiRoutesContainer,
         Request $request,
-        ITranslator $translator
+        Translator $translator
     ) {
         $this->apiRoutesContainer = $apiRoutesContainer;
         $this->request = $request;

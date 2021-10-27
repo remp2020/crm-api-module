@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Authorization;
 
 use Crm\ApiModule\Repository\ApiAccessRepository;
-use Nette\Security\IAuthorizator;
+use Nette\Security\Authorizator;
 
 class Permissions
 {
@@ -16,10 +16,10 @@ class Permissions
 
     public function allowed($token, $resource)
     {
-        if ($resource === IAuthorizator::ALL || $resource === IAuthorizator::ALLOW) {
+        if ($resource === Authorizator::ALL || $resource === Authorizator::ALLOW) {
             return true;
         }
-        if ($resource === IAuthorizator::DENY) {
+        if ($resource === Authorizator::DENY) {
             return false;
         }
         return $this->apiAccessRepository->getTable()

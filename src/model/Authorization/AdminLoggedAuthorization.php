@@ -4,7 +4,7 @@ namespace Crm\ApiModule\Authorization;
 
 use Crm\UsersModule\Repository\AccessTokensRepository;
 use Crm\UsersModule\Repository\UsersRepository;
-use Nette\Security\IAuthorizator;
+use Nette\Security\Authorizator;
 use Nette\Security\User;
 
 class AdminLoggedAuthorization implements ApiAuthorizationInterface
@@ -29,7 +29,7 @@ class AdminLoggedAuthorization implements ApiAuthorizationInterface
         $this->usersRepository = $usersRepository;
     }
 
-    public function authorized($resource = IAuthorizator::ALL)
+    public function authorized($resource = Authorizator::ALL)
     {
         $userId = null;
         if ($this->user->isLoggedIn()) {

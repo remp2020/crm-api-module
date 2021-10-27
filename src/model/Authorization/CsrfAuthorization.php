@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Authorization;
 
 use Nette\Http\Session;
-use Nette\Security\IAuthorizator;
+use Nette\Security\Authorizator;
 
 class CsrfAuthorization implements ApiAuthorizationInterface
 {
@@ -17,7 +17,7 @@ class CsrfAuthorization implements ApiAuthorizationInterface
         $this->session = $session;
     }
 
-    public function authorized($resource = IAuthorizator::ALL)
+    public function authorized($resource = Authorizator::ALL)
     {
         $section = $this->session->getSection('Nette\Forms\Controls\CsrfProtection');
         $token = $this->getToken();

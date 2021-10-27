@@ -4,7 +4,7 @@ namespace Crm\ApiModule\Authorization;
 
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Crm\ApplicationModule\Request;
-use Nette\Security\IAuthorizator;
+use Nette\Security\Authorizator;
 
 class BearerTokenAuthorization implements ApiAuthorizationInterface
 {
@@ -24,7 +24,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
         $this->permissions = $permissions;
     }
 
-    public function authorized($resource = IAuthorizator::ALL)
+    public function authorized($resource = Authorizator::ALL)
     {
         $tokenParser = new TokenParser();
         if (!$tokenParser->isOk()) {

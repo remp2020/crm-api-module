@@ -2,11 +2,11 @@
 
 namespace Crm\ApiModule\Authorization;
 
-use Nette\Security\IAuthorizator;
+use Nette\Security\Authorizator;
 
 class NoAuthorization implements ApiAuthorizationInterface
 {
-    public function authorized($resource = IAuthorizator::ALL)
+    public function authorized($resource = Authorizator::ALL)
     {
         return true;
     }

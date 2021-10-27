@@ -13,7 +13,6 @@ use Crm\ApplicationModule\CrmModule;
 use Crm\ApplicationModule\Menu\MenuContainerInterface;
 use Crm\ApplicationModule\Menu\MenuItem;
 use Crm\ApplicationModule\SeederManager;
-use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
 use Nette\DI\Container;
 use Tomaj\Hermes\Dispatcher;
@@ -62,7 +61,7 @@ class ApiModule extends CrmModule
 
     public function registerRoutes(RouteList $router)
     {
-        $router[] = new Route('api/v<version>/<category>[/<apiaction=default>]', 'Api:Api:api');
+        $router->addRoute('api/v<version>/<category>[/<apiaction=default>]', 'Api:Api:api');
     }
 
     public function registerSeeders(SeederManager $seederManager)

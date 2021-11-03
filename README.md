@@ -26,6 +26,7 @@ services:
 			- setAllowedOrigins('*')
 			- setAllowedHeaders('Content-Type', 'Authorization', 'X-Requested-With')
 			- setAllowedHttpMethods('*')
+			- setAllowedCredentials(true)
 ```
 
 You can configure allowed origins by explicitly stating them or by using wildcards. Following configurations are valid:

@@ -4,11 +4,13 @@ namespace Crm\ApiModule\Api;
 
 class ApiHeadersConfig
 {
-    protected $allowedOrigins = [];
+    protected array $allowedOrigins = [];
 
-    protected $allowedHttpMethods = [];
+    protected array $allowedHttpMethods = [];
 
-    protected $allowedHeaders = [];
+    protected array $allowedHeaders = [];
+
+    protected bool $allowedCredentials = false;
 
     public function isOriginAllowed(?string $origin): bool
     {
@@ -60,5 +62,15 @@ class ApiHeadersConfig
     public function getAllowedHeaders(): string
     {
         return implode(", ", $this->allowedHeaders);
+    }
+
+    public function setAllowedCredentials(bool $allowedCredentials)
+    {
+        $this->allowedCredentials = $allowedCredentials;
+    }
+
+    public function hasAllowedCredentialsHeader(): bool
+    {
+        return $this->allowedCredentials;
     }
 }

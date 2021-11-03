@@ -100,4 +100,11 @@ class ApiHeadersConfigTest extends TestCase
 
         $this->assertEquals("POST, GET", $this->apiHeadersConfig->getAllowedHttpMethods());
     }
+
+    public function testAllowedCredentials()
+    {
+        $this->assertFalse($this->apiHeadersConfig->hasAllowedCredentialsHeader());
+        $this->apiHeadersConfig->setAllowedCredentials(true);
+        $this->assertTrue($this->apiHeadersConfig->hasAllowedCredentialsHeader());
+    }
 }

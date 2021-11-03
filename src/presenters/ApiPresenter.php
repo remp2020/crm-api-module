@@ -85,6 +85,13 @@ class ApiPresenter extends Presenter
                 $this->apiHeadersConfig->getAllowedHttpMethods()
             );
 
+            if ($this->apiHeadersConfig->hasAllowedCredentialsHeader()) {
+                $this->response->addHeader(
+                    'Access-Control-Allow-Credentials',
+                    'true'
+                );
+            }
+
             $this->sendResponse(new JsonResponse(['options' => 'ok']));
         }
 

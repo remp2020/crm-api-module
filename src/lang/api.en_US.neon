@@ -123,6 +123,9 @@ config:
 	enable_api_log:
 		name: API logs
 		description: Enable storing of API logs in database
+	enable_api_stats:
+		name: API token stats
+		description: Enable sorting of API token stats in database
 	internal_api_token:
 		name: Internal API token
 		description: 'Token used for internal API calls (<a href="/api/api-tokens-admin/">tokens</a>)'

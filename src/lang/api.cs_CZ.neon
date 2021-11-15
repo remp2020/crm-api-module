@@ -29,6 +29,9 @@ config:
 	enable_api_log:
 		name: API logy
 		description: Povolit ukládání API logů do databáze
+	enable_api_stats:
+		name: Statistiky API klíčů
+		description: Povolit ukládání statistik API klíčů do databáze
 	internal_api_token:
 		name: Interní API klíč
 		description: 'API klíč používán pro interní volání (<a href="/api/api-tokens-admin/">seznam</a>)'

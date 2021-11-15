@@ -75,6 +75,31 @@ class ConfigsSeeder implements ISeeder
             }
         }
 
+        $name = 'enable_api_stats';
+        $config = $this->configsRepository->loadByName($name);
+        if (!$config) {
+            $this->configBuilder->createNew()
+                ->setName($name)
+                ->setDisplayName('api.config.enable_api_stats.name')
+                ->setDescription('api.config.enable_api_stats.description')
+                ->setType(ApplicationConfig::TYPE_BOOLEAN)
+                ->setAutoload(true)
+                ->setConfigCategory($category)
+                ->setSorting(499)
+                ->setValue(true)
+                ->save();
+            $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
+        } else {
+            $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
+        }
+
         $name = InternalToken::CONFIG_NAME;
         $apiToken = $this->configsRepository->loadByName($name);
         if (!$apiToken) {

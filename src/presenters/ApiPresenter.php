@@ -138,12 +138,13 @@ class ApiPresenter extends Presenter
         }
 
         $apiLogEnabled = $this->applicationConfig->get('enable_api_log');
+        $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
         $token = '';
         if ($authorization instanceof BearerTokenAuthorization) {
             $tokenParser = new TokenParser();
             $token = $tokenParser->getToken();
-            if (!$apiLogEnabled) {
-                // If we don't log API calls, update token stats directly. Otherwise we'll update it asynchronously.
+            if (!$apiLogEnabled && $apiStatsEnabled) {
+                // If we don't log API calls, but API stats yes, update token stats directly. Otherwise we'll update it asynchronously.
                 $this->apiTokenStatsRepository->updateStats($token);
             }
         }

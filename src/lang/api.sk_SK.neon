@@ -126,6 +126,9 @@ config:
 	enable_api_stats:
 		name: Štatistiky API kľúčov
 		description: Povoliť zaznamenávanie štatistík API kľúčov do databázy
+	api_user_token_tracking:
+		name: Zaznamenávať čas posledného prístupu používateľa na API
+		description: Povoliť zaznamenávanie času posledného prístupu používateľa na API do databázy
 	internal_api_token:
 		name: Interný API kľúč
 		description: 'API kľúč používaný pre interné volania (<a href="/api/api-tokens-admin/">zoznam</a>)'

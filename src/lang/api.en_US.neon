@@ -126,6 +126,9 @@ config:
 	enable_api_stats:
 		name: API token stats
 		description: Enable sorting of API token stats in database
+	api_user_token_tracking:
+		name: API token time-stats
+		description: Disable updating users API token time-stats in CRM admin
 	internal_api_token:
 		name: Internal API token
 		description: 'Token used for internal API calls (<a href="/api/api-tokens-admin/">tokens</a>)'

@@ -32,6 +32,9 @@ config:
 	enable_api_stats:
 		name: Statistiky API klíčů
 		description: Povolit ukládání statistik API klíčů do databáze
+	api_user_token_tracking:
+		name: Zaznamenat čas posledního přístupu užívatele na API
+		description: Povolit ukládání časů posledního přístupu užívatele na API do databáze
 	internal_api_token:
 		name: Interní API klíč
 		description: 'API klíč používán pro interní volání (<a href="/api/api-tokens-admin/">seznam</a>)'

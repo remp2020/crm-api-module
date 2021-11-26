@@ -20,17 +20,25 @@ class UserSourceAccessesRepository extends Repository
      */
     final public function upsert($userId, $source, $lastAccessedDate)
     {
-        $datetime = $lastAccessedDate->format('Y-m-d H:i:s');
+        $row = $this->getTable()
+            ->where('user_id', $userId)
+            ->where('source', $source)
+            ->fetch();
 
-        $this->getDatabase()->query(
-            <<<SQL
-INSERT INTO {$this->tableName} (`user_id`, `source`, `last_accessed_at`)
-VALUES ({$userId}, '{$source}', '{$datetime}')
-ON DUPLICATE KEY UPDATE `last_accessed_at` = CASE
-  WHEN VALUES(`last_accessed_at`) > `last_accessed_at` THEN VALUES(`last_accessed_at`) ELSE `last_accessed_at`
-END
-SQL
-        );
+        if ($row) {
+            if ($lastAccessedDate > $row->last_accessed_at) {
+                $this->update($row, ['last_accessed_at' => $lastAccessedDate]);
+                return $row;
+            } else {
+                return $row;
+            }
+        } else {
+            return $this->insert([
+                'user_id' => $userId,
+                'source' => $source,
+                'last_accessed_at' => $lastAccessedDate
+            ]);
+        }
     }
 
     final public function getByUser($userId)

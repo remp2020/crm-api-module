@@ -125,10 +125,11 @@ class ApiPresenter extends Presenter
                 if ($headerIdempotentKey) {
                     $handler->setIdempotentKey($headerIdempotentKey);
                 }
+                $handler->setAuthorization($authorization);
                 if ($idempotentKey && $handler instanceof IdempotentHandlerInterface) {
                     $result = $handler->idempotentHandle($authorization);
                 } else {
-                    $result = $handler->handle($authorization);
+                    $result = $handler->handle([]); // TODO: fix params; ParamProcessor should process params probably here (as in Tomaj's package?)
                     if ($headerIdempotentKey && $result->getHttpCode() == Response::S200_OK && $handler instanceof IdempotentHandlerInterface) {
                         $this->idempotentKeysRepository->add($path, $headerIdempotentKey);
                     }

@@ -2,8 +2,12 @@
 
 namespace Crm\ApiModule\Api;
 
+use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
+
 abstract class ApiHandler implements ApiHandlerInterface
 {
+    private $authorization = null;
+
     private $idempotentKey = null;
 
     private $rawPayload = null;
@@ -11,6 +15,16 @@ abstract class ApiHandler implements ApiHandlerInterface
     public function resource(): string
     {
         return self::resourceFromClass(static::class);
+    }
+
+    public function setAuthorization(ApiAuthorizationInterface $authorization): void
+    {
+        $this->authorization = $authorization;
+    }
+
+    public function getAuthorization(): ApiAuthorizationInterface
+    {
+        return $this->authorization;
     }
 
     /**

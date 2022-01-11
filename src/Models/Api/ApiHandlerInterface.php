@@ -3,17 +3,21 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
-use Nette\Application\Response;
+use Crm\ApiModule\Params\ParamInterface;
+use Crm\ApiModule\Response\ApiResponseInterface;
 
 interface ApiHandlerInterface
 {
-    /** @return Response */
-    public function handle(ApiAuthorizationInterface $authorization);
+    public function handle(array $params): ApiResponseInterface;
 
-    /** @return \Crm\ApiModule\Params\ParamInterface[] */
-    public function params();
+    /** @return ParamInterface[] */
+    public function params(): array;
 
     public function resource(): string;
 
     public function setIdempotentKey(string $idempotentKey): void;
+
+    public function setAuthorization(ApiAuthorizationInterface $authorization): void;
+
+    public function getAuthorization(): ApiAuthorizationInterface;
 }

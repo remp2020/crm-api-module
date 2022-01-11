@@ -6,9 +6,9 @@ use Nette\Security\Authorizator;
 
 interface ApiAuthorizationInterface
 {
-    public function authorized($resource = Authorizator::ALL);
+    public function authorized($resource = Authorizator::ALL): bool;
 
-    public function getErrorMessage();
+    public function getErrorMessage(): ?string;
 
     public function getAuthorizedData();
 }

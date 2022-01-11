@@ -24,6 +24,17 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
     public function attachRouter(ApiRouteInterface $router): void
     {
         $this->routers[$router->getApiIdentifier()->getApiPath()] = $router;
+
+        $handler = $this->getHandler($router->getApiIdentifier());
+        $authorization = $this->getAuthorization($router->getApiIdentifier());
+
+        if ($handler === null || $authorization === null) {
+            throw new \Exception('Incorrectly configured API endpoint: [' .
+                $router->getApiIdentifier()->getApiPath() .
+                ']. Missing handler or authorization.');
+        }
+
+        $handler->setAuthorization($authorization);
     }
 
     /**

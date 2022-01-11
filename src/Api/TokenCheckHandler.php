@@ -7,7 +7,7 @@ use Nette\Http\Response;
 
 class TokenCheckHandler extends ApiHandler
 {
-    public function params()
+    public function params(): array
     {
         return [];
     }

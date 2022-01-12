@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Api;
 
-use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
+use Crm\ApiModule\Response\ApiResponseInterface;
 use Nette\Http\Response;
 
 class TokenCheckHandler extends ApiHandler
@@ -12,7 +12,7 @@ class TokenCheckHandler extends ApiHandler
         return [];
     }
 
-    public function handle(ApiAuthorizationInterface $authorization)
+    public function handle(array $params): ApiResponseInterface
     {
         $result = [
             'status' => 'ok',

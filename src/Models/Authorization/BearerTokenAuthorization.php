@@ -24,7 +24,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
         $this->permissions = $permissions;
     }
 
-    public function authorized($resource = Authorizator::ALL)
+    public function authorized($resource = Authorizator::ALL): bool
     {
         $tokenParser = new TokenParser();
         if (!$tokenParser->isOk()) {
@@ -103,7 +103,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
         return (($ip_decimal & $netmask_decimal) == ($range_decimal & $netmask_decimal));
     }
 
-    public function getErrorMessage()
+    public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
     }

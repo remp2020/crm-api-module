@@ -17,7 +17,7 @@ class CsrfAuthorization implements ApiAuthorizationInterface
         $this->session = $session;
     }
 
-    public function authorized($resource = Authorizator::ALL)
+    public function authorized($resource = Authorizator::ALL): bool
     {
         $section = $this->session->getSection('Nette\Forms\Controls\CsrfProtection');
         $token = $this->getToken();
@@ -41,7 +41,7 @@ class CsrfAuthorization implements ApiAuthorizationInterface
         return true;
     }
 
-    public function getErrorMessage()
+    public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
     }

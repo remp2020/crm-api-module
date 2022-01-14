@@ -29,7 +29,7 @@ class AdminLoggedAuthorization implements ApiAuthorizationInterface
         $this->usersRepository = $usersRepository;
     }
 
-    public function authorized($resource = Authorizator::ALL)
+    public function authorized($resource = Authorizator::ALL): bool
     {
         $userId = null;
         if ($this->user->isLoggedIn()) {
@@ -58,7 +58,7 @@ class AdminLoggedAuthorization implements ApiAuthorizationInterface
         return true;
     }
 
-    public function getErrorMessage()
+    public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
     }

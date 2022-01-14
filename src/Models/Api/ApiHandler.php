@@ -3,6 +3,7 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
+use Nette\Application\LinkGenerator;
 
 abstract class ApiHandler implements ApiHandlerInterface
 {
@@ -11,6 +12,8 @@ abstract class ApiHandler implements ApiHandlerInterface
     private $idempotentKey = null;
 
     private $rawPayload = null;
+
+    protected ?LinkGenerator $linkGenerator;
 
     public function resource(): string
     {

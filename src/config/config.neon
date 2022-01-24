@@ -10,6 +10,7 @@ services:
 	apiAccessRepository: Crm\ApiModule\Repository\ApiAccessRepository
 	idempotentKeysRepository: Crm\ApiModule\Repository\IdempotentKeysRepository
 	userSourceAccessesRepository: Crm\ApiModule\Repository\UserSourceAccessesRepository
+	apiTokenMetaRepository: Crm\ApiModule\Repository\ApiTokenMetaRepository
 
 	apiHeadersConfig:
 		class: Crm\ApiModule\Api\ApiHeadersConfig

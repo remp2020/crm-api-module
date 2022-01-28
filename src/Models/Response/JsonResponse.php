@@ -18,14 +18,13 @@ class JsonResponse implements ApiResponseInterface
     /** @var string */
     private $contentType;
 
-    private $httpCode;
+    private int $code;
 
     public function __construct($payload, string $contentType = null)
     {
         $this->payload = $payload;
         $this->contentType = $contentType ?: 'application/json; charset=utf-8';
     }
-
 
     /**
      * @return mixed
@@ -52,13 +51,29 @@ class JsonResponse implements ApiResponseInterface
         echo Json::encode($this->payload);
     }
 
+    /**
+     * @deprecated use getCode()
+     */
     public function getHttpCode()
     {
-        return $this->httpCode;
+        return $this->getCode();
     }
 
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @deprecated use setCode()
+     */
     public function setHttpCode($httpCode)
     {
-        $this->httpCode = $httpCode;
+        $this->setCode($httpCode);
+    }
+
+    public function setCode(int $code)
+    {
+        $this->code = $code;
     }
 }

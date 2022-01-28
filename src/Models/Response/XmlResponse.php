@@ -8,7 +8,7 @@ use Spatie\ArrayToXml\ArrayToXml;
 
 class XmlResponse implements ApiResponseInterface
 {
-    protected $httpCode;
+    protected int $code;
 
     protected $rootElement;
 
@@ -23,14 +23,30 @@ class XmlResponse implements ApiResponseInterface
         $this->rootElementAttributes = $rootElementAttributes;
     }
 
+    /**
+     * @deprecated use getCode()
+     */
     public function getHttpCode()
     {
-        return $this->httpCode;
+        return $this->getCode();
     }
 
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @deprecated use setCode()
+     */
     public function setHttpCode($httpCode)
     {
-        $this->httpCode = $httpCode;
+        $this->setCode($httpCode);
+    }
+
+    public function setCode(int $code)
+    {
+        $this->code = $code;
     }
 
     public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void

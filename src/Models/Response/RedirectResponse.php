@@ -8,7 +8,7 @@ use Nette\Http\Response;
 
 class RedirectResponse implements ApiResponseInterface
 {
-    private $httpCode = Response::S307_TEMPORARY_REDIRECT;
+    private int $code = Response::S307_TEMPORARY_REDIRECT;
 
     private $url;
 
@@ -17,14 +17,30 @@ class RedirectResponse implements ApiResponseInterface
         $this->url = $url;
     }
 
+    /**
+     * @deprecated use setCode()
+     */
     public function setHttpCode($httpCode)
     {
-        $this->httpCode = $httpCode;
+        $this->setCode($httpCode);
     }
 
+    public function setCode(int $code)
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @deprecated use getCode()
+     */
     public function getHttpCode()
     {
-        return $this->httpCode;
+        return $this->getCode();
+    }
+
+    public function getCode(): int
+    {
+        return $this->code;
     }
 
     public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void

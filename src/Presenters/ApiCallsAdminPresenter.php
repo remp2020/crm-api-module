@@ -6,6 +6,9 @@ use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApiModule\Forms\ApiTestCallFormFactory;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
+use Tomaj\NetteApi\ApiDecider;
+use Tomaj\NetteApi\Component\ApiConsoleControl;
+use Tomaj\NetteApi\Component\ApiListingControl;
 
 class ApiCallsAdminPresenter extends AdminPresenter
 {
@@ -14,6 +17,9 @@ class ApiCallsAdminPresenter extends AdminPresenter
 
     /** @var ApiTestCallFormFactory @inject */
     public $apiTestCallFormFactory;
+
+    /** @var ApiDecider @inject */
+    public $apiDecider;
 
     /**
      * @admin-access-level read
@@ -27,9 +33,9 @@ class ApiCallsAdminPresenter extends AdminPresenter
     /**
      * @admin-access-level read
      */
-    public function renderDetail($version, $category, $apiAction)
+    public function renderDetail($method, $version, $package, $apiAction)
     {
-        $identifier = new ApiIdentifier($version, $category, $apiAction);
+        $identifier = new ApiIdentifier($version, $package, $apiAction);
         $router = $this->apiRoutesContainer->getRouter($identifier);
         $handler = $this->apiRoutesContainer->getHandler($identifier);
 
@@ -38,13 +44,28 @@ class ApiCallsAdminPresenter extends AdminPresenter
         $this->template->apiIdentifier = $identifier;
     }
 
-    protected function createComponentApiTestCallForm()
+    public function createComponentApiListingControl()
     {
-        $identifier = new ApiIdentifier($this->params['version'], $this->params['category'], $this->params['apiAction']);
-        $form = $this->apiTestCallFormFactory->create($identifier);
-        $this->apiTestCallFormFactory->onSubmit = function ($form, $result) {
-            $this->template->callResult = $result;
+        $control = new ApiListingControl($this->apiDecider);
+        $control->onClick[] = function ($method, $version, $package, $apiAction) {
+            $this->redirect('detail', $method, $version, $package, $apiAction);
         };
-        return $form;
+        return $control;
+    }
+
+    protected function createComponentApiConsole()
+    {
+        $api = $this->apiDecider->getApi(
+            $this->params['method'],
+            $this->params['version'],
+            $this->params['package'],
+            $this->params['apiAction'] ?? null
+        );
+        return new ApiConsoleControl(
+            $this->getHttpRequest(),
+            $api->getEndpoint(),
+            $api->getHandler(),
+            $api->getAuthorization()
+        );
     }
 }

@@ -10,7 +10,6 @@ admin:
 			title: API volania
 
 		detail:
-			title: API volanie
 			back: späť na zoznam API volaní
 
 		fields:

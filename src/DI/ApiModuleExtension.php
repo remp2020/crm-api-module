@@ -18,7 +18,7 @@ final class ApiModuleExtension extends CompilerExtension implements ITranslation
     public function beforeCompile()
     {
         $builder = $this->getContainerBuilder();
-        // load presenters from extension to Nette
+
         $builder->getDefinition($builder->getByType(\Nette\Application\IPresenterFactory::class))
             ->addSetup('setMapping', [['Api' => 'Crm\ApiModule\Presenters\*Presenter']]);
     }

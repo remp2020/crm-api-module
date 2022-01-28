@@ -61,7 +61,11 @@ class ApiModule extends CrmModule
 
     public function registerRoutes(RouteList $router)
     {
-        $router->addRoute('api/v<version>/<category>[/<apiaction=default>]', 'Api:Api:api');
+//        $router->addRoute('api/v<version>/<category>[/<apiaction=default>]', 'Api:Api:api');
+        $router->addRoute(
+            '/api/v<version>/<package>[/<apiAction>][/<params>]',
+            'Api:Api:default'
+        );
     }
 
     public function registerSeeders(SeederManager $seederManager)

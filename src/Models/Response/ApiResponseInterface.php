@@ -2,9 +2,9 @@
 
 namespace Crm\ApiModule\Response;
 
-use Nette\Application\Response;
+use Tomaj\NetteApi\Response\ResponseInterface;
 
-interface ApiResponseInterface extends Response
+interface ApiResponseInterface extends ResponseInterface
 {
     /**
      * @deprecated use getCode()

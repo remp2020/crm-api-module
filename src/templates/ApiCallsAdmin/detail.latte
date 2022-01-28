@@ -5,28 +5,9 @@
  <div class="row">
 
   <div class="col-md-12">
-    <a n:href="default"><i class="fa fa-angle-left"></i> {_api.admin.api_calls.detail.back}</a>
-    <h1>
-        {_api.admin.api_calls.detail.title} <code>{$apiIdentifier->getApiPath()}</code>
-    </h1>
-    <hr>
+      <a n:href="default"><i class="fa fa-angle-left"></i> {_api.admin.api_calls.detail.back}</a>
+      {control apiConsole}
   </div>
-
-  <div class="col-md-12">
-
-    {ifset $callResult}
-      <pre>{$callResult}</pre>
-      <hr>
-    {/ifset}
-
-    {control apiTestCallForm}
-  </div>
-
-  <script>
-      if ($('#frm-apiTestCallForm-token_csfr')) {
-          $('#frm-apiTestCallForm-token_csfr').val($("input[name='_token_']").val());
-      }
-  </script>
 
  </div>
 

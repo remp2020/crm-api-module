@@ -8,6 +8,9 @@ use Nette\Http\IResponse;
 use Nette\SmartObject;
 use Nette\Utils\Json;
 
+/**
+ * @deprecated use \Tomaj\NetteApi\Response\JsonApiResponse
+ */
 class JsonResponse implements ApiResponseInterface
 {
     use SmartObject;

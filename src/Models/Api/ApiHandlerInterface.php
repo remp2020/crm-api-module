@@ -3,15 +3,12 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
-use Crm\ApiModule\Params\ParamInterface;
 use Crm\ApiModule\Response\ApiResponseInterface;
+use Tomaj\NetteApi\Handlers\ApiHandlerInterface as TomajApiHandlerInterface;
 
-interface ApiHandlerInterface
+interface ApiHandlerInterface extends TomajApiHandlerInterface
 {
     public function handle(array $params): ApiResponseInterface;
-
-    /** @return ParamInterface[] */
-    public function params(): array;
 
     public function resource(): string;
 

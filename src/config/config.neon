@@ -3,6 +3,14 @@ services:
 		setup:
 			- addModule(Crm\ApiModule\ApiModule(), 100)
 
+	- Tomaj\NetteApi\Link\ApiLink
+	- Tomaj\NetteApi\Misc\IpDetector
+	apiDecider:
+		factory: Tomaj\NetteApi\ApiDecider
+#		setup:
+#			- addApi(\Tomaj\NetteApi\EndpointIdentifier('GET', 1, 'events', 'list'), \Crm\ApplicationModule\Api\EventsListApiHandler(), \Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository))
+
+	bearerTokenAuthorization: Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository)
 	apiTokensRepository: Crm\ApiModule\Repository\ApiTokensRepository
 	apiAccessTokensRepository: Crm\ApiModule\Repository\ApiAccessTokensRepository
 	apiTokenStatsRepository: Crm\ApiModule\Repository\ApiTokenStatsRepository

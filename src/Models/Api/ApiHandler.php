@@ -3,9 +3,10 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
-use Nette\Application\LinkGenerator;
+use Crm\ApiModule\Response\ApiResponseInterface;
+use Tomaj\NetteApi\Handlers\BaseHandler;
 
-abstract class ApiHandler implements ApiHandlerInterface
+abstract class ApiHandler extends BaseHandler implements ApiHandlerInterface
 {
     private $authorization = null;
 
@@ -13,7 +14,7 @@ abstract class ApiHandler implements ApiHandlerInterface
 
     private $rawPayload = null;
 
-    protected ?LinkGenerator $linkGenerator;
+    abstract public function handle(array $params): ApiResponseInterface;
 
     public function resource(): string
     {

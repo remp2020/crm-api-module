@@ -9,25 +9,7 @@
 
 
   <div class="col-md-12">
-    <table class="table table-striped table-hover table-bordered">
-      <thead>
-        <tr>
-          <th>{_api.admin.api_calls.fields.url}</th>
-          <th>{_api.admin.api_calls.fields.handler}</th>
-          <th>{_api.admin.api_calls.fields.authorization}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {foreach $routers as $router}
-          <tr>
-            {var $identifier = $router->getApiIdentifier()}
-            <td><a n:href="detail $identifier->getVersion(), $identifier->getCategory(), $identifier->getApiCall()">{$identifier->getApiPath()}</a></td>
-            <td>{$router->getHandlerClassName()}</td>
-            <td>{$router->getAuthorizationClassName()}</td>
-          </tr>
-        {/foreach}
-      </tbody>
-    </table>
+    {control apiListingControl}
   </div>
 
  </div>

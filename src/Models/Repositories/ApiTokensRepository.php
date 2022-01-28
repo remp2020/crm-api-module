@@ -6,8 +6,9 @@ use Crm\ApplicationModule\Repository;
 use Crm\UsersModule\Auth\Access\TokenGenerator;
 use DateTime;
 use Nette\Database\Table\ActiveRow;
+use Tomaj\NetteApi\Misc\TokenRepositoryInterface;
 
-class ApiTokensRepository extends Repository
+class ApiTokensRepository extends Repository implements TokenRepositoryInterface
 {
     protected $tableName = 'api_tokens';
 
@@ -42,5 +43,15 @@ class ApiTokensRepository extends Repository
             return false;
         }
         return $tokenRow;
+    }
+
+    final public function validToken(string $token): bool
+    {
+        return true;
+    }
+
+    final public function ipRestrictions(string $token): ?string
+    {
+        return '*';
     }
 }

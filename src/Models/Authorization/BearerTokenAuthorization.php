@@ -12,7 +12,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
 
     private $permissions;
 
-    private $errorMessage = false;
+    private $errorMessage = null;
 
     private $authorizedData = [];
 
@@ -26,6 +26,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
 
     public function authorized($resource = Authorizator::ALL): bool
     {
+        // TODO:
         $tokenParser = new TokenParser();
         if (!$tokenParser->isOk()) {
             $this->errorMessage = $tokenParser->errorMessage();
@@ -70,7 +71,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
 
     private function isValidIp($ipRestrictions)
     {
-        if ($ipRestrictions == '*') {
+        if ($ipRestrictions === '*') {
             return true;
         }
         $ip = Request::getIp();

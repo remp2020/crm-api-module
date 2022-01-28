@@ -10,7 +10,6 @@ admin:
 			title: API calls
 
 		detail:
-			title: API call
 			back: back to list of API calls
 
 		fields:

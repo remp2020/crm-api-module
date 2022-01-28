@@ -4,92 +4,34 @@ namespace Crm\ApiModule\Params;
 
 use Exception;
 
-class InputParam implements ParamInterface
+/**
+ * @deprecated use params defined in tomaj/nette-api package (eg. \Tomaj\NetteApi\Params\GetInputParam or \Tomaj\NetteApi\Params\PostInputParam)
+ */
+class InputParam extends \Tomaj\NetteApi\Params\InputParam implements ParamInterface
 {
-    const TYPE_POST = 'POST';
-    const TYPE_GET  = 'GET';
-    // todo - ostatne ako PUT, DELETE atd..
-
-    const OPTIONAL = false;
-    const REQUIRED = true;
-
-    private $type;
-
-    private $key;
-
-    private $required;
-
-    private $availableValues;
-
-    private $multi;
-
-    public function __construct($type, $key, $required = self::OPTIONAL, ?array $availableValues = null, bool $multi = false)
-    {
+    public function __construct(
+        string $type,
+        string $key,
+        bool $required = self::OPTIONAL,
+        ?array $availableValues = null,
+        bool $multi = false
+    ) {
+        parent::__construct($key);
         $this->type = $type;
         $this->key = $key;
         $this->required = $required;
-        if ($availableValues !== null && !is_array($availableValues)) {
-            throw new Exception("Available values must be array or null. Got [{$availableValues}]");
+        if ($availableValues) {
+            $this->setAvailableValues($availableValues);
         }
-        $this->availableValues = $availableValues;
         $this->multi = $multi;
     }
 
     /**
-     * @return string
+     * @deprecated use validate()->isOk()
      */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKey()
-    {
-        return $this->key;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRequired()
-    {
-        return $this->required;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMulti()
-    {
-        return $this->multi;
-    }
-
-    public function getAvailableValues()
-    {
-        return $this->availableValues;
-    }
-
     public function isValid()
     {
-        $value = $this->getValue();
-
-        if (is_array($value) && $this->isMulti()) {
-            // required input, got empty array => invalid input
-            if (empty($value) && $this->isRequired()) {
-                return false;
-            }
-            foreach ($value as $val) {
-                if (!$this->validateValue($val)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        return $this->validateValue($value);
+        return $this->validate()->isOk();
     }
 
     public function getValue()
@@ -108,28 +50,5 @@ class InputParam implements ParamInterface
         }
 
         throw new Exception('Invalid type');
-    }
-
-    private function validateValue($value): bool
-    {
-        // no support for arrays on this level of parameter's value
-        if (is_array($value)) {
-            return false;
-        }
-
-        if ($value === null || (is_string($value) && trim($value) === '')) {
-            if ($this->isRequired()) {
-                return false;
-            } else {
-                // optional value is missing, input is still valid
-                return true;
-            }
-        }
-
-        if ($this->getAvailableValues() !== null) {
-            return in_array($value, $this->getAvailableValues());
-        }
-
-        return true;
     }
 }

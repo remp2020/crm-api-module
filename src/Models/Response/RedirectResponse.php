@@ -6,6 +6,9 @@ use Crm\ApiModule\Response\ApiResponseInterface;
 use Nette;
 use Nette\Http\Response;
 
+/**
+ * @deprecated use \Nette\Application\Responses\RedirectResponse
+ */
 class RedirectResponse implements ApiResponseInterface
 {
     private int $code = Response::S307_TEMPORARY_REDIRECT;

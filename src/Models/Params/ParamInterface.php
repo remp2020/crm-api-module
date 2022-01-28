@@ -2,13 +2,13 @@
 
 namespace Crm\ApiModule\Params;
 
-interface ParamInterface
+/**
+ * @deprecated use \Tomaj\NetteApi\Params\ParamInterface
+ */
+interface ParamInterface extends \Tomaj\NetteApi\Params\ParamInterface
 {
+    /**
+     * @deprecated use validate()->isOk()
+     */
     public function isValid();
-
-    public function getKey();
-
-    public function getValue();
-
-    public function isMulti();
 }

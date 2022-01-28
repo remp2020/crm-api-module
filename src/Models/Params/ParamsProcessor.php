@@ -2,6 +2,9 @@
 
 namespace Crm\ApiModule\Params;
 
+/**
+ * @deprecated use \Tomaj\NetteApi\Params\ParamsProcessor
+ */
 class ParamsProcessor extends \Tomaj\NetteApi\Params\ParamsProcessor
 {
     /** @var ParamInterface[] */

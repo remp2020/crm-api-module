@@ -7,6 +7,7 @@ use Crm\ApiModule\Api\ApiRouteInterface;
 use Crm\ApiModule\Api\ApiRoutersContainerInterface;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Nette\DI\Container;
+use Tomaj\NetteApi\ApiDecider;
 
 class ApiRoutesContainer implements ApiRoutersContainerInterface
 {
@@ -16,18 +17,22 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
     /** @var Container  */
     private $container;
 
-    public function __construct(Container $container)
+    private $apiDecider;
+
+    public function __construct(Container $container, ApiDecider $apiDecider)
     {
         $this->container = $container;
+        $this->apiDecider = $apiDecider;
     }
 
     public function attachRouter(ApiRouteInterface $router): void
     {
+        // TODO: remove attaching to routers
         $this->routers[$router->getApiIdentifier()->getApiPath()] = $router;
 
+        // hacking around issue with handlers not knowing which authorization is used in tomaj/nette-api
         $handler = $this->getHandler($router->getApiIdentifier());
         $authorization = $this->getAuthorization($router->getApiIdentifier());
-
         if ($handler === null || $authorization === null) {
             throw new \Exception('Incorrectly configured API endpoint: [' .
                 $router->getApiIdentifier()->getApiPath() .
@@ -35,6 +40,11 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
         }
 
         $handler->setAuthorization($authorization);
+        $this->apiDecider->addApi(
+            $router->getApiIdentifier(),
+            $handler,
+            $authorization
+        );
     }
 
     /**

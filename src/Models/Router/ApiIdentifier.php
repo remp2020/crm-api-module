@@ -2,59 +2,46 @@
 
 namespace Crm\ApiModule\Router;
 
-class ApiIdentifier
+use Tomaj\NetteApi\EndpointIdentifier;
+
+class ApiIdentifier extends EndpointIdentifier
 {
-    /** @var string  */
-    private $version;
-
-    /** @var string  */
-    private $category;
-
-    /** @var string  */
-    private $apiCall;
-
-    /**
-     * @param string $version
-     * @param string $category
-     * @param string $apiCall
-     */
-    public function __construct($version, $category, $apiCall)
-    {
-        $this->version = '' . $version;
-        $this->category = $category;
-        $this->apiCall = $apiCall;
+    public function __construct(
+        string $version,
+        string $category,
+        string $apiCall,
+        string $method = 'GET'
+    ) {
+        parent::__construct($method, $version, $category, $apiCall);
     }
 
     /**
-     * @return string
+     * @deprecated use getPackage()
      */
-    public function getVersion()
+    public function getCategory(): string
     {
-        return $this->version;
+        return $this->getPackage();
     }
 
     /**
-     * @return string
+     * @deprecated use getApiAction()
      */
-    public function getCategory()
+    public function getApiCall(): ?string
     {
-        return $this->category;
+        return $this->getApiAction();
     }
 
     /**
-     * @return string
+     * @deprecated use getUrl()
      */
-    public function getApiCall()
+    public function getApiPath(): string
     {
-        return $this->apiCall;
+        return $this->getUrl();
     }
 
-    /**
-     * @return string
-     */
-    public function getApiPath()
+    public function getUrl(): string
     {
-        return "/v{$this->version}/{$this->category}/{$this->apiCall}";
+        return "/" . parent::getUrl();
     }
 
     /**

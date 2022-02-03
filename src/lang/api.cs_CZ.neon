@@ -24,6 +24,68 @@ admin:
 			actions: Akce
 			total: Celkem
 
+	api_tokens:
+		default:
+			title: API klíče
+			new_token: Nový API klíč
+			no_records: Nenašli se žádné API klíče
+			last_time: Naposledy
+			total: Celkově
+
+		new:
+			title: Nový API klíč
+			back: zpět na seznam API klíčů
+		edit:
+			title: Úprava API klíče
+			back: zpět na seznam API klíčů
+		show:
+			general_settings: Základní nastavení
+			back: zpět na seznam API klíčů
+		fields:
+			name:
+				title: Název
+				required: Název musí být vyplněn
+				placeholder: např. Testovací API Token
+				description: 'nemá vliv na funkčnost, vhodné pro snazší orientaci'
+			ip_restrictions:
+				title: IP restrikce
+				placeholder: např. 132.42.88.33
+				description: "napište seznam IP oddělených čárků ',' nebo použijte znak * (povolí přístup ze všech IP)"
+			active:
+				title: Aktivován
+			token: API klíč
+			created_at: Vytvořen
+			used: Použitý
+
+		form:
+			submit: Ulož
+
+		message:
+			saved: 'API klíč byl vytvořen.'
+			updated: 'API klíč byl aktualizován.'
+			removed: 'API klíč byl vymazán'
+			not_found: 'API klíč nebyl nalezen.'
+
+	api_token_meta :
+		header: Meta
+		title:
+			create: Nový meta záznam
+			update: Úprava meta
+		value_removed: Hodnota byla smazána
+		value_added: Hodnota byla přidána
+		form:
+			key:
+				label: Klíč
+				required: Klíč je povinný
+			value:
+				label: Hodnota
+				required: Hodnota je povinná
+			submit: Ulož
+		no_record_description: Tento API klíč neobsahuje žádné meta data.
+		error:
+			internal: Nastala chyba. Prosím kontaktujte administrátora.
+			duplicate: Meta se stejným klíčem již existuje.
+
 config:
 	category: API
 	enable_api_log:

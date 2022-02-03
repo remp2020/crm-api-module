@@ -2,9 +2,9 @@
 
 namespace Crm\ApiModule\Api;
 
-use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
+use Crm\ApiModule\Response\ApiResponseInterface;
 
 interface IdempotentHandlerInterface
 {
-    public function idempotentHandle(ApiAuthorizationInterface $authorization);
+    public function idempotentHandle(array $params): ApiResponseInterface;
 }

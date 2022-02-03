@@ -3,8 +3,10 @@
 namespace Crm\ApiModule\Presenters;
 
 use Crm\ApiModule\Api\ApiHeadersConfig;
+use Crm\ApiModule\Api\ApiParamsValidatorInterface;
 use Crm\ApiModule\Api\IdempotentHandlerInterface;
 use Crm\ApiModule\Api\JsonResponse;
+use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\TokenParser;
 use Crm\ApiModule\Repository\ApiTokenStatsRepository;
@@ -13,15 +15,17 @@ use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
-use Crm\ApplicationModule\Request;
 use Crm\UsersModule\Auth\UserTokenAuthorization;
-use Nette\Application\UI\Presenter;
-use Nette\Http\Response;
-use Nette\Utils\Json;
+use Nette\Application\IPresenter;
+use Nette\Application\Request;
+use Nette\Application\Response;
+use Nette\Http\Request as HttpRequest;
+use Nette\Http\Response as HttpResponse;
 use Tomaj\Hermes\Emitter;
+use Tomaj\NetteApi\Params\ParamsProcessor;
 use Tracy\Debugger;
 
-class ApiPresenter extends Presenter
+class ApiPresenter implements IPresenter
 {
     private $apiRoutersContainer;
 
@@ -33,7 +37,9 @@ class ApiPresenter extends Presenter
 
     private $hermesEmitter;
 
-    private $response;
+    private $httpRequest;
+
+    private $httpResponse;
 
     private $applicationConfig;
 
@@ -44,102 +50,140 @@ class ApiPresenter extends Presenter
         IdempotentKeysRepository $idempotentKeysRepository,
         ApiHeadersConfig $apiHeadersConfig,
         Emitter $hermesEmitter,
-        Response $response
+        HttpRequest $request,
+        HttpResponse $response
     ) {
-        parent::__construct();
         $this->apiRoutersContainer = $apiRoutesContainer;
         $this->apiTokenStatsRepository = $apiTokenStatsRepository;
         $this->idempotentKeysRepository = $idempotentKeysRepository;
         $this->apiHeadersConfig = $apiHeadersConfig;
         $this->hermesEmitter = $hermesEmitter;
-        $this->response = $response;
         $this->applicationConfig = $applicationConfig;
+        $this->httpRequest = $request;
+        $this->httpResponse = $response;
     }
 
-    public function actionApi()
+    public function run(Request $request): Response
     {
         Debugger::timer();
 
         $origin = $_SERVER['HTTP_ORIGIN'] ?? null;
         if (!$this->apiHeadersConfig->isOriginAllowed($origin)) {
-            $this->error(Json::encode([
+            $response = new JsonResponse([
                 'error' => 'origin_not_allowed',
                 'message' => 'Origin is not allowed: ' . $origin,
-            ]), Response::S403_FORBIDDEN);
+            ]);
+            $this->httpResponse->setCode(HttpResponse::S403_FORBIDDEN);
+            return $response;
         }
         if ($origin) {
-            $this->getHttpResponse()->addHeader('Access-Control-Allow-Origin', $origin);
+            $this->httpResponse->addHeader('Access-Control-Allow-Origin', $origin);
         }
 
         // handle preflight request
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        if ($this->httpRequest->isMethod('OPTIONS')) {
             // set allowed headers
-            $this->response->addHeader(
+            $this->httpResponse->addHeader(
                 'Access-Control-Allow-Headers',
                 $this->apiHeadersConfig->getAllowedHeaders()
             );
 
             // set allowed methods
-            $this->response->addHeader(
+            $this->httpResponse->addHeader(
                 'Access-Control-Allow-Methods',
                 $this->apiHeadersConfig->getAllowedHttpMethods()
             );
 
             if ($this->apiHeadersConfig->hasAllowedCredentialsHeader()) {
-                $this->response->addHeader(
+                $this->httpResponse->addHeader(
                     'Access-Control-Allow-Credentials',
                     'true'
                 );
             }
 
-            $this->sendResponse(new JsonResponse(['options' => 'ok']));
+            return new JsonResponse(['options' => 'ok']);
         }
 
-        $version = $this->params['version'];
-        $category = $this->params['category'];
-        $action = $this->params['apiaction'];
+        $version = $request->getParameter('version');
+        $category = $request->getParameter('package');
+        $action = $request->getParameter('apiAction');
 
-        $apiIdentifer = new ApiIdentifier($version, $category, $action);
+        $apiIdentifier = new ApiIdentifier($version, $category, $action);
 
-        $authorization = $this->apiRoutersContainer->getAuthorization($apiIdentifer);
-        $handler = $this->apiRoutersContainer->getHandler($apiIdentifer);
+        /** @var ApiAuthorizationInterface $authorization */
+        $authorization = $this->apiRoutersContainer->getAuthorization($apiIdentifier);
+        $handler = $this->apiRoutersContainer->getHandler($apiIdentifier);
 
         if (!$handler) {
-            $this->response->setCode(Response::S501_NOT_IMPLEMENTED);
-            $result = new JsonResponse(['error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)]);
+            $response = new JsonResponse([
+                'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
+            ]);
+            $this->httpResponse->setCode(HttpResponse::S501_NOT_IMPLEMENTED);
+            return $response;
+        }
+
+        if (!$authorization->authorized($handler->resource())) {
+            $response = new JsonResponse([
+                'status' => 'error',
+                'message' => sprintf('Not authorized: %s', $authorization->getErrorMessage()),
+                'error' => 'no_authorization',
+            ]);
+            $this->httpResponse->setCode(HttpResponse::S403_FORBIDDEN);
+            return $response;
+        }
+
+        $paramsProcessor = new ParamsProcessor($handler->params());
+        $params = $paramsProcessor->getValues();
+
+        if ($handler instanceof ApiParamsValidatorInterface) {
+            $response = $handler->validateParams($params);
+            if ($response) {
+                return $response;
+            }
         } else {
-            if (!$authorization->authorized($handler->resource())) {
-                $result = new JsonResponse([
+            if ($paramsProcessor->isError()) {
+                $response = new JsonResponse([
                     'status' => 'error',
-                    'message' => sprintf('Not authorized: %s', $authorization->getErrorMessage()),
-                    'error' => 'no_authorization',
+                    'code' => 'invalid_input',
+                    'errors' => $paramsProcessor->getErrors()
                 ]);
-                $this->response->setCode(Response::S403_FORBIDDEN);
-            } else {
-                $path = $this->getHttpRequest()->getUrl()->path;
-                $headerIdempotentKey = $this->getHttpRequest()->getHeader('Idempotency-Key');
-                $idempotentKey = false;
-                if ($headerIdempotentKey && !$this->request->isMethod('GET')) {
-                    $idempotentKey = $this->idempotentKeysRepository->findKey($path, $headerIdempotentKey);
-                }
-                if ($headerIdempotentKey) {
-                    $handler->setIdempotentKey($headerIdempotentKey);
-                }
-                $handler->setAuthorization($authorization);
-                if ($idempotentKey && $handler instanceof IdempotentHandlerInterface) {
-                    $result = $handler->idempotentHandle($authorization);
-                } else {
-                    $result = $handler->handle([]); // TODO: fix params; ParamProcessor should process params probably here (as in Tomaj's package?)
-                    if ($headerIdempotentKey && $result->getHttpCode() == Response::S200_OK && $handler instanceof IdempotentHandlerInterface) {
-                        $this->idempotentKeysRepository->add($path, $headerIdempotentKey);
-                    }
-                }
-                $this->response->setCode($result->getHttpCode());
+                $this->httpResponse->setCode(\Nette\Http\Response::S400_BAD_REQUEST);
+                return $response;
             }
         }
 
+        $path = $this->httpRequest->getUrl()->path;
+        $headerIdempotencyKey = $this->httpRequest->getHeader('Idempotency-Key');
+        $idempotencyKey = false;
+        if ($headerIdempotencyKey && !$request->isMethod('GET')) {
+            $idempotencyKey = $this->idempotentKeysRepository->findKey($path, $headerIdempotencyKey);
+        }
+        if ($headerIdempotencyKey) {
+            $handler->setIdempotentKey($headerIdempotencyKey);
+        }
+
+        $handler->setAuthorization($authorization);
+
+        if ($idempotencyKey && $handler instanceof IdempotentHandlerInterface) {
+            $response = $handler->idempotentHandle($params);
+        } else {
+            $response = $handler->handle($params);
+            if ($headerIdempotencyKey && $response->getHttpCode() == HttpResponse::S200_OK && $handler instanceof IdempotentHandlerInterface) {
+                $this->idempotentKeysRepository->add($path, $headerIdempotencyKey);
+            }
+        }
+
+        $this->log($apiIdentifier, $authorization, $response);
+
+        $this->httpResponse->setCode($response->getCode());
+        return $response;
+    }
+
+    private function log($apiIdentifier, $authorization, $response)
+    {
         $apiLogEnabled = $this->applicationConfig->get('enable_api_log');
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
+
         $token = '';
         if ($authorization instanceof BearerTokenAuthorization) {
             $tokenParser = new TokenParser();
@@ -155,6 +199,10 @@ class ApiPresenter extends Presenter
             $token = $tokenParser->getToken();
         }
 
+        if (!$apiLogEnabled) {
+            return;
+        }
+
         if (isset($_GET['password'])) {
             $_GET['password'] = '***';
         }
@@ -166,23 +214,19 @@ class ApiPresenter extends Presenter
         $jsonInput = json_encode($input);
 
         $elapsed = Debugger::timer() * 1000;
-        $path = $apiIdentifer->getApiPath();
-        $responseCode = $this->response->getCode();
-        $ipAddress = Request::getIp();
-        $userAgent = Request::getUserAgent();
+        $path = $apiIdentifier->getApiPath();
+        $responseCode = $response->getCode();
+        $ipAddress = \Crm\ApplicationModule\Request::getIp();
+        $userAgent = \Crm\ApplicationModule\Request::getUserAgent();
 
-        if ($apiLogEnabled) {
-            $this->hermesEmitter->emit(new HermesMessage('api-log', [
-                'token' => $token,
-                'path' => $path,
-                'jsonInput' => $jsonInput,
-                'responseCode' => $responseCode,
-                'elapsed' => $elapsed,
-                'ipAddress' => $ipAddress,
-                'userAgent' => $userAgent,
-            ]), HermesMessage::PRIORITY_LOW);
-        }
-
-        $this->sendResponse($result);
+        $this->hermesEmitter->emit(new HermesMessage('api-log', [
+            'token' => $token,
+            'path' => $path,
+            'jsonInput' => $jsonInput,
+            'responseCode' => $responseCode,
+            'elapsed' => $elapsed,
+            'ipAddress' => $ipAddress,
+            'userAgent' => $userAgent,
+        ]), HermesMessage::PRIORITY_LOW);
     }
 }

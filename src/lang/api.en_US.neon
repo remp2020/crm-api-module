@@ -77,6 +77,10 @@ admin:
 		edit:
 			title: Edit API token
 			back: back to list of API tokens
+		show:
+			title: API token
+			general_settings: General settings
+			back: back to list of API tokens
 
 		fields:
 			name:
@@ -101,6 +105,7 @@ admin:
 			saved: 'API token was created.'
 			updated: 'API token was updated.'
 			removed: 'API token was removed.'
+			not_found: 'API token not found'
 
 	api_test_call_form:
 		api_url:
@@ -116,6 +121,26 @@ admin:
 			value: No authorization - global access
 		available_values: available values
 		submit: Test
+
+	api_token_meta:
+		header: Meta
+		title:
+			create: Create new meta
+			update: Update meta
+		value_removed: Value was removed
+		value_added: Value was added
+		form:
+			key:
+				label: Key
+				required: Key is required
+			value:
+				label: Value
+				required: Value is required
+			submit: Save
+		no_record_description: This API token doesn't contain any meta values.
+		error:
+			internal: Internal error. Please contact administrator.
+			duplicate: Meta key with same key already exists.
 
 config:
 	category: API

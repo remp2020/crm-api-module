@@ -77,6 +77,10 @@ admin:
 		edit:
 			title: Úprava API kľúča
 			back: späť na zoznam API kľúčov
+		show:
+			title: API kľúč
+			general_settings: Základné nastavenia
+			back: späť na zoznam API kľúčov
 
 		fields:
 			name:
@@ -101,6 +105,7 @@ admin:
 			saved: 'API kľúč bol vytvorený.'
 			updated: 'API kľúč bol aktualizovný.'
 			removed: 'API kľúč bol vymazaný'
+			not_found: 'API kľúč nebol nájdený.'
 
 	api_test_call_form:
 		api_url:
@@ -116,6 +121,26 @@ admin:
 			value: Žiadna autorizácia - globalny prístup
 		available_values: dostupné hodnoty
 		submit: Otestuj
+
+	api_token_meta:
+		header: Meta
+		title:
+			create: Nový meta záznam
+			update: Úprava meta
+		value_removed: Hodnota bola zmazaná
+		value_added: Hodnota bola pridaná
+		form:
+			key:
+				label: Kľúč
+				required: Kľúč je povinný
+			value:
+				label: Hodnota
+				required: Hodnota je povinná
+			submit: Ulož
+		no_record_description: Tento API kľúč neobsahuje žiadne meta dáta.
+		error:
+			internal: Nastala chyba. Prosím kontaktujte administrátora.
+			duplicate: Meta s rovnakým kľúčom už existuje.
 
 config:
 	category: API

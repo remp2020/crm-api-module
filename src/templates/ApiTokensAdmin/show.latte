@@ -1,0 +1,125 @@
+{block #content}
+
+<div class="row">
+    <div class="col-md-12">
+        <a n:href="ApiTokensAdmin:default"><i class="fa fa-angle-left"></i> {_api.admin.api_tokens.show.back}</a>
+        <div class="page-header">
+            <h1 n:block="title">
+                {_api.admin.api_tokens.show.title}
+                <small>[{$apiToken->id} - {$apiToken->token}]</small>
+                <a n:href="edit $apiToken->id" class="btn btn-primary btn-lg pull-right"><i class="fa fa-edit"></i> {_api.admin.api_tokens.edit.title}</a>
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-sm-6">
+        <h2 class="page-header">{_api.admin.api_tokens.show.general_settings}</h2>
+        <ul class="list-group">
+            <li class="list-group-item"><b>{_api.admin.api_tokens.fields.name.title}:</b> {$apiToken->name}</li>
+            <li class="list-group-item"><b>{_api.admin.api_tokens.fields.token}:</b> <code>{$apiToken->token}</code></li>
+            <li class="list-group-item"><b>{_api.admin.api_tokens.fields.ip_restrictions.title}:</b> {$apiToken->ip_restrictions}</li>
+            <li class="list-group-item"><b>{_api.admin.api_tokens.fields.created_at}:</b> {$apiToken->created_at|userDate}</li>
+            <li class="list-group-item">
+                <b>{_api.admin.api_tokens.fields.used}:</b>
+                {var $stats = $apiToken->related('api_token_stats', 'token_id')}
+                {if $stats}
+                    {foreach $stats as $stat}
+                        {_api.admin.api_tokens.default.last_time}: {$stat->last_call}, {_api.admin.api_tokens.default.total}: {$stat->calls}
+                    {/foreach}
+                {/if}
+            </li>
+            <li class="list-group-item"><b>{_api.admin.api_tokens.fields.active.title}:</b> {$apiToken->active|activeLabel|noescape}</li>
+        </ul>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        {snippet apiTokenMetaSnippet}
+            <script>
+              $('#meta-modal').modal('hide');
+            </script>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="page-header">{_api.admin.api_token_meta.header}</h2>
+
+                    {if $meta->count() > 0}
+                        <ul class="list-group">
+                            <li n:foreach="$meta as $row" class="list-group-item">
+                                {$row['key']}
+                                <code class="muted">{$row['value']}</code>
+
+                                <a n:href="removeApiTokenMeta!, $row['id']" class="pull-right btn btn-xs btn-danger ajax"><i class="fa fa-trash"></i></a>
+                                <a href="#"
+                                   data-toggle="modal"
+                                   data-target="#meta-modal"
+                                   data-modal-title="{_api.admin.api_token_meta.title.update}"
+                                   data-key="{$row['key']}"
+                                   data-value="{$row['value']}"
+                                   data-api_token_meta_id="{$row['id']}"
+                                   class="pull-right btn btn-xs btn-warning open-type-item-modal"
+                                   style="margin-right: 5px;">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <small class="text-muted pull-right" style="margin-right:20px;">{$row['created_at']}</small>
+                            </li>
+                        </ul>
+                    {else}
+                        <p class="text-muted well text-center">
+                            {_api.admin.api_token_meta.no_record_description}<br>
+                        </p>
+                    {/if}
+
+                    <p class="text-center">
+                        <a href="#"
+                           data-toggle="modal"
+                           data-target="#meta-modal"
+                           data-modal-title="{_api.admin.api_token_meta.title.create}"
+                           data-api_token_id="{$apiToken->id}"
+                           class="btn btn-default btn-xs open-type-item-modal">
+                            <i class="fa fa-plus-circle"></i>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        {/snippet}
+    </div>
+</div>
+
+<div class="modal fade" id="meta-modal">
+    <div class="modal-dialog modal-lg" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close-button">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <h3 id="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                {snippet metaFormSnippet}
+                    {control apiTokenMetaForm}
+                {/snippet}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+  $('#meta-modal').on('show.bs.modal', function(e) {
+    const invoker = $(e.relatedTarget);
+    const keyInput = $(this).find('#' + {$control["apiTokenMetaForm"]['key']->htmlId});
+
+    $(this).find('.alert').hide(); // hide all rendered form alerts (errors). Use case: form save -> error -> close modal -> opan modal.
+    $(this).find('#modal-title').html(invoker.data('modal-title'));
+
+    keyInput.val(invoker.data('key'));
+    $(this).find('#' + {$control["apiTokenMetaForm"]['value']->htmlId}).val(invoker.data('value'));
+    $(this).find('#' + {$control["apiTokenMetaForm"]['api_token_meta_id']->htmlId}).val(invoker.data('api_token_meta_id'));
+
+    if (invoker.data('key')) {
+      keyInput[0].readOnly = true;
+    } else {
+      keyInput[0].readOnly = false;
+    }
+  });
+</script>

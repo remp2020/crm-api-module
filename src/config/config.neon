@@ -38,6 +38,7 @@ services:
 	- Crm\ApiModule\Forms\ApiAccessResourceFormFactory
 	- Crm\ApiModule\Forms\ApiAccessTokenFormFactory
 	- Crm\ApiModule\Forms\ApiTestCallFormFactory
+	- Crm\ApiModule\Forms\ApiTokenMetaFormFactory
 	- Crm\ApiModule\Commands\GenerateAccessCommand
 	- Crm\ApiModule\Api\TokenCheckHandler
 	- Crm\ApiModule\Seeders\ConfigsSeeder

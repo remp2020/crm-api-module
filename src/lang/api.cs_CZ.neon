@@ -66,7 +66,7 @@ admin:
 			removed: 'API klíč byl vymazán'
 			not_found: 'API klíč nebyl nalezen.'
 
-	api_token_meta :
+	api_token_meta:
 		header: Meta
 		title:
 			create: Nový meta záznam

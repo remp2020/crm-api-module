@@ -3,6 +3,7 @@ menu:
 	api_calls: Api volání
 	api_logs: Api záznamy
 	api_access: API práva
+
 admin:
 	access:
 		title: API práva
@@ -66,7 +67,7 @@ admin:
 			removed: 'API klíč byl vymazán'
 			not_found: 'API klíč nebyl nalezen.'
 
-	api_token_meta :
+	api_token_meta:
 		header: Meta
 		title:
 			create: Nový meta záznam

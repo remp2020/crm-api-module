@@ -138,7 +138,7 @@ admin:
 				label: Value
 				required: Value is required
 			submit: Save
-		no_record_description: This API token doesn't contain any meta values.
+		no_record_description: "This API token doesn't contain any meta values."
 		error:
 			internal: Internal error. Please contact administrator.
 			duplicate: Meta key with same key already exists.

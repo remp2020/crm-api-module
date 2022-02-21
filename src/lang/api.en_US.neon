@@ -1,159 +1,159 @@
 menu:
-	api_tokens: API tokens
-	api_calls: API calls
-	api_logs: API logs
-	api_access: API access
+    api_tokens: API tokens
+    api_calls: API calls
+    api_logs: API logs
+    api_access: API access
 
 admin:
-	api_calls:
-		default:
-			title: API calls
+    api_calls:
+        default:
+            title: API calls
 
-		detail:
-			title: API call
-			back: back to list of API calls
+        detail:
+            title: API call
+            back: back to list of API calls
 
-		fields:
-			url: API URL
-			handler: Handler
-			authorization: Authorization
+        fields:
+            url: API URL
+            handler: Handler
+            authorization: Authorization
 
-	access:
-		title: API Access
+    access:
+        title: API Access
 
-		form:
-			update_success: Access rights were updated.
-			check_all: Check all
-			tokens: API tokens
-			resources: Resources
-			save: Save
+        form:
+            update_success: Access rights were updated.
+            check_all: Check all
+            tokens: API tokens
+            resources: Resources
+            save: Save
 
-		default:
-			resource: Resource
-			token: API token
-			allowed_tokens_count: Allowed tokens count
-			allowed_resource_count: Allowed resources count
-			calls: API calls
-			tokens: API tokens
-			no_api_calls: No API calls were found
-			no_api_tokens: No API tokens were found
-			actions: Actions
-			total: Total
+        default:
+            resource: Resource
+            token: API token
+            allowed_tokens_count: Allowed tokens count
+            allowed_resource_count: Allowed resources count
+            calls: API calls
+            tokens: API tokens
+            no_api_calls: No API calls were found
+            no_api_tokens: No API tokens were found
+            actions: Actions
+            total: Total
 
-	api_logs:
-		default:
-			title: API logs
-			no_records: No API calls were found
+    api_logs:
+        default:
+            title: API logs
+            no_records: No API calls were found
 
-		fields:
-			api_token: API token
-			api_url: API URL
-			response: Response
-			request: Request
-			client: Client
-			created_at: Created at
+        fields:
+            api_token: API token
+            api_url: API URL
+            response: Response
+            request: Request
+            client: Client
+            created_at: Created at
 
-		graph:
-			api_calls:
-				title: API logs
-				tooltip: Count of API calls over time
-				total: All API calls
-				not_200_response: Response diffrent than HTTP code 200
-			response_times:
-				title: API response times
-				tooltip: 'API response times (ms) over time'
-				response_times: Response times
+        graph:
+            api_calls:
+                title: API logs
+                tooltip: Count of API calls over time
+                total: All API calls
+                not_200_response: Response diffrent than HTTP code 200
+            response_times:
+                title: API response times
+                tooltip: 'API response times (ms) over time'
+                response_times: Response times
 
-	api_tokens:
-		default:
-			title: API tokens
-			new_token: New API token
-			no_records: No API tokens were found
-			last_time: Last time
-			total: Total
+    api_tokens:
+        default:
+            title: API tokens
+            new_token: New API token
+            no_records: No API tokens were found
+            last_time: Last time
+            total: Total
 
-		new:
-			title: New API token
-			back: back to list of API tokens
-		edit:
-			title: Edit API token
-			back: back to list of API tokens
-		show:
-			title: API token
-			general_settings: General settings
-			back: back to list of API tokens
+        new:
+            title: New API token
+            back: back to list of API tokens
+        edit:
+            title: Edit API token
+            back: back to list of API tokens
+        show:
+            title: API token
+            general_settings: General settings
+            back: back to list of API tokens
 
-		fields:
-			name:
-				title: Title
-				required: Title is required field
-				placeholder: eg. Testing API Token
-				description: "doesn't affect functionality, serves only as label"
-			ip_restrictions:
-				title: IP restrictions
-				placeholder: eg. 132.42.88.33
-				description: "provide IP addresses divided by comma ',' or use '*' (allows access from everywhere)"
-			active:
-				title: Active
-			token: API token
-			created_at: Created at
-			used: Used
+        fields:
+            name:
+                title: Title
+                required: Title is required field
+                placeholder: eg. Testing API Token
+                description: "doesn't affect functionality, serves only as label"
+            ip_restrictions:
+                title: IP restrictions
+                placeholder: eg. 132.42.88.33
+                description: "provide IP addresses divided by comma ',' or use '*' (allows access from everywhere)"
+            active:
+                title: Active
+            token: API token
+            created_at: Created at
+            used: Used
 
-		form:
-			submit: Submit
+        form:
+            submit: Submit
 
-		message:
-			saved: 'API token was created.'
-			updated: 'API token was updated.'
-			removed: 'API token was removed.'
-			not_found: 'API token not found'
+        message:
+            saved: 'API token was created.'
+            updated: 'API token was updated.'
+            removed: 'API token was removed.'
+            not_found: 'API token not found'
 
-	api_test_call_form:
-		api_url:
-			title: API URL
-		token:
-			title: API Token
-			placeholder: provide token
-		token_csfr:
-			title: CSRF Token
-			placeholder: provide token
-		authorization:
-			title: Authorization
-			value: No authorization - global access
-		available_values: available values
-		submit: Test
+    api_test_call_form:
+        api_url:
+            title: API URL
+        token:
+            title: API Token
+            placeholder: provide token
+        token_csfr:
+            title: CSRF Token
+            placeholder: provide token
+        authorization:
+            title: Authorization
+            value: No authorization - global access
+        available_values: available values
+        submit: Test
 
-	api_token_meta:
-		header: Meta
-		title:
-			create: Create new meta
-			update: Update meta
-		value_removed: Value was removed
-		value_added: Value was added
-		form:
-			key:
-				label: Key
-				required: Key is required
-			value:
-				label: Value
-				required: Value is required
-			submit: Save
-		no_record_description: "This API token doesn't contain any meta values."
-		error:
-			internal: Internal error. Please contact administrator.
-			duplicate: Meta key with same key already exists.
+    api_token_meta:
+        header: Meta
+        title:
+            create: Create new meta
+            update: Update meta
+        value_removed: Value was removed
+        value_added: Value was added
+        form:
+            key:
+                label: Key
+                required: Key is required
+            value:
+                label: Value
+                required: Value is required
+            submit: Save
+        no_record_description: "This API token doesn't contain any meta values."
+        error:
+            internal: Internal error. Please contact administrator.
+            duplicate: Meta key with same key already exists.
 
 config:
-	category: API
-	enable_api_log:
-		name: API logs
-		description: Enable storing of API logs in database
-	enable_api_stats:
-		name: API token stats
-		description: Enable sorting of API token stats in database
-	api_user_token_tracking:
-		name: API token time-stats
-		description: Disable updating users API token time-stats in CRM admin
-	internal_api_token:
-		name: Internal API token
-		description: 'Token used for internal API calls (<a href="/api/api-tokens-admin/">tokens</a>)'
+    category: API
+    enable_api_log:
+        name: API logs
+        description: Enable storing of API logs in database
+    enable_api_stats:
+        name: API token stats
+        description: Enable sorting of API token stats in database
+    api_user_token_tracking:
+        name: API token time-stats
+        description: Disable updating users API token time-stats in CRM admin
+    internal_api_token:
+        name: Internal API token
+        description: 'Token used for internal API calls (<a href="/api/api-tokens-admin/">tokens</a>)'

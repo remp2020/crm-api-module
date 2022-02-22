@@ -5,9 +5,9 @@ namespace Crm\ApiModule\Forms;
 use Crm\ApiModule\Repository\ApiTokenMetaRepository;
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Nette\Application\UI\Form;
-use Nette\Database\Table\IRow;
+use Nette\Database\Table\ActiveRow;
 use Nette\Database\UniqueConstraintViolationException;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 use Nette\Utils\DateTime;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
@@ -26,14 +26,14 @@ class ApiTokenMetaFormFactory
     public function __construct(
         ApiTokensRepository $apiTokensRepository,
         ApiTokenMetaRepository $apiTokenMetaRepository,
-        ITranslator $translator
+        Translator $translator
     ) {
         $this->apiTokensRepository = $apiTokensRepository;
         $this->apiTokenMetaRepository = $apiTokenMetaRepository;
         $this->translator = $translator;
     }
 
-    public function create(IRow $apiToken)
+    public function create(ActiveRow $apiToken)
     {
         $form = new Form();
         $form->setTranslator($this->translator);

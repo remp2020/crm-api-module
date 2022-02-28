@@ -105,7 +105,7 @@ admin:
         message:
             saved: 'API kľúč bol vytvorený.'
             updated: 'API kľúč bol aktualizovný.'
-            removed: 'API kľúč bol vymazaný'
+            removed: 'API kľúč bol vymazaný.'
             not_found: 'API kľúč nebol nájdený.'
 
     api_test_call_form:

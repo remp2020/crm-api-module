@@ -1,5 +1,7 @@
 # CRM API Module
 
+[![Translation status @ Weblate](https://hosted.weblate.org/widgets/remp-crm/-/api-module/svg-badge.svg)](https://hosted.weblate.org/projects/remp-crm/api-module/)
+
 This documentation serves as a complement to [CRM Skeleton](https://github.com/remp2020/crm-skeleton/#registerapicalls)
 documentation related to creating and registering API handlers.
 

@@ -106,7 +106,7 @@ admin:
             saved: 'API token was created.'
             updated: 'API token was updated.'
             removed: 'API token was removed.'
-            not_found: 'API token not found'
+            not_found: 'API token not found.'
 
     api_test_call_form:
         api_url:

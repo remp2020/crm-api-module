@@ -64,7 +64,7 @@ admin:
         message:
             saved: 'API klíč byl vytvořen.'
             updated: 'API klíč byl aktualizován.'
-            removed: 'API klíč byl vymazán'
+            removed: 'API klíč byl vymazán.'
             not_found: 'API klíč nebyl nalezen.'
 
     api_token_meta:

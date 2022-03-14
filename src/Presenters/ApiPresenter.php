@@ -108,20 +108,26 @@ class ApiPresenter implements IPresenter
         $category = $request->getParameter('package');
         $action = $request->getParameter('apiAction');
 
+        if (!isset($version, $category, $action)) {
+            $response = new JsonResponse([
+                'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
+            ]);
+            $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
+            return $response;
+        }
+
         $apiIdentifier = new ApiIdentifier($version, $category, $action);
-
-        /** @var ApiAuthorizationInterface $authorization */
-        $authorization = $this->apiRoutersContainer->getAuthorization($apiIdentifier);
         $handler = $this->apiRoutersContainer->getHandler($apiIdentifier);
-
         if (!$handler) {
             $response = new JsonResponse([
                 'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
             ]);
-            $this->httpResponse->setCode(HttpResponse::S501_NOT_IMPLEMENTED);
+            $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
             return $response;
         }
 
+        /** @var ApiAuthorizationInterface $authorization */
+        $authorization = $this->apiRoutersContainer->getAuthorization($apiIdentifier);
         if (!$authorization->authorized($handler->resource())) {
             $response = new JsonResponse([
                 'status' => 'error',

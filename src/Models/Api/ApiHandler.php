@@ -3,7 +3,6 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
-use Crm\ApiModule\Response\ApiResponseInterface;
 use Tomaj\NetteApi\Handlers\BaseHandler;
 
 abstract class ApiHandler extends BaseHandler implements ApiHandlerInterface
@@ -13,8 +12,6 @@ abstract class ApiHandler extends BaseHandler implements ApiHandlerInterface
     private $idempotentKey = null;
 
     private $rawPayload = null;
-
-    abstract public function handle(array $params): ApiResponseInterface;
 
     public function resource(): string
     {

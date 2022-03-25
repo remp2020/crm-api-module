@@ -6,6 +6,7 @@ use JsonSchema\Validator;
 use Nette\Http\Response;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
+use Tomaj\NetteApi\Response\JsonApiResponse;
 use Tracy\Debugger;
 
 trait JsonValidationTrait
@@ -16,8 +17,7 @@ trait JsonValidationTrait
             $request = file_get_contents('php://input');
         }
         if (empty($request)) {
-            $response = new JsonResponse(['status' => 'error', 'message' => 'Empty request']);
-            $response->setHttpCode(Response::S400_BAD_REQUEST);
+            $response = new JsonApiResponse(Response::S400_BAD_REQUEST, ['status' => 'error', 'message' => 'Empty request']);
             return JsonValidationResult::error($response);
         }
 
@@ -34,15 +34,13 @@ trait JsonValidationTrait
                     $data['errors'][] = [$error['property'] => $error['message']];
                 }
                 Debugger::log('Cannot parse request. Errors: ' . print_r($data['errors'], true) . '. Request: [' . $request . ']');
-                $response = new JsonResponse($data);
-                $response->setHttpCode(Response::S400_BAD_REQUEST);
+                $response = new JsonApiResponse(Response::S400_BAD_REQUEST, $data);
                 return JsonValidationResult::error($response);
             }
 
             return JsonValidationResult::json($json);
         } catch (JsonException $e) {
-            $response = new JsonResponse(['status' => 'error', 'message' => 'Malformed JSON', 'errors' => [$e->getMessage()]]);
-            $response->setHttpCode(Response::S400_BAD_REQUEST);
+            $response = new JsonApiResponse(Response::S400_BAD_REQUEST, ['status' => 'error', 'message' => 'Malformed JSON', 'errors' => [$e->getMessage()]]);
             return JsonValidationResult::error($response);
         }
     }

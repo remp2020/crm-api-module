@@ -2,9 +2,9 @@
 
 namespace Crm\ApiModule\Api;
 
-use Crm\ApiModule\Response\ApiResponseInterface;
+use Tomaj\NetteApi\Response\ResponseInterface;
 
 interface IdempotentHandlerInterface
 {
-    public function idempotentHandle(array $params): ApiResponseInterface;
+    public function idempotentHandle(array $params): ResponseInterface;
 }

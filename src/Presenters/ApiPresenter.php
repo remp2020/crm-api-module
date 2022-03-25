@@ -5,7 +5,6 @@ namespace Crm\ApiModule\Presenters;
 use Crm\ApiModule\Api\ApiHeadersConfig;
 use Crm\ApiModule\Api\ApiParamsValidatorInterface;
 use Crm\ApiModule\Api\IdempotentHandlerInterface;
-use Crm\ApiModule\Api\JsonResponse;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\TokenParser;
@@ -23,6 +22,7 @@ use Nette\Http\Request as HttpRequest;
 use Nette\Http\Response as HttpResponse;
 use Tomaj\Hermes\Emitter;
 use Tomaj\NetteApi\Params\ParamsProcessor;
+use Tomaj\NetteApi\Response\JsonApiResponse;
 use Tracy\Debugger;
 
 class ApiPresenter implements IPresenter
@@ -69,7 +69,7 @@ class ApiPresenter implements IPresenter
 
         $origin = $_SERVER['HTTP_ORIGIN'] ?? null;
         if (!$this->apiHeadersConfig->isOriginAllowed($origin)) {
-            $response = new JsonResponse([
+            $response = new JsonApiResponse([
                 'error' => 'origin_not_allowed',
                 'message' => 'Origin is not allowed: ' . $origin,
             ]);
@@ -101,7 +101,7 @@ class ApiPresenter implements IPresenter
                 );
             }
 
-            return new JsonResponse(['options' => 'ok']);
+            return new JsonApiResponse(['options' => 'ok']);
         }
 
         $version = $request->getParameter('version');
@@ -109,7 +109,7 @@ class ApiPresenter implements IPresenter
         $action = $request->getParameter('apiAction');
 
         if (!isset($version, $category, $action)) {
-            $response = new JsonResponse([
+            $response = new JsonApiResponse([
                 'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
             ]);
             $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
@@ -119,7 +119,7 @@ class ApiPresenter implements IPresenter
         $apiIdentifier = new ApiIdentifier($version, $category, $action);
         $handler = $this->apiRoutersContainer->getHandler($apiIdentifier);
         if (!$handler) {
-            $response = new JsonResponse([
+            $response = new JsonApiResponse([
                 'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
             ]);
             $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
@@ -129,7 +129,7 @@ class ApiPresenter implements IPresenter
         /** @var ApiAuthorizationInterface $authorization */
         $authorization = $this->apiRoutersContainer->getAuthorization($apiIdentifier);
         if (!$authorization->authorized($handler->resource())) {
-            $response = new JsonResponse([
+            $response = new JsonApiResponse([
                 'status' => 'error',
                 'message' => sprintf('Not authorized: %s', $authorization->getErrorMessage()),
                 'error' => 'no_authorization',
@@ -148,7 +148,7 @@ class ApiPresenter implements IPresenter
             }
         } else {
             if ($paramsProcessor->isError()) {
-                $response = new JsonResponse([
+                $response = new JsonApiResponse([
                     'status' => 'error',
                     'code' => 'invalid_input',
                     'errors' => $paramsProcessor->getErrors()

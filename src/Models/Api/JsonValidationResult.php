@@ -2,13 +2,15 @@
 
 namespace Crm\ApiModule\Api;
 
+use Tomaj\NetteApi\Response\JsonApiResponse;
+
 class JsonValidationResult
 {
     private $parsedObject;
 
     private $errorResponse;
 
-    public static function error(JsonResponse $errorResponse)
+    public static function error(JsonApiResponse $errorResponse)
     {
         return new JsonValidationResult(null, $errorResponse);
     }
@@ -18,7 +20,7 @@ class JsonValidationResult
         return new JsonValidationResult($parsedObject, null);
     }
 
-    private function __construct($parsedObject, ?JsonResponse $errorResponse)
+    private function __construct($parsedObject, ?JsonApiResponse $errorResponse)
     {
         $this->parsedObject = $parsedObject;
         $this->errorResponse = $errorResponse;
@@ -29,7 +31,7 @@ class JsonValidationResult
         return $this->parsedObject;
     }
 
-    public function getErrorResponse(): ?JsonResponse
+    public function getErrorResponse(): ?JsonApiResponse
     {
         return $this->errorResponse;
     }

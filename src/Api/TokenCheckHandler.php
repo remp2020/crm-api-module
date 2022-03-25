@@ -2,8 +2,9 @@
 
 namespace Crm\ApiModule\Api;
 
-use Crm\ApiModule\Response\ApiResponseInterface;
 use Nette\Http\Response;
+use Tomaj\NetteApi\Response\JsonApiResponse;
+use Tomaj\NetteApi\Response\ResponseInterface;
 
 class TokenCheckHandler extends ApiHandler
 {
@@ -12,14 +13,13 @@ class TokenCheckHandler extends ApiHandler
         return [];
     }
 
-    public function handle(array $params): ApiResponseInterface
+    public function handle(array $params): ResponseInterface
     {
         $result = [
             'status' => 'ok',
         ];
 
-        $response = new JsonResponse($result);
-        $response->setHttpCode(Response::S200_OK);
+        $response = new JsonApiResponse(Response::S200_OK, $result);
         return $response;
     }
 }

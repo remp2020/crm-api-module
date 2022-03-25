@@ -69,7 +69,7 @@ class ApiPresenter implements IPresenter
 
         $origin = $_SERVER['HTTP_ORIGIN'] ?? null;
         if (!$this->apiHeadersConfig->isOriginAllowed($origin)) {
-            $response = new JsonApiResponse([
+            $response = new JsonApiResponse(HttpResponse::S403_FORBIDDEN, [
                 'error' => 'origin_not_allowed',
                 'message' => 'Origin is not allowed: ' . $origin,
             ]);
@@ -101,7 +101,7 @@ class ApiPresenter implements IPresenter
                 );
             }
 
-            return new JsonApiResponse(['options' => 'ok']);
+            return new JsonApiResponse(HttpResponse::S204_NO_CONTENT, ['options' => 'ok']);
         }
 
         $version = $request->getParameter('version');
@@ -109,7 +109,7 @@ class ApiPresenter implements IPresenter
         $action = $request->getParameter('apiAction');
 
         if (!isset($version, $category, $action)) {
-            $response = new JsonApiResponse([
+            $response = new JsonApiResponse(HttpResponse::S404_NOT_FOUND, [
                 'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
             ]);
             $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
@@ -119,7 +119,7 @@ class ApiPresenter implements IPresenter
         $apiIdentifier = new ApiIdentifier($version, $category, $action);
         $handler = $this->apiRoutersContainer->getHandler($apiIdentifier);
         if (!$handler) {
-            $response = new JsonApiResponse([
+            $response = new JsonApiResponse(HttpResponse::S404_NOT_FOUND, [
                 'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
             ]);
             $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
@@ -129,7 +129,7 @@ class ApiPresenter implements IPresenter
         /** @var ApiAuthorizationInterface $authorization */
         $authorization = $this->apiRoutersContainer->getAuthorization($apiIdentifier);
         if (!$authorization->authorized($handler->resource())) {
-            $response = new JsonApiResponse([
+            $response = new JsonApiResponse(HttpResponse::S403_FORBIDDEN, [
                 'status' => 'error',
                 'message' => sprintf('Not authorized: %s', $authorization->getErrorMessage()),
                 'error' => 'no_authorization',
@@ -148,12 +148,12 @@ class ApiPresenter implements IPresenter
             }
         } else {
             if ($paramsProcessor->isError()) {
-                $response = new JsonApiResponse([
+                $response = new JsonApiResponse(HttpResponse::S400_BAD_REQUEST, [
                     'status' => 'error',
                     'code' => 'invalid_input',
                     'errors' => $paramsProcessor->getErrors()
                 ]);
-                $this->httpResponse->setCode(\Nette\Http\Response::S400_BAD_REQUEST);
+                $this->httpResponse->setCode(HttpResponse::S400_BAD_REQUEST);
                 return $response;
             }
         }

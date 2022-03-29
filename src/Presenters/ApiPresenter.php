@@ -174,7 +174,7 @@ class ApiPresenter implements IPresenter
             $response = $handler->idempotentHandle($params);
         } else {
             $response = $handler->handle($params);
-            if ($headerIdempotencyKey && $response->getHttpCode() == HttpResponse::S200_OK && $handler instanceof IdempotentHandlerInterface) {
+            if ($headerIdempotencyKey && $response->getCode() == HttpResponse::S200_OK && $handler instanceof IdempotentHandlerInterface) {
                 $this->idempotentKeysRepository->add($path, $headerIdempotencyKey);
             }
         }

@@ -101,7 +101,7 @@ class ApiPresenter implements IPresenter
                 );
             }
 
-            return new JsonApiResponse(HttpResponse::S204_NO_CONTENT, ['options' => 'ok']);
+            return new JsonApiResponse(HttpResponse::S200_OK, ['options' => 'ok']);
         }
 
         $version = $request->getParameter('version');

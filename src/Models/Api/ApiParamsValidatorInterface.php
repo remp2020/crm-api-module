@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Api;
 
-use Crm\ApiModule\Response\ApiResponseInterface;
+use Tomaj\NetteApi\Response\ResponseInterface;
 
 interface ApiParamsValidatorInterface
 {
@@ -10,7 +10,7 @@ interface ApiParamsValidatorInterface
      * validateParams should validate input parameters.
      *
      * If the parameters are valid, validator is expected to return null.
-     * If the parameters are not valid, return ApiResponseInterface and set correct HTTP status code.
+     * If the parameters are not valid, return ResponseInterface and set correct HTTP status code.
      */
-    public function validateParams(array $params): ?ApiResponseInterface;
+    public function validateParams(array $params): ?ResponseInterface;
 }

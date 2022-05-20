@@ -29,6 +29,7 @@ services:
 			- setAllowedHeaders('Content-Type', 'Authorization', 'X-Requested-With')
 			- setAllowedHttpMethods('*')
 			- setAllowedCredentials(true)
+			- setAccessControlMaxAge(600) # seconds
 ```
 
 You can configure allowed origins by explicitly stating them or by using wildcards. Following configurations are valid:

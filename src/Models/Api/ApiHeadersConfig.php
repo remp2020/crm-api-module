@@ -12,6 +12,8 @@ class ApiHeadersConfig
 
     protected bool $allowedCredentials = false;
 
+    protected ?int $accessControlMaxAge = null;
+
     public function isOriginAllowed(?string $origin): bool
     {
         if ($origin === null) {
@@ -72,5 +74,18 @@ class ApiHeadersConfig
     public function hasAllowedCredentialsHeader(): bool
     {
         return $this->allowedCredentials;
+    }
+
+    public function setAccessControlMaxAge(int $seconds): void
+    {
+        $this->accessControlMaxAge = $seconds;
+    }
+
+    /**
+     * @return int|null Max age in seconds.
+     */
+    public function getAccessControlMaxAge(): ?int
+    {
+        return $this->accessControlMaxAge;
     }
 }

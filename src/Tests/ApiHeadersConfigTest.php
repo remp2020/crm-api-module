@@ -3,19 +3,18 @@
 namespace Crm\ApiModule\Tests;
 
 use Crm\ApiModule\Api\ApiHeadersConfig;
-use Nette\DI\Container;
-use PHPUnit\Framework\TestCase;
+use Crm\ApplicationModule\Tests\CrmTestCase;
 
-class ApiHeadersConfigTest extends TestCase
+class ApiHeadersConfigTest extends CrmTestCase
 {
     /** @var ApiHeadersConfig */
     private $apiHeadersConfig;
 
     protected function setUp(): void
     {
-        /** @var Container $container */
-        $container = $GLOBALS['container'];
-        $this->apiHeadersConfig = $container->getByType(ApiHeadersConfig::class);
+        parent::setUp();
+
+        $this->apiHeadersConfig = $this->container->getByType(ApiHeadersConfig::class);
     }
 
     public function testAllowAllOrigins()
@@ -106,5 +105,11 @@ class ApiHeadersConfigTest extends TestCase
         $this->assertFalse($this->apiHeadersConfig->hasAllowedCredentialsHeader());
         $this->apiHeadersConfig->setAllowedCredentials(true);
         $this->assertTrue($this->apiHeadersConfig->hasAllowedCredentialsHeader());
+    }
+
+    public function testAccessControlMaxAge()
+    {
+        $this->apiHeadersConfig->setAccessControlMaxAge(600);
+        $this->assertEquals(600, $this->apiHeadersConfig->getAccessControlMaxAge());
     }
 }

@@ -14,7 +14,7 @@ class ApiAccessTokenFormFactory
     private $apiAccessRepository;
 
     private $apiAccessTokensRepository;
-    
+
     private $translator;
 
     public $onSubmit;
@@ -48,10 +48,10 @@ class ApiAccessTokenFormFactory
         $form->setRenderer(new BootstrapRenderer());
         $form->addProtection();
 
-        $form->addSubmit('send', $this->translator->translate('api.admin.access.form.check_all'))
+        $form->addSubmit('send')
             ->getControlPrototype()
             ->setName('button')
-            ->setHtml('<i class="fa fa-cloud-upload"></i> ' . $this->translator->translate('api.admin.access.form.save'));
+            ->setHtml('<i class="fa fa-save"></i> ' . $this->translator->translate('api.admin.access.form.save'));
 
         $form->setDefaults($defaults);
 

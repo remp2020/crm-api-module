@@ -1,1 +1,142 @@
-{}
+admin:
+    api_calls:
+        default:
+            title: API-Aufrufe
+        detail:
+            back: Zurück zur Liste der API-Aufrufe
+            title: API-Aufruf
+        fields:
+            url: API-URL
+            handler: Handler
+            authorization: Autorisation
+    access:
+        title: API-Zugriff
+        form:
+            update_success: Zugriffsrechte wurden aktualisiert.
+            check_all: Alle auswählen
+            save: Speichern
+            resources: Ressourcen
+            tokens: API-Tokens
+        default:
+            resource: Ressource
+            no_api_calls: Keine API-Aufrufe gefunden
+            actions: Aktionen
+            token: API-Token
+            allowed_tokens_count: Erlaubte Token-Anzahl
+            allowed_resource_count: Erlaubte Ressourcen-Anzahl
+            tokens: API-Token
+            total: Insgesamt
+            calls: API-Aufrufe
+            no_api_tokens: Keine API-Token gefunden
+    api_logs:
+        fields:
+            created_at: Angelegt am
+            api_url: API-URL
+            request: Anfrage
+            client: Client
+            api_token: API-Token
+            response: Antwort
+        graph:
+            api_calls:
+                not_200_response: abweichende Antworten von HTTP-Code 200
+                title: API-Logs
+                total: Alle API-Aufrufe
+                tooltip: Anzahl der API-Aufrufe über die Zeit
+            response_times:
+                title: API-Antwortzeiten
+                tooltip: API-Antwortzeiten (in ms) über die Zeit
+                response_times: Antwortzeiten
+        default:
+            title: API-Logs
+            no_records: Keine API-Aufrufe gefunden
+    api_tokens:
+        default:
+            title: API-Token
+            new_token: Neuer API-Token
+            no_records: Keine API-Token gefunden
+            last_time: Letzte Zeit
+            total: Insgesamt
+        new:
+            title: Neuer API-Token
+            back: Zurück zur Liste der API-Token
+        edit:
+            title: API-Token bearbeiten
+            back: Zurück zur Liste der API-Token
+        show:
+            title: API-Token
+            general_settings: Allgemeine Einstellungen
+            back: Zurück zur Liste der API-Token
+        fields:
+            name:
+                placeholder: z.B. Teste API-Token
+                description: hat keinen Einfluß auf die Funktion, dient nur als Bezeichner
+                title: Titel
+                required: Titel ist erforderlich
+            ip_restrictions:
+                title: IP-Einschränkungen
+                description: IP-Adressen mit ',' getrennt, oder '*' (erlaubt Zugriff von überall)
+                placeholder: z.B. 132.42.88.33
+            active:
+                title: Aktiv
+            token: API-Token
+            created_at: Angelegt am
+            used: Benutzt
+        message:
+            not_found: API-Token nicht gefunden.
+            updated: API-Token wurde aktualisiert.
+            saved: API-Token wurde angelegt.
+            removed: API-Token wurde entfernt.
+        form:
+            submit: Absenden
+    api_test_call_form:
+        api_url:
+            title: API-URL
+        token:
+            title: API-Token
+            placeholder: Token bereitstellen
+        token_csfr:
+            placeholder: Token bereitstellen
+            title: CSRF-Token
+        authorization:
+            title: Autorisierung
+            value: Keine Autorisierung - globaler Zugriff
+        submit: Test
+        available_values: verfügbare Werte
+    api_token_meta:
+        header: Meta
+        title:
+            create: Neues Meta anlegen
+            update: Meta aktualisieren
+        value_removed: Wert wurde entfernt
+        form:
+            key:
+                label: Schlüssel
+                required: Schlüssel ist erforderlich
+            value:
+                label: Wert
+                required: Wert ist erforderlich
+            submit: Speichern
+        no_record_description: Das API-Token enthält keinerlei Meta-Werte.
+        error:
+            internal: Interner Fehler. Bitte kontaktieren Sie den Administrator.
+            duplicate: Meta-Schlüssel mit diesen Namen existiert bereits.
+        value_added: Wert wurde hinzugefügt
+config:
+    enable_api_log:
+        description: Speicherung der API-Logs in der Datenbank aktivieren
+        name: API-Logs
+    enable_api_stats:
+        name: API-Token-Statistiken
+        description: Aktiviere Sortierung von API-Token-Statistiken in der Datenbank
+    api_user_token_tracking:
+        name: API-Token Zeit-Statistiken
+        description: Aktiviere Speicherung der Zugriffszeit von User-API-Token in der Datenbank
+    internal_api_token:
+        name: Internes API-Token
+        description: Token für interne API-Aufrufe (<a href="/api/api-tokens-admin/">tokens</a>)
+    category: API
+menu:
+    api_tokens: API-Tokens
+    api_calls: API-Aufrufe
+    api_logs: API-Logs
+    api_access: API-Zugriff

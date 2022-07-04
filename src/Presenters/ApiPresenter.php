@@ -80,6 +80,13 @@ class ApiPresenter implements IPresenter
             $this->httpResponse->addHeader('Access-Control-Allow-Origin', $origin);
         }
 
+        if ($this->apiHeadersConfig->hasAllowedCredentialsHeader()) {
+            $this->httpResponse->addHeader(
+                'Access-Control-Allow-Credentials',
+                'true'
+            );
+        }
+
         // handle preflight request
         if ($this->httpRequest->isMethod('OPTIONS')) {
             $this->httpResponse->addHeader(
@@ -91,13 +98,6 @@ class ApiPresenter implements IPresenter
                 'Access-Control-Allow-Methods',
                 $this->apiHeadersConfig->getAllowedHttpMethods()
             );
-
-            if ($this->apiHeadersConfig->hasAllowedCredentialsHeader()) {
-                $this->httpResponse->addHeader(
-                    'Access-Control-Allow-Credentials',
-                    'true'
-                );
-            }
 
             if ($this->apiHeadersConfig->getAccessControlMaxAge() !== null) {
                 $this->httpResponse->addHeader(

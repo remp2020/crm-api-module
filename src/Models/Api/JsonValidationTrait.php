@@ -32,7 +32,7 @@ trait JsonValidationTrait
                 $data = ['status' => 'error', 'message' => 'Payload error', 'errors' => []];
                 foreach ($validator->getErrors() as $error) {
                     $data['errors'][] = [
-                        $error['property'] => sprintf("%s: %s", $error['message'], $error['constraint']),
+                        $error['property'] => $error['message'],
                     ];
                 }
                 Debugger::log('Cannot parse request. Errors: ' . print_r($data['errors'], true) . '. Request: [' . $request . ']');

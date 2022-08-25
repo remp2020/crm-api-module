@@ -2,10 +2,10 @@
 
 namespace Crm\ApiModule\DI;
 
-use Kdyby\Translation\DI\ITranslationProvider;
+use Contributte\Translation\DI\TranslationProviderInterface;
 use Nette\DI\CompilerExtension;
 
-final class ApiModuleExtension extends CompilerExtension implements ITranslationProvider
+final class ApiModuleExtension extends CompilerExtension implements TranslationProviderInterface
 {
     public function loadConfiguration()
     {
@@ -23,11 +23,7 @@ final class ApiModuleExtension extends CompilerExtension implements ITranslation
             ->addSetup('setMapping', [['Api' => 'Crm\ApiModule\Presenters\*Presenter']]);
     }
 
-    /**
-     * Return array of directories, that contain resources for translator.
-     * @return string[]
-     */
-    public function getTranslationResources()
+    public function getTranslationResources(): array
     {
         return [__DIR__ . '/../lang/'];
     }

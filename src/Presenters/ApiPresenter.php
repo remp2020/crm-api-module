@@ -20,6 +20,7 @@ use Nette\Application\Request;
 use Nette\Application\Response;
 use Nette\Http\Request as HttpRequest;
 use Nette\Http\Response as HttpResponse;
+use Nette\Utils\Strings;
 use Tomaj\Hermes\Emitter;
 use Tomaj\NetteApi\Params\ParamsProcessor;
 use Tomaj\NetteApi\Response\JsonApiResponse;
@@ -42,6 +43,8 @@ class ApiPresenter implements IPresenter
     private $httpResponse;
 
     private $applicationConfig;
+
+    private const API_PATH_PARTS = 3;
 
     public function __construct(
         ApplicationConfig $applicationConfig,
@@ -192,7 +195,7 @@ class ApiPresenter implements IPresenter
 
     private function log($apiIdentifier, $authorization, $response)
     {
-        $apiLogEnabled = $this->applicationConfig->get('enable_api_log');
+        $apiLogEnabled = $this->applicationConfig->get('enable_api_log') && $this->hasPathLogEnabled($apiIdentifier->getApiPath());
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
 
         $token = '';
@@ -221,7 +224,7 @@ class ApiPresenter implements IPresenter
             $_POST['password'] = '***';
         }
 
-        $input = ['POST' => $_POST, 'GET' => $_GET];
+        $input = ['POST' => $_POST, 'GET' => $_GET, 'raw' => file_get_contents('php://input')];
         $jsonInput = json_encode($input);
 
         $elapsed = Debugger::timer() * 1000;
@@ -239,5 +242,38 @@ class ApiPresenter implements IPresenter
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,
         ]), HermesMessage::PRIORITY_LOW);
+    }
+
+    private function hasPathLogEnabled(string $path): bool
+    {
+        $apiLogPathsConfig = Strings::trim($this->applicationConfig->get('enabled_api_log_paths'));
+        $logPaths = array_filter(array_map(function ($value) {
+            return trim($value);
+        }, preg_split("/\r\n|\r|\n/", $apiLogPathsConfig)));
+
+        if (count($logPaths) === 0) {
+            return true;
+        }
+
+        $pathParts = explode('/', trim($path, '/'));
+        if (count($pathParts) !== self::API_PATH_PARTS) {
+            return false;
+        }
+
+        foreach ($logPaths as $logPath) {
+            $configPathParts = explode('/', trim($logPath, '/'));
+            if (count($configPathParts) !== self::API_PATH_PARTS) {
+                continue;
+            }
+
+            if (($pathParts[0] === $configPathParts[0] || $configPathParts[0] === '*') &&
+                ($pathParts[1] === $configPathParts[1] || $configPathParts[1] === '*') &&
+                ($pathParts[2] === $configPathParts[2] || $configPathParts[2] === '*')
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

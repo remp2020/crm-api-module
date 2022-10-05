@@ -2,7 +2,10 @@
 
 namespace Crm\ApiModule\Presenters;
 
+use Crm\ApiModule\Api\ApiHandler;
+use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApiModule\Api\ApiHeadersConfig;
+use Crm\ApiModule\Api\ApiLoggerConfig;
 use Crm\ApiModule\Api\ApiParamsValidatorInterface;
 use Crm\ApiModule\Api\IdempotentHandlerInterface;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
@@ -20,6 +23,8 @@ use Nette\Application\Request;
 use Nette\Application\Response;
 use Nette\Http\Request as HttpRequest;
 use Nette\Http\Response as HttpResponse;
+use Nette\Utils\Json;
+use Nette\Utils\JsonException;
 use Tomaj\Hermes\Emitter;
 use Tomaj\NetteApi\Params\ParamsProcessor;
 use Tomaj\NetteApi\Response\JsonApiResponse;
@@ -27,40 +32,17 @@ use Tracy\Debugger;
 
 class ApiPresenter implements IPresenter
 {
-    private $apiRoutersContainer;
-
-    private $apiTokenStatsRepository;
-
-    private $idempotentKeysRepository;
-
-    private $apiHeadersConfig;
-
-    private $hermesEmitter;
-
-    private $httpRequest;
-
-    private $httpResponse;
-
-    private $applicationConfig;
-
     public function __construct(
-        ApplicationConfig $applicationConfig,
-        ApiRoutesContainer $apiRoutesContainer,
-        ApiTokenStatsRepository $apiTokenStatsRepository,
-        IdempotentKeysRepository $idempotentKeysRepository,
-        ApiHeadersConfig $apiHeadersConfig,
-        Emitter $hermesEmitter,
-        HttpRequest $request,
-        HttpResponse $response
+        private ApplicationConfig $applicationConfig,
+        private ApiRoutesContainer $apiRoutesContainer,
+        private ApiTokenStatsRepository $apiTokenStatsRepository,
+        private IdempotentKeysRepository $idempotentKeysRepository,
+        private ApiHeadersConfig $apiHeadersConfig,
+        private ApiLoggerConfig $apiLoggerConfig,
+        private Emitter $hermesEmitter,
+        private HttpRequest $httpRequest,
+        private HttpResponse $httpResponse
     ) {
-        $this->apiRoutersContainer = $apiRoutesContainer;
-        $this->apiTokenStatsRepository = $apiTokenStatsRepository;
-        $this->idempotentKeysRepository = $idempotentKeysRepository;
-        $this->apiHeadersConfig = $apiHeadersConfig;
-        $this->hermesEmitter = $hermesEmitter;
-        $this->applicationConfig = $applicationConfig;
-        $this->httpRequest = $request;
-        $this->httpResponse = $response;
     }
 
     public function run(Request $request): Response
@@ -122,7 +104,7 @@ class ApiPresenter implements IPresenter
         }
 
         $apiIdentifier = new ApiIdentifier($version, $category, $action);
-        $handler = $this->apiRoutersContainer->getHandler($apiIdentifier);
+        $handler = $this->apiRoutesContainer->getHandler($apiIdentifier);
         if (!$handler) {
             $response = new JsonApiResponse(HttpResponse::S404_NOT_FOUND, [
                 'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
@@ -132,7 +114,7 @@ class ApiPresenter implements IPresenter
         }
 
         /** @var ApiAuthorizationInterface $authorization */
-        $authorization = $this->apiRoutersContainer->getAuthorization($apiIdentifier);
+        $authorization = $this->apiRoutesContainer->getAuthorization($apiIdentifier);
         if (!$authorization->authorized($handler->resource())) {
             $response = new JsonApiResponse(HttpResponse::S403_FORBIDDEN, [
                 'status' => 'error',
@@ -184,15 +166,17 @@ class ApiPresenter implements IPresenter
             }
         }
 
-        $this->log($apiIdentifier, $authorization, $response);
+        $this->log($apiIdentifier, $authorization, $response, $handler);
 
         $this->httpResponse->setCode($response->getCode());
         return $response;
     }
 
-    private function log($apiIdentifier, $authorization, $response)
+    private function log($apiIdentifier, $authorization, $response, $handler)
     {
-        $apiLogEnabled = $this->applicationConfig->get('enable_api_log');
+        $apiLogEnabled = $this->applicationConfig->get('enable_api_log')
+            && $this->apiLoggerConfig->isPathEnabled($apiIdentifier);
+
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
 
         $token = '';
@@ -200,7 +184,7 @@ class ApiPresenter implements IPresenter
             $tokenParser = new TokenParser();
             $token = $tokenParser->getToken();
             if (!$apiLogEnabled && $apiStatsEnabled) {
-                // If we don't log API calls, but API stats yes, update token stats directly. Otherwise we'll update it asynchronously.
+                // If we don't log API calls, but do log the API stats, update token stats directly. Otherwise, we'll update it asynchronously.
                 $this->apiTokenStatsRepository->updateStats($token);
             }
         }
@@ -221,8 +205,31 @@ class ApiPresenter implements IPresenter
             $_POST['password'] = '***';
         }
 
-        $input = ['POST' => $_POST, 'GET' => $_GET];
-        $jsonInput = json_encode($input);
+        $input = ['POST' => $_POST, 'GET' => $_GET, 'RAW' => ''];
+
+        $payload = $this->rawPayload($handler);
+
+        // https://www.php.net/manual/en/reserved.variables.post.php
+        $postHandledContentTypes = [
+            'application/x-www-form-urlencoded',
+            'multipart/form-data',
+        ];
+        $contentType = $this->httpRequest->getHeader('Content-Type');
+
+        if ($contentType === 'application/json') {
+            try {
+                // try to store decoded json (it would be double-encoded due to the following lines)
+                $input['JSON'] = Json::decode($payload);
+            } catch (JsonException $e) {
+                // it's not JSON, log the payload as we received it
+                $input['RAW'] = $payload;
+            }
+        } elseif (!in_array($contentType, $postHandledContentTypes, true)) {
+            // postHandledContentTypes are already present in $_POST, use RAW for remaining content types
+            $input['RAW'] = $payload;
+        }
+
+        $jsonInput = Json::encode($input);
 
         $elapsed = Debugger::timer() * 1000;
         $path = $apiIdentifier->getApiPath();
@@ -239,5 +246,14 @@ class ApiPresenter implements IPresenter
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,
         ]), HermesMessage::PRIORITY_LOW);
+    }
+
+    private function rawPayload(ApiHandlerInterface $handler): string
+    {
+        if ($handler instanceof ApiHandler) {
+            return $handler->rawPayload();
+        }
+
+        return file_get_contents('php://input');
     }
 }

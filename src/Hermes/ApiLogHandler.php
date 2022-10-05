@@ -5,6 +5,7 @@ namespace Crm\ApiModule\Hermes;
 use Crm\ApiModule\Repository\ApiLogsRepository;
 use Crm\ApiModule\Repository\ApiTokenStatsRepository;
 use Crm\ApplicationModule\Config\ApplicationConfig;
+use Nette\Utils\Json;
 use Tomaj\Hermes\Handler\HandlerInterface;
 use Tomaj\Hermes\Handler\RetryTrait;
 use Tomaj\Hermes\MessageInterface;
@@ -29,11 +30,12 @@ class ApiLogHandler implements HandlerInterface
     public function handle(MessageInterface $message): bool
     {
         $payload = $message->getPayload();
+        $input = Json::decode(Json::encode($payload['jsonInput'])); // strip whitespaces
 
         $this->apiLogsRepository->add(
             $payload['token'],
             $payload['path'],
-            $payload['jsonInput'],
+            $input,
             $payload['responseCode'],
             $payload['elapsed'],
             $payload['ipAddress'],

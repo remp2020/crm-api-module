@@ -18,6 +18,8 @@ extensions:
 
 ### Configuration
 
+#### Preflight requests
+
 Module allows you to configure preflight request handling. Add following snippet to your `config.neon` file:
 
 ```neon
@@ -37,6 +39,33 @@ You can configure allowed origins by explicitly stating them or by using wildcar
 - `setAllowedOrigins("*")`. Matches everything
 - `setAllowedOrigins("foo.bar", "*.foo.bar")`. Matches `foo.bar` and all of its subdomains.
 - `setAllowedOrigins("foo.bar", "1.foo.bar")`. Matches `foo.bar`, `1.foo.bar`, but nothing else (nor any other subdomain).
+
+#### API requests logging
+
+You can globally enable or disable API logging in the CRM admin - config section. If the logging is enabled, you can further configure which specific paths should be logged or not.
+
+We recommend using configuration of blacklist over whitelist. Otherwise you might encounter a scenario, where logs from one of our APIs might be missing when you need them.
+
+To enable blacklist, add following snippet to your `config.neon` file:
+
+```neon
+services:
+	# ...
+	apiLoggerConfig:
+		setup:
+			- setPathBlacklist([
+				Crm\ApiModule\Models\LoggerEndpointIdentifier('1', 'foo', 'bar'),
+			])
+```
+
+The `LoggerEndpointIdentifier` requires three parameters: `version`, `package` and `apiCall` - same parameters which you use when you register a new API handler. The snippet above will not log requests to the `/api/v1/foo/bar` endpoint.
+
+You can also use wildcards where necessary:
+
+- `Crm\ApiModule\Models\LoggerEndpointIdentifier('*', 'foo', 'bar')` will match all requests going to `/api/*/foo/bar`.
+- `Crm\ApiModule\Models\LoggerEndpointIdentifier('1', '*', '*')` will match all requests going to `/api/v3/*/*`.
+
+Blacklist and whitelist cannot be combined, the latter configured wins.
 
 #### Data retention configuration
 

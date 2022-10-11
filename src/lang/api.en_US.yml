@@ -157,6 +157,3 @@ config:
     internal_api_token:
         name: Internal API token
         description: 'Token used for internal API calls (<a href="/api/api-tokens-admin/">tokens</a>)'
-    enabled_api_log_paths:
-      name: Logged API URL
-      description: 'Format: /v1/category/action. You can replace individual parts with *. Enter one entry per line. If you leave blank, all API requests are logged.'

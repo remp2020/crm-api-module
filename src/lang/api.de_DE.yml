@@ -135,9 +135,6 @@ config:
         name: Internes API-Token
         description: Token für interne API-Aufrufe (<a href="/api/api-tokens-admin/">tokens</a>)
     category: API
-    enabled_api_log_paths:
-        name: Protokollierte API-URL
-        description: 'Format: /v1/categories/action. Sie können einzelne Teile durch * ersetzen. Geben Sie einen Eintrag pro Zeile ein. Wenn Sie es leer lassen, werden alle API-Anforderungen protokolliert.'
 menu:
     api_tokens: API-Tokens
     api_calls: API-Aufrufe

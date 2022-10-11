@@ -101,6 +101,3 @@ config:
     internal_api_token:
         name: Interní API klíč
         description: 'API klíč používán pro interní volání (<a href="/api/api-tokens-admin/">seznam</a>)'
-    enabled_api_log_paths:
-      name: Logované API URL
-      description: 'Formát: /v1/category/action. Jednotlivé části můžete nahradit znakem *. Uvádějte jeden záznam na řádek. Necháte-li prázdné logují se všechny API requesty.'

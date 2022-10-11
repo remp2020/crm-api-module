@@ -2,8 +2,10 @@
 
 namespace Crm\ApiModule\Presenters;
 
+use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApiModule\Api\ApiHeadersConfig;
 use Crm\ApiModule\Api\ApiParamsValidatorInterface;
+use Crm\ApiModule\Api\ApiPathsLogConfig;
 use Crm\ApiModule\Api\IdempotentHandlerInterface;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
@@ -36,6 +38,8 @@ class ApiPresenter implements IPresenter
 
     private $apiHeadersConfig;
 
+    private $apiPathsLogConfig;
+
     private $hermesEmitter;
 
     private $httpRequest;
@@ -52,6 +56,7 @@ class ApiPresenter implements IPresenter
         ApiTokenStatsRepository $apiTokenStatsRepository,
         IdempotentKeysRepository $idempotentKeysRepository,
         ApiHeadersConfig $apiHeadersConfig,
+        ApiPathsLogConfig $apiPathsLogConfig,
         Emitter $hermesEmitter,
         HttpRequest $request,
         HttpResponse $response
@@ -62,6 +67,7 @@ class ApiPresenter implements IPresenter
         $this->apiHeadersConfig = $apiHeadersConfig;
         $this->hermesEmitter = $hermesEmitter;
         $this->applicationConfig = $applicationConfig;
+        $this->apiPathsLogConfig = $apiPathsLogConfig;
         $this->httpRequest = $request;
         $this->httpResponse = $response;
     }
@@ -187,15 +193,15 @@ class ApiPresenter implements IPresenter
             }
         }
 
-        $this->log($apiIdentifier, $authorization, $response);
+        $this->log($apiIdentifier, $authorization, $response, $handler);
 
         $this->httpResponse->setCode($response->getCode());
         return $response;
     }
 
-    private function log($apiIdentifier, $authorization, $response)
+    private function log($apiIdentifier, $authorization, $response, $handler)
     {
-        $apiLogEnabled = $this->applicationConfig->get('enable_api_log') && $this->hasPathLogEnabled($apiIdentifier->getApiPath());
+        $apiLogEnabled = $this->applicationConfig->get('enable_api_log') && $this->apiPathsLogConfig->isPathEnabled($apiIdentifier->getApiPath());
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
 
         $token = '';
@@ -224,7 +230,7 @@ class ApiPresenter implements IPresenter
             $_POST['password'] = '***';
         }
 
-        $input = ['POST' => $_POST, 'GET' => $_GET, 'raw' => file_get_contents('php://input')];
+        $input = ['POST' => $_POST, 'GET' => $_GET, 'raw' => $this->getRawPayload($handler)];
         $jsonInput = json_encode($input);
 
         $elapsed = Debugger::timer() * 1000;
@@ -244,36 +250,12 @@ class ApiPresenter implements IPresenter
         ]), HermesMessage::PRIORITY_LOW);
     }
 
-    private function hasPathLogEnabled(string $path): bool
+    private function getRawPayload(ApiHandlerInterface $handler): string
     {
-        $apiLogPathsConfig = Strings::trim($this->applicationConfig->get('enabled_api_log_paths'));
-        $logPaths = array_filter(array_map(function ($value) {
-            return trim($value);
-        }, preg_split("/\r\n|\r|\n/", $apiLogPathsConfig)));
-
-        if (count($logPaths) === 0) {
-            return true;
+        if (method_exists($handler, 'getRawPayload')) {
+            return $handler->getRawPayload();
         }
 
-        $pathParts = explode('/', trim($path, '/'));
-        if (count($pathParts) !== self::API_PATH_PARTS) {
-            return false;
-        }
-
-        foreach ($logPaths as $logPath) {
-            $configPathParts = explode('/', trim($logPath, '/'));
-            if (count($configPathParts) !== self::API_PATH_PARTS) {
-                continue;
-            }
-
-            if (($pathParts[0] === $configPathParts[0] || $configPathParts[0] === '*') &&
-                ($pathParts[1] === $configPathParts[1] || $configPathParts[1] === '*') &&
-                ($pathParts[2] === $configPathParts[2] || $configPathParts[2] === '*')
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return file_get_contents('php://input');
     }
 }

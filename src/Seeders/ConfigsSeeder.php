@@ -160,31 +160,6 @@ class ConfigsSeeder implements ISeeder
             }
         }
 
-        $name = 'enabled_api_log_paths';
-        $config = $this->configsRepository->loadByName($name);
-        if (!$config) {
-            $this->configBuilder->createNew()
-                ->setName($name)
-                ->setDisplayName('api.config.enabled_api_log_paths.name')
-                ->setDescription('api.config.enabled_api_log_paths.description')
-                ->setType(ApplicationConfig::TYPE_TEXT)
-                ->setAutoload(true)
-                ->setConfigCategory($category)
-                ->setSorting(600)
-                ->setValue('')
-                ->save();
-            $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
-        } else {
-            $output->writeln("  * config item <info>$name</info> exists");
-
-            if ($config['category']['name'] != $categoryName) {
-                $this->configsRepository->update($config, [
-                    'config_category_id' => $category['id'],
-                ]);
-                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
-            }
-        }
-
         $this->internalToken->addAccessToAllApiResources();
     }
 }

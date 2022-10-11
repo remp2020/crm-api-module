@@ -27,6 +27,9 @@ services:
 			- setAllowedHeaders('Content-Type', 'Authorization', 'X-Requested-With')
 			- setAllowedHttpMethods('*')
 
+	apiPathsLogConfig:
+		factory: Crm\ApiModule\Api\ApiPathsLogConfig
+
 	- Crm\ApiModule\Router\ApiRoutesContainer
 	- Crm\ApiModule\Authorization\BearerTokenAuthorization
 	- Crm\ApiModule\Authorization\NoAuthorization

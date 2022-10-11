@@ -2,8 +2,10 @@
 
 namespace Crm\ApiModule\Presenters;
 
+use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApiModule\Api\ApiHeadersConfig;
 use Crm\ApiModule\Api\ApiParamsValidatorInterface;
+use Crm\ApiModule\Api\ApiPathsLogConfig;
 use Crm\ApiModule\Api\IdempotentHandlerInterface;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
@@ -20,6 +22,7 @@ use Nette\Application\Request;
 use Nette\Application\Response;
 use Nette\Http\Request as HttpRequest;
 use Nette\Http\Response as HttpResponse;
+use Nette\Utils\Strings;
 use Tomaj\Hermes\Emitter;
 use Tomaj\NetteApi\Params\ParamsProcessor;
 use Tomaj\NetteApi\Response\JsonApiResponse;
@@ -35,6 +38,8 @@ class ApiPresenter implements IPresenter
 
     private $apiHeadersConfig;
 
+    private $apiPathsLogConfig;
+
     private $hermesEmitter;
 
     private $httpRequest;
@@ -43,12 +48,15 @@ class ApiPresenter implements IPresenter
 
     private $applicationConfig;
 
+    private const API_PATH_PARTS = 3;
+
     public function __construct(
         ApplicationConfig $applicationConfig,
         ApiRoutesContainer $apiRoutesContainer,
         ApiTokenStatsRepository $apiTokenStatsRepository,
         IdempotentKeysRepository $idempotentKeysRepository,
         ApiHeadersConfig $apiHeadersConfig,
+        ApiPathsLogConfig $apiPathsLogConfig,
         Emitter $hermesEmitter,
         HttpRequest $request,
         HttpResponse $response
@@ -59,6 +67,7 @@ class ApiPresenter implements IPresenter
         $this->apiHeadersConfig = $apiHeadersConfig;
         $this->hermesEmitter = $hermesEmitter;
         $this->applicationConfig = $applicationConfig;
+        $this->apiPathsLogConfig = $apiPathsLogConfig;
         $this->httpRequest = $request;
         $this->httpResponse = $response;
     }
@@ -184,15 +193,15 @@ class ApiPresenter implements IPresenter
             }
         }
 
-        $this->log($apiIdentifier, $authorization, $response);
+        $this->log($apiIdentifier, $authorization, $response, $handler);
 
         $this->httpResponse->setCode($response->getCode());
         return $response;
     }
 
-    private function log($apiIdentifier, $authorization, $response)
+    private function log($apiIdentifier, $authorization, $response, $handler)
     {
-        $apiLogEnabled = $this->applicationConfig->get('enable_api_log');
+        $apiLogEnabled = $this->applicationConfig->get('enable_api_log') && $this->apiPathsLogConfig->isPathEnabled($apiIdentifier->getApiPath());
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
 
         $token = '';
@@ -221,7 +230,7 @@ class ApiPresenter implements IPresenter
             $_POST['password'] = '***';
         }
 
-        $input = ['POST' => $_POST, 'GET' => $_GET];
+        $input = ['POST' => $_POST, 'GET' => $_GET, 'raw' => $this->getRawPayload($handler)];
         $jsonInput = json_encode($input);
 
         $elapsed = Debugger::timer() * 1000;
@@ -239,5 +248,14 @@ class ApiPresenter implements IPresenter
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,
         ]), HermesMessage::PRIORITY_LOW);
+    }
+
+    private function getRawPayload(ApiHandlerInterface $handler): string
+    {
+        if (method_exists($handler, 'getRawPayload')) {
+            return $handler->getRawPayload();
+        }
+
+        return file_get_contents('php://input');
     }
 }

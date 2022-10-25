@@ -57,7 +57,7 @@ class ApiAccessAdminPresenter extends AdminPresenter
     {
         $apiAccess = $this->apiAccessRepository->find($this->getParameter('id'));
         $this->apiAccessResourceFormFactory->onSubmit = function () {
-            $this->flashMessage($this->translator->trans('api.admin.access.form.update_success'));
+            $this->flashMessage($this->translator->translate('api.admin.access.form.update_success'));
             $this->redirect('ApiAccessAdmin:default');
         };
         return $this->apiAccessResourceFormFactory->create($apiAccess);
@@ -67,7 +67,7 @@ class ApiAccessAdminPresenter extends AdminPresenter
     {
         $token = $this->apiTokensRepository->find($this->getParameter('id'));
         $this->apiAccessTokenFormFactory->onSubmit = function () {
-            $this->flashMessage($this->translator->trans('api.admin.access.form.update_success'));
+            $this->flashMessage($this->translator->translate('api.admin.access.form.update_success'));
             $this->redirect('ApiAccessAdmin:default');
         };
         return $this->apiAccessTokenFormFactory->create($token);

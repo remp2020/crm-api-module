@@ -7,7 +7,7 @@
   "require": {
     "php": "^8.0",
     "justinrainbow/json-schema": "^5.2",
-    "spatie/array-to-xml": "^2.11",
+    "spatie/array-to-xml": "^3.1",
     "tomaj/nette-api": "^2.6"
   },
   "minimum-stability": "dev",

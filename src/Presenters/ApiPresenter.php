@@ -157,13 +157,26 @@ class ApiPresenter implements IPresenter
 
         $handler->setAuthorization($authorization);
 
-        if ($idempotencyKey && $handler instanceof IdempotentHandlerInterface) {
-            $response = $handler->idempotentHandle($params);
-        } else {
-            $response = $handler->handle($params);
-            if ($headerIdempotencyKey && $response->getCode() == HttpResponse::S200_OK && $handler instanceof IdempotentHandlerInterface) {
-                $this->idempotentKeysRepository->add($path, $headerIdempotencyKey);
+        try {
+            if ($idempotencyKey && $handler instanceof IdempotentHandlerInterface) {
+                $response = $handler->idempotentHandle($params);
+            } else {
+                $response = $handler->handle($params);
+                if ($headerIdempotencyKey && $response->getCode() == HttpResponse::S200_OK && $handler instanceof IdempotentHandlerInterface) {
+                    $this->idempotentKeysRepository->add($path, $headerIdempotencyKey);
+                }
             }
+        } catch (\Throwable $exception) {
+            $response = new JsonApiResponse(HttpResponse::S500_INTERNAL_SERVER_ERROR, [
+                'status' => 'error',
+                'code' => 'internal_server_error',
+            ]);
+
+            Debugger::log($exception, Debugger::EXCEPTION);
+            $this->log($apiIdentifier, $authorization, $response, $handler); // log api call
+
+            $this->httpResponse->setCode(HttpResponse::S500_INTERNAL_SERVER_ERROR);
+            return $response;
         }
 
         $this->log($apiIdentifier, $authorization, $response, $handler);

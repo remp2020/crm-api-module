@@ -87,6 +87,9 @@ admin:
             internal: Nastala chyba. Prosím kontaktujte administrátora.
             duplicate: Meta se stejným klíčem již existuje.
 
+    api_calls:
+        default:
+            title: API volání
 config:
     category: API
     enable_api_log:

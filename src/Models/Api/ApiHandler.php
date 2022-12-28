@@ -7,11 +7,11 @@ use Tomaj\NetteApi\Handlers\BaseHandler;
 
 abstract class ApiHandler extends BaseHandler implements ApiHandlerInterface
 {
-    private $authorization = null;
+    private ApiAuthorizationInterface $authorization;
 
-    private $idempotentKey = null;
+    private ?string $idempotentKey = null;
 
-    private $rawPayload = null;
+    private ?string $rawPayload = null;
 
     public function resource(): string
     {

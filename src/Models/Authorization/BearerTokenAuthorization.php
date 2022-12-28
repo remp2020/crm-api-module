@@ -92,7 +92,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
 
     private function ipInRange($ip, $range)
     {
-        if (strpos($range, '/') == false) {
+        if (!str_contains($range, '/')) {
             $range .= '/32';
         }
         // $range is in IP/CIDR format eg 127.0.0.1/24

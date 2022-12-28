@@ -48,8 +48,8 @@ class ApiIdentifier extends EndpointIdentifier
      * @param ApiIdentifier $otherIdentifier
      * @return bool
      */
-    public function equals(ApiIdentifier $otherIdentifier)
+    public function equals(ApiIdentifier $otherIdentifier): bool
     {
-        return $this->getApiPath() === $otherIdentifier->getApiPath();
+        return $this->getUrl() === $otherIdentifier->getUrl();
     }
 }

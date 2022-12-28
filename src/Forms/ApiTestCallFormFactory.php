@@ -8,42 +8,28 @@ use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\CsrfAuthorization;
 use Crm\ApiModule\Authorization\NoAuthorization;
-use Crm\ApiModule\Params\InputParam;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Nette\Application\UI\Form;
 use Nette\Http\Request;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
+use Tomaj\NetteApi\Params\InputParam;
 use Tracy\Debugger;
 
 class ApiTestCallFormFactory
 {
-    protected $apiRoutesContainer;
-
-    /** @var ApiRouteInterface */
-    private $router;
-
-    /** @var ApiHandlerInterface */
-    private $handler;
-
-    /** @var ApiAuthorizationInterface */
-    private $authorization;
-
-    private $request;
-
-    private $translator;
+    private ApiRouteInterface $router;
+    private ApiHandlerInterface $handler;
+    private ApiAuthorizationInterface $authorization;
 
     public $onSubmit;
 
     public function __construct(
-        ApiRoutesContainer $apiRoutesContainer,
-        Request $request,
-        Translator $translator
+        protected ApiRoutesContainer $apiRoutesContainer,
+        private Request $request,
+        private Translator $translator
     ) {
-        $this->apiRoutesContainer = $apiRoutesContainer;
-        $this->request = $request;
-        $this->translator = $translator;
     }
 
     /**
@@ -65,7 +51,7 @@ class ApiTestCallFormFactory
             $form->addProtection();
         }
 
-        $url = $identifier->getApiPath();
+        $url = $identifier->getUrl();
         $form->addText('api_url', $this->translator->translate('api.admin.api_test_call_form.api_url.title'))
             ->setDefaultValue($url)
             ->setDisabled(true);
@@ -118,7 +104,7 @@ class ApiTestCallFormFactory
         if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
             $scheme = $_SERVER['HTTP_X_FORWARDED_PROTO'];
         }
-        $url = $scheme . '://' . $uri->host . '/api' . $identifier->getApiPath();
+        $url = $scheme . '://' . $uri->host . '/api' . $identifier->getUrl();
 
         $token = false;
         if (isset($values['token'])) {

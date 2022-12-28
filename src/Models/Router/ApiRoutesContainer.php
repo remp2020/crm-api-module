@@ -28,14 +28,14 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
     public function attachRouter(ApiRouteInterface $router): void
     {
         // TODO: remove attaching to routers
-        $this->routers[$router->getApiIdentifier()->getApiPath()] = $router;
+        $this->routers[$router->getApiIdentifier()->getUrl()] = $router;
 
         // hacking around issue with handlers not knowing which authorization is used in tomaj/nette-api
         $handler = $this->getHandler($router->getApiIdentifier());
         $authorization = $this->getAuthorization($router->getApiIdentifier());
         if ($handler === null || $authorization === null) {
             throw new \Exception('Incorrectly configured API endpoint: [' .
-                $router->getApiIdentifier()->getApiPath() .
+                $router->getApiIdentifier()->getUrl() .
                 ']. Missing handler or authorization.');
         }
 

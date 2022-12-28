@@ -46,3 +46,4 @@ services:
 	- Crm\ApiModule\Api\TokenCheckHandler
 	- Crm\ApiModule\Seeders\ConfigsSeeder
 	- Crm\ApiModule\Hermes\ApiLogHandler
+	apiRunner: Crm\ApiModule\Api\Runner

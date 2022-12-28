@@ -6,13 +6,11 @@ use Crm\ApiModule\Api\ApiHandler;
 use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApiModule\Api\ApiHeadersConfig;
 use Crm\ApiModule\Api\ApiLoggerConfig;
-use Crm\ApiModule\Api\ApiParamsValidatorInterface;
-use Crm\ApiModule\Api\IdempotentHandlerInterface;
+use Crm\ApiModule\Api\Runner;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\TokenParser;
 use Crm\ApiModule\Repository\ApiTokenStatsRepository;
-use Crm\ApiModule\Repository\IdempotentKeysRepository;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
 use Crm\ApplicationModule\Config\ApplicationConfig;
@@ -26,7 +24,6 @@ use Nette\Http\Response as HttpResponse;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use Tomaj\Hermes\Emitter;
-use Tomaj\NetteApi\Params\ParamsProcessor;
 use Tomaj\NetteApi\Response\JsonApiResponse;
 use Tracy\Debugger;
 
@@ -36,10 +33,10 @@ class ApiPresenter implements IPresenter
         private ApplicationConfig $applicationConfig,
         private ApiRoutesContainer $apiRoutesContainer,
         private ApiTokenStatsRepository $apiTokenStatsRepository,
-        private IdempotentKeysRepository $idempotentKeysRepository,
         private ApiHeadersConfig $apiHeadersConfig,
         private ApiLoggerConfig $apiLoggerConfig,
         private Emitter $hermesEmitter,
+        private Runner $apiRunner,
         private HttpRequest $httpRequest,
         private HttpResponse $httpResponse
     ) {
@@ -125,59 +122,8 @@ class ApiPresenter implements IPresenter
             return $response;
         }
 
-        $paramsProcessor = new ParamsProcessor($handler->params());
-        $params = $paramsProcessor->getValues();
-
-        if ($handler instanceof ApiParamsValidatorInterface) {
-            $response = $handler->validateParams($params);
-            if ($response) {
-                return $response;
-            }
-        } else {
-            if ($paramsProcessor->isError()) {
-                $response = new JsonApiResponse(HttpResponse::S400_BAD_REQUEST, [
-                    'status' => 'error',
-                    'code' => 'invalid_input',
-                    'errors' => $paramsProcessor->getErrors()
-                ]);
-                $this->httpResponse->setCode(HttpResponse::S400_BAD_REQUEST);
-                return $response;
-            }
-        }
-
-        $path = $this->httpRequest->getUrl()->path;
-        $headerIdempotencyKey = $this->httpRequest->getHeader('Idempotency-Key');
-        $idempotencyKey = false;
-        if ($headerIdempotencyKey && !$request->isMethod('GET')) {
-            $idempotencyKey = $this->idempotentKeysRepository->findKey($path, $headerIdempotencyKey);
-        }
-        if ($headerIdempotencyKey) {
-            $handler->setIdempotentKey($headerIdempotencyKey);
-        }
-
         $handler->setAuthorization($authorization);
-
-        try {
-            if ($idempotencyKey && $handler instanceof IdempotentHandlerInterface) {
-                $response = $handler->idempotentHandle($params);
-            } else {
-                $response = $handler->handle($params);
-                if ($headerIdempotencyKey && $response->getCode() == HttpResponse::S200_OK && $handler instanceof IdempotentHandlerInterface) {
-                    $this->idempotentKeysRepository->add($path, $headerIdempotencyKey);
-                }
-            }
-        } catch (\Throwable $exception) {
-            $response = new JsonApiResponse(HttpResponse::S500_INTERNAL_SERVER_ERROR, [
-                'status' => 'error',
-                'code' => 'internal_server_error',
-            ]);
-
-            Debugger::log($exception, Debugger::EXCEPTION);
-            $this->log($apiIdentifier, $authorization, $response, $handler); // log api call
-
-            $this->httpResponse->setCode(HttpResponse::S500_INTERNAL_SERVER_ERROR);
-            return $response;
-        }
+        $response = $this->apiRunner->run($handler);
 
         $this->log($apiIdentifier, $authorization, $response, $handler);
 

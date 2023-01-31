@@ -37,7 +37,7 @@ class ApiCallsAdminPresenter extends AdminPresenter
     {
         $identifier = new ApiIdentifier($version, $package, $apiAction);
         $router = $this->apiRoutesContainer->getRouter($identifier);
-        $handler = $this->apiRoutesContainer->getHandler($identifier);
+        $handler = $this->apiRoutesContainer->resolveRouterHandler($router);
 
         $this->template->handler = $handler;
         $this->template->router = $router;

@@ -39,8 +39,8 @@ class ApiTestCallFormFactory
     public function create(ApiIdentifier $identifier)
     {
         $this->router = $this->apiRoutesContainer->getRouter($identifier);
-        $this->handler = $this->apiRoutesContainer->getHandler($identifier);
-        $this->authorization = $this->apiRoutesContainer->getAuthorization($identifier);
+        $this->handler = $this->apiRoutesContainer->resolveRouterHandler($this->router);
+        $this->authorization = $this->apiRoutesContainer->resolveRouterAuthorization($this->router);
 
         $form = new Form;
 

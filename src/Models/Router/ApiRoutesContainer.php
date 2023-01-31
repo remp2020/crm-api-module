@@ -12,27 +12,23 @@ use Tomaj\NetteApi\ApiDecider;
 class ApiRoutesContainer implements ApiRoutersContainerInterface
 {
     /** @var ApiRouteInterface[] */
-    private $routers = [];
+    private array $routers = [];
 
-    /** @var Container  */
-    private $container;
-
-    private $apiDecider;
-
-    public function __construct(Container $container, ApiDecider $apiDecider)
-    {
-        $this->container = $container;
-        $this->apiDecider = $apiDecider;
+    public function __construct(
+        private Container $container,
+        private ApiDecider $apiDecider
+    ) {
     }
 
     public function attachRouter(ApiRouteInterface $router): void
     {
         // TODO: remove attaching to routers
-        $this->routers[$router->getApiIdentifier()->getUrl()] = $router;
+        $apiIdentifier = $router->getApiIdentifier();
+        $this->routers[$apiIdentifier->getUrl()] = $router;
 
         // hacking around issue with handlers not knowing which authorization is used in tomaj/nette-api
-        $handler = $this->getHandler($router->getApiIdentifier());
-        $authorization = $this->getAuthorization($router->getApiIdentifier());
+        $handler = $this->resolveRouterHandler($router);
+        $authorization = $this->resolveRouterAuthorization($router);
         if ($handler === null || $authorization === null) {
             throw new \Exception('Incorrectly configured API endpoint: [' .
                 $router->getApiIdentifier()->getUrl() .
@@ -41,7 +37,7 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
 
         $handler->setAuthorization($authorization);
         $this->apiDecider->addApi(
-            $router->getApiIdentifier(),
+            $apiIdentifier,
             $handler,
             $authorization
         );
@@ -76,6 +72,16 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
             }
         }
         return null;
+    }
+
+    public function resolveRouterHandler(ApiRouteInterface $router): ?ApiHandlerInterface
+    {
+        return $this->container->getByType($router->getHandlerClassName());
+    }
+
+    public function resolveRouterAuthorization(ApiRouteInterface $router): ?ApiAuthorizationInterface
+    {
+        return $this->container->getByType($router->getAuthorizationClassName());
     }
 
     /**

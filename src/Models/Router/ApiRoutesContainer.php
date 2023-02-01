@@ -28,20 +28,21 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
     public function attachRouter(ApiRouteInterface $router): void
     {
         // TODO: remove attaching to routers
-        $this->routers[$router->getApiIdentifier()->getApiPath()] = $router;
+        $apiIdentifier = $router->getApiIdentifier();
+        $this->routers[$apiIdentifier->getUrl()] = $router;
 
         // hacking around issue with handlers not knowing which authorization is used in tomaj/nette-api
-        $handler = $this->getHandler($router->getApiIdentifier());
-        $authorization = $this->getAuthorization($router->getApiIdentifier());
+        $handler = $this->resolveRouterHandler($router);
+        $authorization = $this->resolveRouterAuthorization($router);
         if ($handler === null || $authorization === null) {
             throw new \Exception('Incorrectly configured API endpoint: [' .
-                $router->getApiIdentifier()->getApiPath() .
+                $router->getApiIdentifier()->getUrl() .
                 ']. Missing handler or authorization.');
         }
 
         $handler->setAuthorization($authorization);
         $this->apiDecider->addApi(
-            $router->getApiIdentifier(),
+            $apiIdentifier,
             $handler,
             $authorization
         );
@@ -76,6 +77,16 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
             }
         }
         return null;
+    }
+
+    public function resolveRouterHandler(ApiRouteInterface $router): ?ApiHandlerInterface
+    {
+        return $this->container->getByType($router->getHandlerClassName());
+    }
+
+    public function resolveRouterAuthorization(ApiRouteInterface $router): ?ApiAuthorizationInterface
+    {
+        return $this->container->getByType($router->getAuthorizationClassName());
     }
 
     /**

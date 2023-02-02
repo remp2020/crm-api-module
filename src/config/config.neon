@@ -6,7 +6,7 @@ services:
 	- Tomaj\NetteApi\Link\ApiLink
 	- Tomaj\NetteApi\Misc\IpDetector
 	apiDecider:
-		factory: Tomaj\NetteApi\ApiDecider
+		factory: Crm\ApiModule\Api\LazyApiDecider
 #		setup:
 #			- addApi(\Tomaj\NetteApi\EndpointIdentifier('GET', 1, 'events', 'list'), \Crm\ApplicationModule\Api\EventsListApiHandler(), \Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository))
 

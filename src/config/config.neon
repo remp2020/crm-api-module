@@ -9,6 +9,8 @@ services:
 		factory: Tomaj\NetteApi\ApiDecider
 #		setup:
 #			- addApi(\Tomaj\NetteApi\EndpointIdentifier('GET', 1, 'events', 'list'), \Crm\ApplicationModule\Api\EventsListApiHandler(), \Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository))
+	lazyApiDecider:
+		factory: Crm\ApiModule\Api\LazyApiDecider
 
 	bearerTokenAuthorization: Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository)
 	apiTokensRepository: Crm\ApiModule\Repository\ApiTokensRepository
@@ -30,20 +32,21 @@ services:
 	apiLoggerConfig:
 		factory: Crm\ApiModule\Api\ApiLoggerConfig
 
-	- Crm\ApiModule\Router\ApiRoutesContainer
+	apiRunner: Crm\ApiModule\Api\Runner
+	- Crm\ApiModule\Api\TokenCheckHandler
 	- Crm\ApiModule\Authorization\BearerTokenAuthorization
 	- Crm\ApiModule\Authorization\NoAuthorization
 	- Crm\ApiModule\Authorization\CsrfAuthorization
 	- Crm\ApiModule\Authorization\AdminLoggedAuthorization
 	- Crm\ApiModule\Authorization\Permissions
-	- Crm\ApiModule\Token\InternalToken
+	- Crm\ApiModule\Commands\GenerateAccessCommand
+	- Crm\ApiModule\Components\ApiListingControl
 	- Crm\ApiModule\Forms\ApiTokenFormFactory
 	- Crm\ApiModule\Forms\ApiAccessResourceFormFactory
 	- Crm\ApiModule\Forms\ApiAccessTokenFormFactory
 	- Crm\ApiModule\Forms\ApiTestCallFormFactory
 	- Crm\ApiModule\Forms\ApiTokenMetaFormFactory
-	- Crm\ApiModule\Commands\GenerateAccessCommand
-	- Crm\ApiModule\Api\TokenCheckHandler
-	- Crm\ApiModule\Seeders\ConfigsSeeder
 	- Crm\ApiModule\Hermes\ApiLogHandler
-	apiRunner: Crm\ApiModule\Api\Runner
+	- Crm\ApiModule\Router\ApiRoutesContainer
+	- Crm\ApiModule\Seeders\ConfigsSeeder
+	- Crm\ApiModule\Token\InternalToken

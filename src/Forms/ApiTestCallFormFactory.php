@@ -3,7 +3,6 @@
 namespace Crm\ApiModule\Forms;
 
 use Crm\ApiModule\Api\ApiHandlerInterface;
-use Crm\ApiModule\Api\ApiRouteInterface;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Authorization\CsrfAuthorization;
@@ -14,12 +13,13 @@ use Nette\Application\UI\Form;
 use Nette\Http\Request;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
+use Tomaj\NetteApi\EndpointInterface;
 use Tomaj\NetteApi\Params\InputParam;
 use Tracy\Debugger;
 
 class ApiTestCallFormFactory
 {
-    private ApiRouteInterface $router;
+    private EndpointInterface $identifier;
     private ApiHandlerInterface $handler;
     private ApiAuthorizationInterface $authorization;
 
@@ -38,9 +38,9 @@ class ApiTestCallFormFactory
      */
     public function create(ApiIdentifier $identifier)
     {
-        $this->router = $this->apiRoutesContainer->getRouter($identifier);
-        $this->handler = $this->apiRoutesContainer->resolveRouterHandler($this->router);
-        $this->authorization = $this->apiRoutesContainer->resolveRouterAuthorization($this->router);
+        $this->identifier = $identifier;
+        $this->handler = $this->apiRoutesContainer->getHandler($identifier);
+        $this->authorization = $this->apiRoutesContainer->getAuthorization($identifier);
 
         $form = new Form;
 
@@ -98,13 +98,12 @@ class ApiTestCallFormFactory
 
     public function formSucceeded($form, $values)
     {
-        $identifier = $this->router->getApiIdentifier();
         $uri = $this->request->getUrl();
         $scheme = $uri->scheme;
         if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
             $scheme = $_SERVER['HTTP_X_FORWARDED_PROTO'];
         }
-        $url = $scheme . '://' . $uri->host . '/api' . $identifier->getUrl();
+        $url = $scheme . '://' . $uri->host . '/api' . $this->identifier->getUrl();
 
         $token = false;
         if (isset($values['token'])) {

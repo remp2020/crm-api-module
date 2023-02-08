@@ -88,6 +88,7 @@ class ApiPresenter implements IPresenter
             return new JsonApiResponse(HttpResponse::S200_OK, ['options' => 'ok']);
         }
 
+        $method = $request->getMethod();
         $version = $request->getParameter('version');
         $category = $request->getParameter('package');
         $action = $request->getParameter('apiAction');
@@ -100,7 +101,7 @@ class ApiPresenter implements IPresenter
             return $response;
         }
 
-        $apiIdentifier = new ApiIdentifier($version, $category, $action);
+        $apiIdentifier = new ApiIdentifier($version, $category, $action, $method);
         $handler = $this->apiRoutesContainer->getHandler($apiIdentifier);
         if (!$handler) {
             $response = new JsonApiResponse(HttpResponse::S404_NOT_FOUND, [

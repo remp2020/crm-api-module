@@ -3,23 +3,19 @@
 namespace Crm\ApiModule\Presenters;
 
 use Crm\AdminModule\Presenters\AdminPresenter;
-use Crm\ApiModule\Forms\ApiTestCallFormFactory;
+use Crm\ApiModule\Api\LazyApiDecider;
+use Crm\ApiModule\Components\ApiListingControl;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
-use Tomaj\NetteApi\ApiDecider;
 use Tomaj\NetteApi\Component\ApiConsoleControl;
-use Tomaj\NetteApi\Component\ApiListingControl;
 
 class ApiCallsAdminPresenter extends AdminPresenter
 {
     /** @var ApiRoutesContainer @inject */
     public $apiRoutesContainer;
 
-    /** @var ApiTestCallFormFactory @inject */
-    public $apiTestCallFormFactory;
-
-    /** @var ApiDecider @inject */
-    public $apiDecider;
+    /** @var LazyApiDecider @inject */
+    public $lazyApiDecider;
 
     /**
      * @admin-access-level read
@@ -37,7 +33,7 @@ class ApiCallsAdminPresenter extends AdminPresenter
     {
         $identifier = new ApiIdentifier($version, $package, $apiAction);
         $router = $this->apiRoutesContainer->getRouter($identifier);
-        $handler = $this->apiRoutesContainer->resolveRouterHandler($router);
+        $handler = $this->apiRoutesContainer->getHandler($identifier);
 
         $this->template->handler = $handler;
         $this->template->router = $router;
@@ -46,7 +42,7 @@ class ApiCallsAdminPresenter extends AdminPresenter
 
     public function createComponentApiListingControl()
     {
-        $control = new ApiListingControl($this->apiDecider);
+        $control = new ApiListingControl($this->lazyApiDecider);
         $control->onClick[] = function ($method, $version, $package, $apiAction) {
             $this->redirect('detail', $method, $version, $package, $apiAction);
         };
@@ -55,7 +51,7 @@ class ApiCallsAdminPresenter extends AdminPresenter
 
     protected function createComponentApiConsole()
     {
-        $api = $this->apiDecider->getApi(
+        $api = $this->lazyApiDecider->getApi(
             $this->params['method'],
             $this->params['version'],
             $this->params['package'],

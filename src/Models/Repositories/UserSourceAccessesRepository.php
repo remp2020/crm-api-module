@@ -13,12 +13,7 @@ class UserSourceAccessesRepository extends Repository
         return $this->getTable()->order('created_at DESC')->limit($limit);
     }
 
-    /**
-     * @param integer $userId
-     * @param string $source
-     * @param \DateTime $lastAccessedDate
-     */
-    final public function upsert($userId, $source, $lastAccessedDate)
+    final public function upsert(int $userId, string $source, \DateTime $lastAccessedDate)
     {
         $row = $this->getTable()
             ->where('user_id', $userId)

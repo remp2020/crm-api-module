@@ -36,7 +36,6 @@ services:
 	- Crm\ApiModule\Api\TokenCheckHandler
 	- Crm\ApiModule\Authorization\BearerTokenAuthorization
 	- Crm\ApiModule\Authorization\NoAuthorization
-	- Crm\ApiModule\Authorization\CsrfAuthorization
 	- Crm\ApiModule\Authorization\AdminLoggedAuthorization
 	- Crm\ApiModule\Authorization\Permissions
 	- Crm\ApiModule\Commands\GenerateAccessCommand

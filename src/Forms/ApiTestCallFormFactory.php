@@ -5,7 +5,6 @@ namespace Crm\ApiModule\Forms;
 use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
-use Crm\ApiModule\Authorization\CsrfAuthorization;
 use Crm\ApiModule\Authorization\NoAuthorization;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
@@ -61,9 +60,6 @@ class ApiTestCallFormFactory
         if ($this->authorization instanceof BearerTokenAuthorization) {
             $form->addText('token', $this->translator->translate('api.admin.api_test_call_form.token.title'))
                 ->setHtmlAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token.placeholder'));
-        } elseif ($this->authorization instanceof CsrfAuthorization) {
-            $form->addText('token_csfr', $this->translator->translate('api.admin.api_test_call_form.token_csfr.title'))
-                ->setHtmlAttribute('placeholder', $this->translator->translate('api.admin.api_test_call_form.token_csfr.placeholder'));
         } elseif ($this->authorization instanceof NoAuthorization) {
             $form->addText('authorization', $this->translator->translate('api.admin.api_test_call_form.authorization.title'))
                 ->setDisabled(true);

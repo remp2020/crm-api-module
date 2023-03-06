@@ -36,7 +36,7 @@ class ApiTokensPopulator extends AbstractPopulator
                 ]);
             }
 
-            $logsCount = rand(0, 100);
+            $logsCount = random_int(0, 100);
             for ($i = 0; $i < $logsCount; $i++) {
                 $apiLogs->insert([
                     'token' => $data['token'],
@@ -57,12 +57,12 @@ class ApiTokensPopulator extends AbstractPopulator
     private function getIpRestriction()
     {
         $restrictions = ['*', '10, 27.0.0.1', $this->faker->ipv4, "{$this->faker->ipv4},{$this->faker->ipv4}", "{$this->faker->ipv4},{$this->faker->ipv4},{$this->faker->ipv4}"];
-        return $restrictions[ rand(0, count($restrictions) - 1) ];
+        return $restrictions[ random_int(0, count($restrictions) - 1) ];
     }
 
     private function getResponseCode()
     {
         $codes = [200, 403, 500];
-        return $codes[ rand(0, count($codes) - 1) ];
+        return $codes[ random_int(0, count($codes) - 1) ];
     }
 }

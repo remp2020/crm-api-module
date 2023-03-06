@@ -6,27 +6,23 @@ use Tomaj\NetteApi\Response\JsonApiResponse;
 
 class JsonValidationResult
 {
-    private $parsedObject;
-
-    private $errorResponse;
-
     public static function error(JsonApiResponse $errorResponse)
     {
         return new JsonValidationResult(null, $errorResponse);
     }
 
-    public static function json($parsedObject)
+    public static function json(\stdClass $parsedObject)
     {
         return new JsonValidationResult($parsedObject, null);
     }
 
-    private function __construct($parsedObject, ?JsonApiResponse $errorResponse)
-    {
-        $this->parsedObject = $parsedObject;
-        $this->errorResponse = $errorResponse;
+    private function __construct(
+        private ?\stdClass $parsedObject,
+        private ?JsonApiResponse $errorResponse
+    ) {
     }
 
-    public function getParsedObject()
+    public function getParsedObject(): ?\stdClass
     {
         return $this->parsedObject;
     }

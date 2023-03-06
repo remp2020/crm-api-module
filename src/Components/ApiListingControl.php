@@ -6,7 +6,7 @@ namespace Crm\ApiModule\Components;
 
 use Crm\ApiModule\Api\LazyApiDecider;
 use Nette\Application\UI\Control;
-use Nette\Bridges\ApplicationLatte\Template;
+use Nette\Bridges\ApplicationLatte\DefaultTemplate;
 
 /**
  * @method void onClick(string $method, int $version, string $package, ?string $apiAction)
@@ -23,7 +23,7 @@ class ApiListingControl extends Control
     {
         $apis = $this->apiDecider->getApis();
 
-        /** @var Template $template */
+        /** @var DefaultTemplate $template */
         $template = $this->getTemplate();
         $template->add('apis', $this->groupApis($apis));
         $template->setFile($this->getTemplateFilePath());

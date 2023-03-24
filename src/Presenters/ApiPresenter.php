@@ -189,7 +189,17 @@ class ApiPresenter implements IPresenter
             $input['RAW'] = $payload;
         }
 
-        $jsonInput = Json::encode($input);
+        try {
+            $jsonInput = Json::encode($input);
+        } catch (JsonException $e) {
+            if ($e->getCode() === JSON_ERROR_UTF8) {
+                // Occasionally some payloads include "malformed UTF-8" characters which can't be JSON-encoded; this helps.
+                // https://stackoverflow.com/a/46305914
+                $jsonInput = Json::encode(mb_convert_encoding($input, 'UTF-8', 'UTF-8'));
+            } else {
+                throw $e;
+            }
+        }
 
         $elapsed = Debugger::timer() * 1000;
         $path = $apiIdentifier->getApiPath();

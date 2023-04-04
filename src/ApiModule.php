@@ -50,6 +50,7 @@ class ApiModule extends CrmModule
     public function registerCommands(CommandsContainerInterface $commandsContainer)
     {
         $commandsContainer->registerCommand($this->getInstance(\Crm\ApiModule\Commands\GenerateAccessCommand::class));
+        $commandsContainer->registerCommand($this->getInstance(\Crm\ApiModule\Commands\MigrateApiLogsCommand::class));
     }
 
     public function registerApiCalls(ApiRoutersContainerInterface $apiRoutersContainer)

@@ -5,10 +5,11 @@ namespace Crm\ApiModule\Repository;
 use Crm\ApplicationModule\Repository;
 use Crm\ApplicationModule\Repository\RetentionData;
 use DateTime;
+use Remp\MailerModule\Repositories\NewTableDataMigrationTrait;
 
 class ApiLogsRepository extends Repository
 {
-    use RetentionData;
+    use RetentionData, NewTableDataMigrationTrait;
 
     protected $tableName = 'api_logs';
 

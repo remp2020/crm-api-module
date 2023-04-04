@@ -16,7 +16,13 @@ services:
 	apiTokensRepository: Crm\ApiModule\Repository\ApiTokensRepository
 	apiAccessTokensRepository: Crm\ApiModule\Repository\ApiAccessTokensRepository
 	apiTokenStatsRepository: Crm\ApiModule\Repository\ApiTokenStatsRepository
-	apiLogsRepository: Crm\ApiModule\Repository\ApiLogsRepository
+	apiLogsRepository:
+		factory: Crm\ApiModule\Repository\ApiLogsRepository
+		setup:
+			- setNewTableName('api_logs_v2')
+			- setNewTableDataMigrationIsRunningFlag(Crm\ApiModule\Commands\MigrateApiLogsCommand::API_LOGS_MIGRATION_RUNNING)
+			- setRedisClientFactory(@redisClientFactory)
+
 	apiAccessRepository: Crm\ApiModule\Repository\ApiAccessRepository
 	idempotentKeysRepository: Crm\ApiModule\Repository\IdempotentKeysRepository
 	userSourceAccessesRepository: Crm\ApiModule\Repository\UserSourceAccessesRepository
@@ -39,6 +45,7 @@ services:
 	- Crm\ApiModule\Authorization\AdminLoggedAuthorization
 	- Crm\ApiModule\Authorization\Permissions
 	- Crm\ApiModule\Commands\GenerateAccessCommand
+	- Crm\ApiModule\Commands\MigrateApiLogsCommand
 	- Crm\ApiModule\Components\ApiListingControl
 	- Crm\ApiModule\Forms\ApiTokenFormFactory
 	- Crm\ApiModule\Forms\ApiAccessResourceFormFactory

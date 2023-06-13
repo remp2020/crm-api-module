@@ -83,7 +83,7 @@ SQL;
         $this->execute("ALTER TABLE api_logs_new CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
 
         $this->table('api_logs_new')
-            ->changeColumn('input', 'mediumtext', [
+            ->changeColumn('input', 'text', [
                 'limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_MEDIUM,
                 'null' => false,
                 'collation' => 'utf8_general_ci',

@@ -91,6 +91,8 @@ Steps:
 1. Run phinx migrations command `phinx:migrate`, which creates new table `api_logs_v2` (in case there is no data in table, migration just changes type of primary key and next steps are not needed).
 2. Run command `api:convert_api_logs_to_bigint`, which copies data from old table to new (e.g. `api_logs` to `api_logs_v2`). Command will after successful migration atomically rename tables (e.g. `api_logs` -> `api_logs_old` and `api_logs_v2` -> `api_logs`), so when the migration ends only new tables are used.
 
+It's recommended to run `application:bigint_migration_cleanup api_logs` command, at least 2 weeks (to preserve backup data, if some issue emerges) after successful migration to drop left-over tables.
+
 ## API documentation
 
 All examples use `http://crm.press` as a base domain. Please change the host to the one you use

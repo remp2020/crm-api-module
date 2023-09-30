@@ -13,7 +13,7 @@ class NoAuthorization implements ApiAuthorizationInterface
 
     public function getErrorMessage(): ?string
     {
-        return false;
+        return null;
     }
 
     public function getAuthorizedData()

@@ -40,7 +40,9 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
     {
         $handlers = [];
         foreach ($this->apiDecider->getApis() as $api) {
-            $handlers[] = $api->getHandler();
+            /** @var ApiHandlerInterface $handler */
+            $handler = $api->getHandler();
+            $handlers[] = $handler;
         }
         return $handlers;
     }

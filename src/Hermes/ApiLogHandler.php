@@ -14,17 +14,11 @@ class ApiLogHandler implements HandlerInterface
 {
     use RetryTrait;
 
-    private $apiLogsRepository;
-
-    private $apiTokenStatsRepository;
-
-    private $applicationConfig;
-
-    public function __construct(ApiLogsRepository $apiLogsRepository, ApiTokenStatsRepository $apiTokenStatsRepository, ApplicationConfig $applicationConfig)
-    {
-        $this->apiLogsRepository = $apiLogsRepository;
-        $this->apiTokenStatsRepository = $apiTokenStatsRepository;
-        $this->applicationConfig = $applicationConfig;
+    public function __construct(
+        protected ApiLogsRepository $apiLogsRepository,
+        protected ApiTokenStatsRepository $apiTokenStatsRepository,
+        protected ApplicationConfig $applicationConfig
+    ) {
     }
 
     public function handle(MessageInterface $message): bool

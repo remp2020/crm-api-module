@@ -6,6 +6,7 @@ use Crm\ApiModule\Api\ApiHandler;
 use Crm\ApiModule\Api\ApiHandlerInterface;
 use Crm\ApiModule\Api\ApiHeadersConfig;
 use Crm\ApiModule\Api\ApiLoggerConfig;
+use Crm\ApiModule\Api\JsonResponse;
 use Crm\ApiModule\Api\Runner;
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Authorization\BearerTokenAuthorization;
@@ -207,11 +208,18 @@ class ApiPresenter implements IPresenter
         $ipAddress = \Crm\ApplicationModule\Request::getIp();
         $userAgent = \Crm\ApplicationModule\Request::getUserAgent();
 
+        if ($response instanceof JsonApiResponse || $response instanceof JsonResponse) {
+            $responseBody = Json::encode($response->getPayload());
+        } else {
+            $responseBody = null;
+        }
+
         $this->hermesEmitter->emit(new HermesMessage('api-log', [
             'token' => $token,
             'path' => $path,
             'jsonInput' => $jsonInput,
             'responseCode' => $responseCode,
+            'responseBody' => $responseBody,
             'elapsed' => $elapsed,
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,

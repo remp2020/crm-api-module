@@ -52,7 +52,7 @@ services:
 	- Crm\ApiModule\Forms\ApiAccessTokenFormFactory
 	- Crm\ApiModule\Forms\ApiTestCallFormFactory
 	- Crm\ApiModule\Forms\ApiTokenMetaFormFactory
-	- Crm\ApiModule\Hermes\ApiLogHandler
+	apiLogHandler: Crm\ApiModule\Hermes\ApiLogHandler
 	- Crm\ApiModule\Router\ApiRoutesContainer
 	- Crm\ApiModule\Seeders\ConfigsSeeder
 	- Crm\ApiModule\Token\InternalToken

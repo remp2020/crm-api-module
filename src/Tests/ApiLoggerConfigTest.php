@@ -6,6 +6,7 @@ use Crm\ApiModule\Api\ApiLoggerConfig;
 use Crm\ApiModule\Models\LoggerEndpointIdentifier;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApplicationModule\Tests\CrmTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ApiLoggerConfigTest extends CrmTestCase
 {
@@ -27,9 +28,7 @@ class ApiLoggerConfigTest extends CrmTestCase
         $this->apiLoggerConfig = $this->inject(ApiLoggerConfig::class);
     }
 
-    /**
-     * @dataProvider loggerConfigDataProvider
-     */
+    #[DataProvider('loggerConfigDataProvider')]
     public function testLoggerConfig(?array $whitelist, ?array $blacklist, array $loggedPaths)
     {
         if ($whitelist) {
@@ -63,7 +62,7 @@ class ApiLoggerConfigTest extends CrmTestCase
         $this->assertCount(0, $loggedPaths);
     }
 
-    public function loggerConfigDataProvider()
+    public static function loggerConfigDataProvider()
     {
         return [
             'nothingConfigured' => [

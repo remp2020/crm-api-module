@@ -7,11 +7,12 @@ use Crm\ApiModule\Repository\ApiLogsRepository;
 use Crm\ApplicationModule\Components\Graphs\GoogleLineGraphGroupControlFactoryInterface;
 use Crm\ApplicationModule\Graphs\Criteria;
 use Crm\ApplicationModule\Graphs\GraphDataItem;
+use Nette\DI\Attributes\Inject;
 
 class ApiLogsAdminPresenter extends AdminPresenter
 {
-    /** @var ApiLogsRepository @inject */
-    public $apiLogsRepository;
+    #[Inject]
+    public ApiLogsRepository $apiLogsRepository;
 
     /**
      * @admin-access-level read

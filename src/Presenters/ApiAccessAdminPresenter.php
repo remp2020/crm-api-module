@@ -8,23 +8,24 @@ use Crm\ApiModule\Forms\ApiAccessTokenFormFactory;
 use Crm\ApiModule\Repository\ApiAccessRepository;
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Crm\ApiModule\Router\ApiRoutesContainer;
+use Nette\DI\Attributes\Inject;
 
 class ApiAccessAdminPresenter extends AdminPresenter
 {
-    /** @var ApiAccessRepository @inject */
-    public $apiAccessRepository;
+    #[Inject]
+    public ApiAccessRepository $apiAccessRepository;
 
-    /** @var ApiTokensRepository @inject */
-    public $apiTokensRepository;
+    #[Inject]
+    public ApiTokensRepository $apiTokensRepository;
 
-    /** @var ApiRoutesContainer @inject */
-    public $apiRoutesContainer;
+    #[Inject]
+    public ApiRoutesContainer $apiRoutesContainer;
 
-    /** @var ApiAccessResourceFormFactory @inject */
-    public $apiAccessResourceFormFactory;
+    #[Inject]
+    public ApiAccessResourceFormFactory $apiAccessResourceFormFactory;
 
-    /** @var ApiAccessTokenFormFactory @inject */
-    public $apiAccessTokenFormFactory;
+    #[Inject]
+    public ApiAccessTokenFormFactory $apiAccessTokenFormFactory;
 
     /**
      * @admin-access-level read

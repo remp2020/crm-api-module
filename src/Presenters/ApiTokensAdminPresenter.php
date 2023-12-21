@@ -9,20 +9,21 @@ use Crm\ApiModule\Repository\ApiTokenMetaRepository;
 use Crm\ApiModule\Repository\ApiTokensRepository;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
+use Nette\DI\Attributes\Inject;
 
 class ApiTokensAdminPresenter extends AdminPresenter
 {
-    /** @var ApiTokensRepository @inject */
-    public $apiTokensRepository;
+    #[Inject]
+    public ApiTokensRepository $apiTokensRepository;
 
-    /** @var  ApiTokenFormFactory @inject */
-    public $apiTokenFormfactory;
+    #[Inject]
+    public ApiTokenFormFactory $apiTokenFormfactory;
 
-    /** @var ApiTokenMetaRepository @inject */
-    public $apiTokenMetaRepository;
+    #[Inject]
+    public ApiTokenMetaRepository $apiTokenMetaRepository;
 
-    /** @var ApiTokenMetaFormFactory @inject */
-    public $apiTokenMetaFormFactory;
+    #[Inject]
+    public ApiTokenMetaFormFactory $apiTokenMetaFormFactory;
 
     private $apiToken;
 

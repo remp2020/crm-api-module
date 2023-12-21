@@ -7,15 +7,16 @@ use Crm\ApiModule\Api\LazyApiDecider;
 use Crm\ApiModule\Components\ApiListingControl;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoutesContainer;
+use Nette\DI\Attributes\Inject;
 use Tomaj\NetteApi\Component\ApiConsoleControl;
 
 class ApiCallsAdminPresenter extends AdminPresenter
 {
-    /** @var ApiRoutesContainer @inject */
-    public $apiRoutesContainer;
+    #[Inject]
+    public ApiRoutesContainer $apiRoutesContainer;
 
-    /** @var LazyApiDecider @inject */
-    public $lazyApiDecider;
+    #[Inject]
+    public LazyApiDecider $lazyApiDecider;
 
     /**
      * @admin-access-level read

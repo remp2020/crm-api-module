@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Authorization;
+namespace Crm\ApiModule\Models\Authorization;
 
 use Crm\UsersModule\Repository\AccessTokensRepository;
 use Crm\UsersModule\Repository\UsersRepository;

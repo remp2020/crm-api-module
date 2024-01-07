@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Token;
+namespace Crm\ApiModule\Models\Token;
 
 use Crm\ApiModule\Repository\ApiAccessRepository;
 use Crm\ApiModule\Repository\ApiAccessTokensRepository;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Api;
+namespace Crm\ApiModule\Models\Response;
 
 use Crm\ApiModule\Response\ApiResponseInterface;
 use Nette\Http\IRequest;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Api;
+namespace Crm\ApiModule\Models\Api;
 
 use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
 use Tomaj\NetteApi\Handlers\BaseHandler;

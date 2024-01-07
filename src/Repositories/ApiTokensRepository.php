@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Repository;
+namespace Crm\ApiModule\Repositories;
 
 use Crm\ApplicationModule\Repository;
 use Crm\UsersModule\Auth\Access\TokenGenerator;

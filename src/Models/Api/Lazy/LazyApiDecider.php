@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Api;
+namespace Crm\ApiModule\Models\Api\Lazy;
 
 use Crm\ApiModule\Router\ApiIdentifier;
 use Nette\DI\Container;

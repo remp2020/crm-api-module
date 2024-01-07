@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Router;
+namespace Crm\ApiModule\Models\Router;
 
 use Crm\ApiModule\Api\ApiRouteInterface;
 

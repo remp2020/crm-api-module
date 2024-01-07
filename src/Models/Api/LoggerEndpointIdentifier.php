@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Models;
+namespace Crm\ApiModule\Models\Api;
 
 class LoggerEndpointIdentifier
 {

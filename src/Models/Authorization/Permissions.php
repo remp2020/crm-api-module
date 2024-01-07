@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Authorization;
+namespace Crm\ApiModule\Models\Authorization;
 
 use Crm\ApiModule\Repository\ApiAccessRepository;
 use Nette\Security\Authorizator;

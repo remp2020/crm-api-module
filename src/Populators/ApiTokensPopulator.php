@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Populator;
+namespace Crm\ApiModule\Populators;
 
 use Crm\ApplicationModule\Populator\AbstractPopulator;
 use Crm\UsersModule\Auth\Access\TokenGenerator;

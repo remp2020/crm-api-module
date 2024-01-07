@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Authorization;
+namespace Crm\ApiModule\Models\Authorization;
 
 use Nette\Security\Authorizator;
 use Tomaj\NetteApi\Authorization\ApiAuthorizationInterface as TomajApiAuthorizationInterface;

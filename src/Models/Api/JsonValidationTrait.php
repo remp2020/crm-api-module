@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Api;
+namespace Crm\ApiModule\Models\Api;
 
 use JsonSchema\Validator;
 use Nette\Http\Response;

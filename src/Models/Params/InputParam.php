@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Params;
+namespace Crm\ApiModule\Models\Params;
 
 use Exception;
 

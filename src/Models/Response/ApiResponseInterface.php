@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Response;
+namespace Crm\ApiModule\Models\Response;
 
 use Tomaj\NetteApi\Response\ResponseInterface;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\ApiModule\Api;
+namespace Crm\ApiModule\Models\Api\Lazy;
 
 use Tomaj\NetteApi\EndpointInterface;
 use Tomaj\NetteApi\RateLimit\NoRateLimit;

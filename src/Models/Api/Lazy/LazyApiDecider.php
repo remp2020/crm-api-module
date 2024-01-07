@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Models\Api\Lazy;
 
-use Crm\ApiModule\Router\ApiIdentifier;
+use Crm\ApiModule\Models\Router\ApiIdentifier;
 use Nette\DI\Container;
 use Tomaj\NetteApi\Api;
 use Tomaj\NetteApi\ApiDecider;

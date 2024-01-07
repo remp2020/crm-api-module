@@ -3,10 +3,10 @@
 namespace Crm\ApiModule\Presenters;
 
 use Crm\AdminModule\Presenters\AdminPresenter;
-use Crm\ApiModule\Api\LazyApiDecider;
 use Crm\ApiModule\Components\ApiListingControl;
-use Crm\ApiModule\Router\ApiIdentifier;
-use Crm\ApiModule\Router\ApiRoutesContainer;
+use Crm\ApiModule\Models\Api\Lazy\LazyApiDecider;
+use Crm\ApiModule\Models\Router\ApiIdentifier;
+use Crm\ApiModule\Models\Router\ApiRoutesContainer;
 use Nette\DI\Attributes\Inject;
 use Tomaj\NetteApi\Component\ApiConsoleControl;
 

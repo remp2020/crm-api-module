@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Models\Api;
 
-use Crm\ApiModule\Router\ApiIdentifier;
+use Crm\ApiModule\Models\Router\ApiIdentifier;
 
 interface ApiRouteInterface
 {

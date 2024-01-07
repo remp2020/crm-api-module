@@ -2,18 +2,18 @@
 
 namespace Crm\ApiModule\Presenters;
 
-use Crm\ApiModule\Api\ApiHandler;
-use Crm\ApiModule\Api\ApiHandlerInterface;
-use Crm\ApiModule\Api\ApiHeadersConfig;
-use Crm\ApiModule\Api\ApiLoggerConfig;
-use Crm\ApiModule\Api\JsonResponse;
-use Crm\ApiModule\Api\Runner;
-use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
-use Crm\ApiModule\Authorization\BearerTokenAuthorization;
-use Crm\ApiModule\Authorization\TokenParser;
-use Crm\ApiModule\Repository\ApiTokenStatsRepository;
-use Crm\ApiModule\Router\ApiIdentifier;
-use Crm\ApiModule\Router\ApiRoutesContainer;
+use Crm\ApiModule\Models\Api\ApiHandler;
+use Crm\ApiModule\Models\Api\ApiHandlerInterface;
+use Crm\ApiModule\Models\Api\ApiHeadersConfig;
+use Crm\ApiModule\Models\Api\ApiLoggerConfig;
+use Crm\ApiModule\Models\Api\Runner;
+use Crm\ApiModule\Models\Authorization\ApiAuthorizationInterface;
+use Crm\ApiModule\Models\Authorization\BearerTokenAuthorization;
+use Crm\ApiModule\Models\Authorization\TokenParser;
+use Crm\ApiModule\Models\Response\JsonResponse;
+use Crm\ApiModule\Models\Router\ApiIdentifier;
+use Crm\ApiModule\Models\Router\ApiRoutesContainer;
+use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\UsersModule\Auth\UserTokenAuthorization;

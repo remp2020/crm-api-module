@@ -5,9 +5,9 @@ namespace Crm\ApiModule\Presenters;
 use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApiModule\Forms\ApiAccessResourceFormFactory;
 use Crm\ApiModule\Forms\ApiAccessTokenFormFactory;
-use Crm\ApiModule\Repository\ApiAccessRepository;
-use Crm\ApiModule\Repository\ApiTokensRepository;
-use Crm\ApiModule\Router\ApiRoutesContainer;
+use Crm\ApiModule\Models\Router\ApiRoutesContainer;
+use Crm\ApiModule\Repositories\ApiAccessRepository;
+use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Nette\DI\Attributes\Inject;
 
 class ApiAccessAdminPresenter extends AdminPresenter

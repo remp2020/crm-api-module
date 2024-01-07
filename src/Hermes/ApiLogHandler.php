@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Hermes;
 
-use Crm\ApiModule\Repository\ApiLogsRepository;
-use Crm\ApiModule\Repository\ApiTokenStatsRepository;
+use Crm\ApiModule\Repositories\ApiLogsRepository;
+use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Nette\Utils\Json;
 use Tomaj\Hermes\Handler\HandlerInterface;

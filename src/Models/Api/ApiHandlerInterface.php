@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Models\Api;
 
-use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
+use Crm\ApiModule\Models\Authorization\ApiAuthorizationInterface;
 use Tomaj\NetteApi\Handlers\ApiHandlerInterface as TomajApiHandlerInterface;
 
 interface ApiHandlerInterface extends TomajApiHandlerInterface

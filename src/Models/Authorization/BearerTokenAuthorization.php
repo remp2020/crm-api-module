@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Models\Authorization;
 
-use Crm\ApiModule\Repository\ApiTokensRepository;
+use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Crm\ApplicationModule\Request;
 use Nette\Security\Authorizator;
 

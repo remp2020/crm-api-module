@@ -2,7 +2,6 @@
 
 namespace Crm\ApiModule\Models\Response;
 
-use Crm\ApiModule\Response\ApiResponseInterface;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
 use Nette\Http\Response;

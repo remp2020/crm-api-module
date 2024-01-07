@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Tests;
 
-use Crm\ApiModule\Api\ApiHandlerInterface;
-use Crm\ApiModule\Api\Runner;
+use Crm\ApiModule\Models\Api\ApiHandlerInterface;
+use Crm\ApiModule\Models\Api\Runner;
 use Tomaj\NetteApi\Response\JsonApiResponse;
 use Tomaj\NetteApi\Response\ResponseInterface;
 

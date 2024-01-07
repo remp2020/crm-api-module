@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Seeders;
 
-use Crm\ApiModule\Repository\ApiTokensRepository;
-use Crm\ApiModule\Token\InternalToken;
+use Crm\ApiModule\Models\Token\InternalToken;
+use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Crm\ApplicationModule\Builder\ConfigBuilder;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Config\Repository\ConfigCategoriesRepository;

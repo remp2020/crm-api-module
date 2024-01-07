@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Models\Router;
 
-use Crm\ApiModule\Api\ApiRouteInterface;
+use Crm\ApiModule\Models\Api\ApiRouteInterface;
 
 class ApiRoute implements ApiRouteInterface
 {

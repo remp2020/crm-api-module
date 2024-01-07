@@ -10,40 +10,40 @@ services:
 #		setup:
 #			- addApi(\Tomaj\NetteApi\EndpointIdentifier('GET', 1, 'events', 'list'), \Crm\ApplicationModule\Api\EventsListApiHandler(), \Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository))
 	lazyApiDecider:
-		factory: Crm\ApiModule\Api\LazyApiDecider
+		factory: Crm\ApiModule\Models\Api\Lazy\LazyApiDecider
 
 	bearerTokenAuthorization: Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository)
-	apiTokensRepository: Crm\ApiModule\Repository\ApiTokensRepository
-	apiAccessTokensRepository: Crm\ApiModule\Repository\ApiAccessTokensRepository
-	apiTokenStatsRepository: Crm\ApiModule\Repository\ApiTokenStatsRepository
+	apiTokensRepository: Crm\ApiModule\Repositories\ApiTokensRepository
+	apiAccessTokensRepository: Crm\ApiModule\Repositories\ApiAccessTokensRepository
+	apiTokenStatsRepository: Crm\ApiModule\Repositories\ApiTokenStatsRepository
 	apiLogsRepository:
-		factory: Crm\ApiModule\Repository\ApiLogsRepository
+		factory: Crm\ApiModule\Repositories\ApiLogsRepository
 		setup:
 			- setNewTableName('api_logs_v2')
 			- setNewTableDataMigrationIsRunningFlag(Crm\ApiModule\Commands\MigrateApiLogsCommand::API_LOGS_MIGRATION_RUNNING)
 			- setRedisClientFactory(@redisClientFactory)
 
-	apiAccessRepository: Crm\ApiModule\Repository\ApiAccessRepository
-	idempotentKeysRepository: Crm\ApiModule\Repository\IdempotentKeysRepository
-	userSourceAccessesRepository: Crm\ApiModule\Repository\UserSourceAccessesRepository
-	apiTokenMetaRepository: Crm\ApiModule\Repository\ApiTokenMetaRepository
+	apiAccessRepository: Crm\ApiModule\Repositories\ApiAccessRepository
+	idempotentKeysRepository: Crm\ApiModule\Repositories\IdempotentKeysRepository
+	userSourceAccessesRepository: Crm\ApiModule\Repositories\UserSourceAccessesRepository
+	apiTokenMetaRepository: Crm\ApiModule\Repositories\ApiTokenMetaRepository
 
 	apiHeadersConfig:
-		factory: Crm\ApiModule\Api\ApiHeadersConfig
+		factory: Crm\ApiModule\Models\Api\ApiHeadersConfig
 		setup:
 			- setAllowedOrigins('*')
 			- setAllowedHeaders('Content-Type', 'Authorization', 'X-Requested-With')
 			- setAllowedHttpMethods('*')
 
 	apiLoggerConfig:
-		factory: Crm\ApiModule\Api\ApiLoggerConfig
+		factory: Crm\ApiModule\Models\Api\ApiLoggerConfig
 
-	apiRunner: Crm\ApiModule\Api\Runner
+	apiRunner: Crm\ApiModule\Models\Api\Runner
 	- Crm\ApiModule\Api\TokenCheckHandler
-	- Crm\ApiModule\Authorization\BearerTokenAuthorization
-	- Crm\ApiModule\Authorization\NoAuthorization
-	- Crm\ApiModule\Authorization\AdminLoggedAuthorization
-	- Crm\ApiModule\Authorization\Permissions
+	- Crm\ApiModule\Models\Authorization\BearerTokenAuthorization
+	- Crm\ApiModule\Models\Authorization\NoAuthorization
+	- Crm\ApiModule\Models\Authorization\AdminLoggedAuthorization
+	- Crm\ApiModule\Models\Authorization\Permissions
 	- Crm\ApiModule\Commands\GenerateAccessCommand
 	- Crm\ApiModule\Commands\MigrateApiLogsCommand
 	- Crm\ApiModule\Components\ApiListingControl
@@ -53,6 +53,6 @@ services:
 	- Crm\ApiModule\Forms\ApiTestCallFormFactory
 	- Crm\ApiModule\Forms\ApiTokenMetaFormFactory
 	apiLogHandler: Crm\ApiModule\Hermes\ApiLogHandler
-	- Crm\ApiModule\Router\ApiRoutesContainer
+	- Crm\ApiModule\Models\Router\ApiRoutesContainer
 	- Crm\ApiModule\Seeders\ConfigsSeeder
-	- Crm\ApiModule\Token\InternalToken
+	- Crm\ApiModule\Models\Token\InternalToken

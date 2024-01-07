@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Presenters;
 
 use Crm\AdminModule\Presenters\AdminPresenter;
-use Crm\ApiModule\Repository\ApiLogsRepository;
+use Crm\ApiModule\Repositories\ApiLogsRepository;
 use Crm\ApplicationModule\Components\Graphs\GoogleLineGraphGroupControlFactoryInterface;
 use Crm\ApplicationModule\Graphs\Criteria;
 use Crm\ApplicationModule\Graphs\GraphDataItem;

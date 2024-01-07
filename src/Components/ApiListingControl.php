@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Crm\ApiModule\Components;
 
-use Crm\ApiModule\Api\LazyApiDecider;
+use Crm\ApiModule\Models\Api\Lazy\LazyApiDecider;
 use Nette\Application\UI\Control;
 use Nette\Bridges\ApplicationLatte\DefaultTemplate;
 

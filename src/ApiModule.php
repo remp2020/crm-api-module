@@ -2,15 +2,15 @@
 
 namespace Crm\ApiModule;
 
-use Crm\ApiModule\Api\ApiRoutersContainerInterface;
 use Crm\ApiModule\Api\TokenCheckHandler;
-use Crm\ApiModule\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Commands\GenerateAccessCommand;
 use Crm\ApiModule\Commands\MigrateApiLogsCommand;
 use Crm\ApiModule\Hermes\ApiLogHandler;
-use Crm\ApiModule\Repository\ApiLogsRepository;
-use Crm\ApiModule\Router\ApiIdentifier;
-use Crm\ApiModule\Router\ApiRoute;
+use Crm\ApiModule\Models\Api\ApiRoutersContainerInterface;
+use Crm\ApiModule\Models\Authorization\BearerTokenAuthorization;
+use Crm\ApiModule\Models\Router\ApiIdentifier;
+use Crm\ApiModule\Models\Router\ApiRoute;
+use Crm\ApiModule\Repositories\ApiLogsRepository;
 use Crm\ApiModule\Seeders\ConfigsSeeder;
 use Crm\ApplicationModule\CallbackManagerInterface;
 use Crm\ApplicationModule\Commands\CommandsContainerInterface;

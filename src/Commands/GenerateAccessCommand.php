@@ -2,10 +2,10 @@
 
 namespace Crm\ApiModule\Commands;
 
-use Crm\ApiModule\Api\ApiHandler;
-use Crm\ApiModule\Repository\ApiAccessRepository;
-use Crm\ApiModule\Router\ApiRoute;
-use Crm\ApiModule\Router\ApiRoutesContainer;
+use Crm\ApiModule\Models\Api\ApiHandler;
+use Crm\ApiModule\Models\Router\ApiRoute;
+use Crm\ApiModule\Models\Router\ApiRoutesContainer;
+use Crm\ApiModule\Repositories\ApiAccessRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

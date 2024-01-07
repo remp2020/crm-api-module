@@ -2,12 +2,12 @@
 
 namespace Crm\ApiModule\Forms;
 
-use Crm\ApiModule\Api\ApiHandlerInterface;
-use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
-use Crm\ApiModule\Authorization\BearerTokenAuthorization;
-use Crm\ApiModule\Authorization\NoAuthorization;
-use Crm\ApiModule\Router\ApiIdentifier;
-use Crm\ApiModule\Router\ApiRoutesContainer;
+use Crm\ApiModule\Models\Api\ApiHandlerInterface;
+use Crm\ApiModule\Models\Authorization\ApiAuthorizationInterface;
+use Crm\ApiModule\Models\Authorization\BearerTokenAuthorization;
+use Crm\ApiModule\Models\Authorization\NoAuthorization;
+use Crm\ApiModule\Models\Router\ApiIdentifier;
+use Crm\ApiModule\Models\Router\ApiRoutesContainer;
 use Nette\Application\UI\Form;
 use Nette\Http\Request;
 use Nette\Localization\Translator;

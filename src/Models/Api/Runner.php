@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Models\Api;
 
-use Crm\ApiModule\Repository\IdempotentKeysRepository;
+use Crm\ApiModule\Repositories\IdempotentKeysRepository;
 use Nette\Http\Request;
 use Nette\Http\Response;
 use Tomaj\NetteApi\Params\ParamsProcessor;

@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Commands;
 
-use Crm\ApiModule\Repository\ApiLogsRepository;
+use Crm\ApiModule\Repositories\ApiLogsRepository;
 use Crm\ApplicationModule\EnvironmentConfig;
 use Crm\ApplicationModule\RedisClientFactory;
 use Crm\ApplicationModule\RedisClientTrait;

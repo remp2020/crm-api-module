@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Tests;
 
-use Crm\ApiModule\Api\ApiHeadersConfig;
+use Crm\ApiModule\Models\Api\ApiHeadersConfig;
 use Crm\ApplicationModule\Tests\CrmTestCase;
 
 class ApiHeadersConfigTest extends CrmTestCase

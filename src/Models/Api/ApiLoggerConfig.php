@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Crm\ApiModule\Models\Api;
 
-use Crm\ApiModule\Models\LoggerEndpointIdentifier;
 use Tomaj\NetteApi\EndpointIdentifier;
 
 class ApiLoggerConfig

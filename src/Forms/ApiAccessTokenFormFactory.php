@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Forms;
 
-use Crm\ApiModule\Repository\ApiAccessRepository;
-use Crm\ApiModule\Repository\ApiAccessTokensRepository;
+use Crm\ApiModule\Repositories\ApiAccessRepository;
+use Crm\ApiModule\Repositories\ApiAccessTokensRepository;
 use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
 use Nette\Localization\Translator;

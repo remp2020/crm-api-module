@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Forms;
 
-use Crm\ApiModule\Repository\ApiTokenMetaRepository;
-use Crm\ApiModule\Repository\ApiTokensRepository;
+use Crm\ApiModule\Repositories\ApiTokenMetaRepository;
+use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\UniqueConstraintViolationException;

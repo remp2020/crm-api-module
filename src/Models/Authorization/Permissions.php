@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Models\Authorization;
 
-use Crm\ApiModule\Repository\ApiAccessRepository;
+use Crm\ApiModule\Repositories\ApiAccessRepository;
 use Nette\Security\Authorizator;
 
 class Permissions

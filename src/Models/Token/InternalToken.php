@@ -2,9 +2,9 @@
 
 namespace Crm\ApiModule\Models\Token;
 
-use Crm\ApiModule\Repository\ApiAccessRepository;
-use Crm\ApiModule\Repository\ApiAccessTokensRepository;
-use Crm\ApiModule\Repository\ApiTokensRepository;
+use Crm\ApiModule\Repositories\ApiAccessRepository;
+use Crm\ApiModule\Repositories\ApiAccessTokensRepository;
+use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
 
 class InternalToken

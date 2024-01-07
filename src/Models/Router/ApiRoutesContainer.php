@@ -2,12 +2,12 @@
 
 namespace Crm\ApiModule\Models\Router;
 
-use Crm\ApiModule\Api\ApiConfigurationException;
-use Crm\ApiModule\Api\ApiHandlerInterface;
-use Crm\ApiModule\Api\ApiRouteInterface;
-use Crm\ApiModule\Api\ApiRoutersContainerInterface;
-use Crm\ApiModule\Api\LazyApiDecider;
-use Crm\ApiModule\Authorization\ApiAuthorizationInterface;
+use Crm\ApiModule\Models\Api\ApiConfigurationException;
+use Crm\ApiModule\Models\Api\ApiHandlerInterface;
+use Crm\ApiModule\Models\Api\ApiRouteInterface;
+use Crm\ApiModule\Models\Api\ApiRoutersContainerInterface;
+use Crm\ApiModule\Models\Api\Lazy\LazyApiDecider;
+use Crm\ApiModule\Models\Authorization\ApiAuthorizationInterface;
 use Nette\DI\Container;
 
 class ApiRoutesContainer implements ApiRoutersContainerInterface

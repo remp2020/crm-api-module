@@ -2,9 +2,9 @@
 
 namespace Crm\ApiModule\Tests;
 
-use Crm\ApiModule\Api\ApiLoggerConfig;
-use Crm\ApiModule\Models\LoggerEndpointIdentifier;
-use Crm\ApiModule\Router\ApiIdentifier;
+use Crm\ApiModule\Models\Api\ApiLoggerConfig;
+use Crm\ApiModule\Models\Api\LoggerEndpointIdentifier;
+use Crm\ApiModule\Models\Router\ApiIdentifier;
 use Crm\ApplicationModule\Tests\CrmTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 

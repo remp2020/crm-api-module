@@ -3,7 +3,8 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Response\ApiResponseInterface;
-use Nette;
+use Nette\Http\IRequest;
+use Nette\Http\IResponse;
 use Nette\Http\Response;
 
 /**
@@ -46,7 +47,7 @@ class RedirectResponse implements ApiResponseInterface
         return $this->code;
     }
 
-    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
+    public function send(IRequest $httpRequest, IResponse $httpResponse): void
     {
         header("Location: {$this->url}");
     }

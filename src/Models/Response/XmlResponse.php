@@ -3,7 +3,8 @@
 namespace Crm\ApiModule\Api;
 
 use Crm\ApiModule\Response\ApiResponseInterface;
-use Nette;
+use Nette\Http\IRequest;
+use Nette\Http\IResponse;
 use Spatie\ArrayToXml\ArrayToXml;
 
 /**
@@ -52,7 +53,7 @@ class XmlResponse implements ApiResponseInterface
         $this->code = $code;
     }
 
-    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse): void
+    public function send(IRequest $httpRequest, IResponse $httpResponse): void
     {
         $httpResponse->setContentType('application/xml', 'utf-8');
         echo ArrayToXml::convert($this->payload, [

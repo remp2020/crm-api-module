@@ -4,11 +4,12 @@ namespace Crm\ApiModule\Populator;
 
 use Crm\ApplicationModule\Populator\AbstractPopulator;
 use Crm\UsersModule\Auth\Access\TokenGenerator;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class ApiTokensPopulator extends AbstractPopulator
 {
     /**
-     * @param \Symfony\Component\Console\Helper\ProgressBar $progressBar
+     * @param ProgressBar $progressBar
      */
     public function seed($progressBar)
     {

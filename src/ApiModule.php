@@ -3,6 +3,11 @@
 namespace Crm\ApiModule;
 
 use Crm\ApiModule\Api\ApiRoutersContainerInterface;
+use Crm\ApiModule\Api\TokenCheckHandler;
+use Crm\ApiModule\Authorization\BearerTokenAuthorization;
+use Crm\ApiModule\Commands\GenerateAccessCommand;
+use Crm\ApiModule\Commands\MigrateApiLogsCommand;
+use Crm\ApiModule\Hermes\ApiLogHandler;
 use Crm\ApiModule\Repository\ApiLogsRepository;
 use Crm\ApiModule\Router\ApiIdentifier;
 use Crm\ApiModule\Router\ApiRoute;
@@ -49,14 +54,14 @@ class ApiModule extends CrmModule
 
     public function registerCommands(CommandsContainerInterface $commandsContainer)
     {
-        $commandsContainer->registerCommand($this->getInstance(\Crm\ApiModule\Commands\GenerateAccessCommand::class));
-        $commandsContainer->registerCommand($this->getInstance(\Crm\ApiModule\Commands\MigrateApiLogsCommand::class));
+        $commandsContainer->registerCommand($this->getInstance(GenerateAccessCommand::class));
+        $commandsContainer->registerCommand($this->getInstance(MigrateApiLogsCommand::class));
     }
 
     public function registerApiCalls(ApiRoutersContainerInterface $apiRoutersContainer)
     {
         $apiRoutersContainer->attachRouter(
-            new ApiRoute(new ApiIdentifier('1', 'token', 'check'), \Crm\ApiModule\Api\TokenCheckHandler::class, \Crm\ApiModule\Authorization\BearerTokenAuthorization::class)
+            new ApiRoute(new ApiIdentifier('1', 'token', 'check'), TokenCheckHandler::class, BearerTokenAuthorization::class)
         );
     }
 
@@ -77,7 +82,7 @@ class ApiModule extends CrmModule
     {
         $dispatcher->registerHandler(
             'api-log',
-            $this->getInstance(\Crm\ApiModule\Hermes\ApiLogHandler::class)
+            $this->getInstance(ApiLogHandler::class)
         );
     }
 }

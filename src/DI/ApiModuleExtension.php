@@ -3,6 +3,7 @@
 namespace Crm\ApiModule\DI;
 
 use Contributte\Translation\DI\TranslationProviderInterface;
+use Nette\Application\IPresenterFactory;
 use Nette\DI\CompilerExtension;
 
 final class ApiModuleExtension extends CompilerExtension implements TranslationProviderInterface
@@ -19,7 +20,7 @@ final class ApiModuleExtension extends CompilerExtension implements TranslationP
     {
         $builder = $this->getContainerBuilder();
 
-        $builder->getDefinition($builder->getByType(\Nette\Application\IPresenterFactory::class))
+        $builder->getDefinition($builder->getByType(IPresenterFactory::class))
             ->addSetup('setMapping', [['Api' => 'Crm\ApiModule\Presenters\*Presenter']]);
     }
 

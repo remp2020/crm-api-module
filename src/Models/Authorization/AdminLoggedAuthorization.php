@@ -2,8 +2,8 @@
 
 namespace Crm\ApiModule\Models\Authorization;
 
-use Crm\UsersModule\Repository\AccessTokensRepository;
-use Crm\UsersModule\Repository\UsersRepository;
+use Crm\UsersModule\Repositories\AccessTokensRepository;
+use Crm\UsersModule\Repositories\UsersRepository;
 use Nette\Security\Authorizator;
 use Nette\Security\User;
 

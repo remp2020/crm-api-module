@@ -9,7 +9,7 @@ use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Config\Repository\ConfigCategoriesRepository;
 use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
 use Crm\ApplicationModule\Seeders\ISeeder;
-use Crm\UsersModule\Auth\Access\TokenGenerator;
+use Crm\UsersModule\Models\Auth\Access\TokenGenerator;
 use Nette\Utils\DateTime;
 use Symfony\Component\Console\Output\OutputInterface;
 

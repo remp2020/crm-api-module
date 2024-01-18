@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Populators;
 
 use Crm\ApplicationModule\Populator\AbstractPopulator;
-use Crm\UsersModule\Auth\Access\TokenGenerator;
+use Crm\UsersModule\Models\Auth\Access\TokenGenerator;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 class ApiTokensPopulator extends AbstractPopulator

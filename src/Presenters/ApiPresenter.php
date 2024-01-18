@@ -16,7 +16,7 @@ use Crm\ApiModule\Models\Router\ApiRoutesContainer;
 use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
-use Crm\UsersModule\Auth\UserTokenAuthorization;
+use Crm\UsersModule\Models\Auth\UserTokenAuthorization;
 use Nette\Application\IPresenter;
 use Nette\Application\Request;
 use Nette\Application\Response;

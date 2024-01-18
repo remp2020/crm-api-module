@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Repositories;
 
 use Crm\ApplicationModule\Repository;
-use Crm\UsersModule\Auth\Access\TokenGenerator;
+use Crm\UsersModule\Models\Auth\Access\TokenGenerator;
 use DateTime;
 use Nette\Database\Table\ActiveRow;
 use Tomaj\NetteApi\Misc\TokenRepositoryInterface;

@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Populators;
 
-use Crm\ApplicationModule\Populator\AbstractPopulator;
+use Crm\ApplicationModule\Populators\AbstractPopulator;
 use Crm\UsersModule\Models\Auth\Access\TokenGenerator;
 use Symfony\Component\Console\Helper\ProgressBar;
 

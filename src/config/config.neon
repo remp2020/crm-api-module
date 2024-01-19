@@ -8,7 +8,7 @@ services:
 	apiDecider:
 		factory: Tomaj\NetteApi\ApiDecider
 #		setup:
-#			- addApi(\Tomaj\NetteApi\EndpointIdentifier('GET', 1, 'events', 'list'), \Crm\ApplicationModule\Api\EventsListApiHandler(), \Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository))
+#			- addApi(\Tomaj\NetteApi\EndpointIdentifier('GET', 1, 'events', 'list'), \Crm\ApplicationModule\Models\Api\EventsListApiHandler(), \Tomaj\NetteApi\Authorization\BearerTokenAuthorization(@apiTokensRepository))
 	lazyApiDecider:
 		factory: Crm\ApiModule\Models\Api\Lazy\LazyApiDecider
 

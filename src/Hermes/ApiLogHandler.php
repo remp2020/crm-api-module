@@ -4,7 +4,7 @@ namespace Crm\ApiModule\Hermes;
 
 use Crm\ApiModule\Repositories\ApiLogsRepository;
 use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
-use Crm\ApplicationModule\Config\ApplicationConfig;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Nette\Utils\Json;
 use Tomaj\Hermes\Handler\HandlerInterface;
 use Tomaj\Hermes\Handler\RetryTrait;

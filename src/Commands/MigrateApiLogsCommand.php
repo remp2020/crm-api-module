@@ -3,9 +3,9 @@
 namespace Crm\ApiModule\Commands;
 
 use Crm\ApiModule\Repositories\ApiLogsRepository;
-use Crm\ApplicationModule\EnvironmentConfig;
-use Crm\ApplicationModule\RedisClientFactory;
-use Crm\ApplicationModule\RedisClientTrait;
+use Crm\ApplicationModule\Application\EnvironmentConfig;
+use Crm\ApplicationModule\Models\Redis\RedisClientFactory;
+use Crm\ApplicationModule\Models\Redis\RedisClientTrait;
 use Nette\Database\Explorer;
 use Nette\Utils\DateTime;
 use Symfony\Component\Console\Command\Command;

@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Models\Authorization;
 
 use Crm\ApiModule\Repositories\ApiTokensRepository;
-use Crm\ApplicationModule\Request;
+use Crm\ApplicationModule\Models\Request;
 use Nette\Security\Authorizator;
 
 class BearerTokenAuthorization implements ApiAuthorizationInterface

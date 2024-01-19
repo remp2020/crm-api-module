@@ -2,10 +2,10 @@
 
 namespace Crm\ApiModule\Repositories;
 
-use Crm\ApplicationModule\Repository;
-use Crm\ApplicationModule\Repository\RetentionData;
+use Crm\ApplicationModule\Models\Database\NewTableDataMigrationTrait;
+use Crm\ApplicationModule\Models\Database\Repository;
+use Crm\ApplicationModule\Models\Database\RetentionData;
 use DateTime;
-use Remp\MailerModule\Repositories\NewTableDataMigrationTrait;
 
 class ApiLogsRepository extends Repository
 {

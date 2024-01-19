@@ -14,8 +14,8 @@ use Crm\ApiModule\Models\Response\JsonResponse;
 use Crm\ApiModule\Models\Router\ApiIdentifier;
 use Crm\ApiModule\Models\Router\ApiRoutesContainer;
 use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
-use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\UsersModule\Models\Auth\UserTokenAuthorization;
 use Nette\Application\IPresenter;
 use Nette\Application\Request;
@@ -205,8 +205,8 @@ class ApiPresenter implements IPresenter
         $elapsed = Debugger::timer() * 1000;
         $path = $apiIdentifier->getApiPath();
         $responseCode = $response->getCode();
-        $ipAddress = \Crm\ApplicationModule\Request::getIp();
-        $userAgent = \Crm\ApplicationModule\Request::getUserAgent();
+        $ipAddress = \Crm\ApplicationModule\Models\Request::getIp();
+        $userAgent = \Crm\ApplicationModule\Models\Request::getUserAgent();
 
         if ($response instanceof JsonApiResponse || $response instanceof JsonResponse) {
             $responseBody = Json::encode($response->getPayload());

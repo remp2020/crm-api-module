@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Repositories;
 
-use Crm\ApplicationModule\Repository;
+use Crm\ApplicationModule\Models\Database\Repository;
 use Nette\Utils\DateTime;
 
 class IdempotentKeysRepository extends Repository

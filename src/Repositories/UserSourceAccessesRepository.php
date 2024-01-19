@@ -2,7 +2,7 @@
 
 namespace Crm\ApiModule\Repositories;
 
-use Crm\ApplicationModule\Repository;
+use Crm\ApplicationModule\Models\Database\Repository;
 
 class UserSourceAccessesRepository extends Repository
 {

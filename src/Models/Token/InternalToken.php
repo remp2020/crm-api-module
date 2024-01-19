@@ -5,7 +5,7 @@ namespace Crm\ApiModule\Models\Token;
 use Crm\ApiModule\Repositories\ApiAccessRepository;
 use Crm\ApiModule\Repositories\ApiAccessTokensRepository;
 use Crm\ApiModule\Repositories\ApiTokensRepository;
-use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
+use Crm\ApplicationModule\Repositories\ConfigsRepository;
 
 class InternalToken
 {

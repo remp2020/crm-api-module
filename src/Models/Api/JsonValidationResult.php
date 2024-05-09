@@ -27,6 +27,15 @@ class JsonValidationResult
         return $this->parsedObject;
     }
 
+    public function getParsedObjectAsArray(): ?array
+    {
+        if ($this->parsedObject === null) {
+            return null;
+        }
+
+        return json_decode(json_encode($this->parsedObject), true);
+    }
+
     public function getErrorResponse(): ?JsonApiResponse
     {
         return $this->errorResponse;

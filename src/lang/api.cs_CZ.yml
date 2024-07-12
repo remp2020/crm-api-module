@@ -66,6 +66,7 @@ admin:
             updated: 'API klíč byl aktualizován.'
             removed: 'API klíč byl vymazán.'
             not_found: 'API klíč nebyl nalezen.'
+            cant_delete_active_token: 'Aktivovaný API klíč není možné vymazat.'
 
     api_token_meta:
         header: Meta

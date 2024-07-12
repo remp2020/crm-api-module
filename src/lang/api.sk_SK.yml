@@ -107,6 +107,7 @@ admin:
             updated: 'API kľúč bol aktualizovný.'
             removed: 'API kľúč bol vymazaný.'
             not_found: 'API kľúč nebol nájdený.'
+            cant_delete_active_token: 'Aktivovaný API kľúč nie je možné vymazať.'
 
     api_test_call_form:
         api_url:

@@ -5,6 +5,7 @@ namespace Crm\ApiModule\Presenters;
 use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApiModule\Forms\ApiTokenFormFactory;
 use Crm\ApiModule\Forms\ApiTokenMetaFormFactory;
+use Crm\ApiModule\Models\Exception\CantDeleteActiveTokenException;
 use Crm\ApiModule\Repositories\ApiTokenMetaRepository;
 use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Nette\Application\BadRequestException;
@@ -60,8 +61,14 @@ class ApiTokensAdminPresenter extends AdminPresenter
     public function renderDelete($id)
     {
         $apiToken = $this->apiTokensRepository->find($id);
-        $this->apiTokensRepository->delete($apiToken);
-        $this->flashMessage($this->translator->translate('api.admin.api_tokens.message.removed'));
+
+        try {
+            $this->apiTokensRepository->delete($apiToken);
+            $this->flashMessage($this->translator->translate('api.admin.api_tokens.message.removed'));
+        } catch (CantDeleteActiveTokenException $e) {
+            $this->flashMessage($this->translator->translate('api.admin.api_tokens.message.cant_delete_active_token'), 'error');
+        }
+
         $this->redirect('default');
     }
 

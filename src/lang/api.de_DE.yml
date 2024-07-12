@@ -86,6 +86,7 @@ admin:
             updated: API-Token wurde aktualisiert.
             saved: API-Token wurde angelegt.
             removed: API-Token wurde entfernt.
+            cant_delete_active_token: Das aktive API-Token kann nicht gelöscht werden
         form:
             submit: Absenden
     api_test_call_form:

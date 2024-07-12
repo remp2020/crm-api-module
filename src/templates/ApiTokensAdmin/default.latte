@@ -51,11 +51,16 @@
                 {$apiToken->active|activeLabel|noescape}
               </td>
               <td>
-                <p class="text-nowrap">
-                  <a n:href="ApiTokensAdmin:show $apiToken->id" class="btn btn-sm btn-info" title="{_system.show}"><i class="fa fa-eye"></i> </a>
-                  <a n:href="ApiTokensAdmin:edit $apiToken->id" class="btn btn-sm btn-primary" title="{_system.edit}"><i class="fa fa-edit"></i> </a>
-                  <a n:href="ApiTokensAdmin:delete $apiToken->id" class="btn btn-sm btn-danger" title="{_system.delete}"><i class="fa fa-trash"></i> </a>
-              	<p>
+                <a n:href="ApiTokensAdmin:show $apiToken->id" class="btn btn-sm btn-info" title="{_system.show}" data-toggle="tooltip"><i class="fa fa-eye"></i> </a>
+                <a n:href="ApiTokensAdmin:edit $apiToken->id" class="btn btn-sm btn-primary" title="{_system.edit}" data-toggle="tooltip"><i class="fa fa-edit"></i> </a>
+
+                {if $apiToken->active}
+                  <span title="{_"api.admin.api_tokens.message.cant_delete_active_token"}" data-toggle="tooltip">
+                      <button type="button" class="btn btn-sm btn-danger" disabled="disabled"><i class="fa fa-trash"></i></button>
+                  </span>
+                {else}
+                    <a n:href="ApiTokensAdmin:delete $apiToken->id" class="btn btn-sm btn-danger" title="{_system.delete}" data-toggle="tooltip"><i class="fa fa-trash"></i> </a>
+                {/if}
               </td>
             </tr>
           {/foreach}

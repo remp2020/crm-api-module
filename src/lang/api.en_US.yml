@@ -107,6 +107,7 @@ admin:
             updated: 'API token was updated.'
             removed: 'API token was removed.'
             not_found: 'API token not found.'
+            cant_delete_active_token: Can't delete activated API token.
 
     api_test_call_form:
         api_url:

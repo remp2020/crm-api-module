@@ -48,7 +48,7 @@
                 {/if}
               </td>
               <td>
-                {$apiToken->active|activeLabel|noescape}
+                {$apiToken->active|activeLabel}
               </td>
               <td>
                 <a n:href="ApiTokensAdmin:show $apiToken->id" class="btn btn-sm btn-info" title="{_system.show}" data-toggle="tooltip"><i class="fa fa-eye"></i> </a>

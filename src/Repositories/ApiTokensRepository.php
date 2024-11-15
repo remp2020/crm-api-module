@@ -74,7 +74,7 @@ class ApiTokensRepository extends Repository implements TokenRepositoryInterface
             throw new CantDeleteActiveTokenException();
         }
 
-        return $this->getDatabase()->transaction(function () use ($row) {
+        return $this->getTransaction()->wrap(function () use ($row) {
             $this->emitter->emit(new BeforeRemoveApiTokenEvent($row));
 
             $row->related('api_token_meta')->delete();

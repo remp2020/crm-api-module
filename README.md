@@ -54,7 +54,7 @@ services:
 	apiLoggerConfig:
 		setup:
 			- setPathBlacklist([
-				Crm\ApiModule\Models\LoggerEndpointIdentifier('1', 'foo', 'bar'),
+				Crm\ApiModule\Models\Api\LoggerEndpointIdentifier('1', 'foo', 'bar'),
 			])
 ```
 
@@ -62,8 +62,8 @@ The `LoggerEndpointIdentifier` requires three parameters: `version`, `package` a
 
 You can also use wildcards where necessary:
 
-- `Crm\ApiModule\Models\LoggerEndpointIdentifier('*', 'foo', 'bar')` will match all requests going to `/api/*/foo/bar`.
-- `Crm\ApiModule\Models\LoggerEndpointIdentifier('1', '*', '*')` will match all requests going to `/api/v3/*/*`.
+- `Crm\ApiModule\Models\Api\LoggerEndpointIdentifier('*', 'foo', 'bar')` will match all requests going to `/api/*/foo/bar`.
+- `Crm\ApiModule\Models\Api\LoggerEndpointIdentifier('1', '*', '*')` will match all requests going to `/api/v3/*/*`.
 
 Blacklist and whitelist cannot be combined, the latter configured wins.
 

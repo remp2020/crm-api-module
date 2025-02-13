@@ -4,7 +4,7 @@ namespace Crm\ApiModule\Forms;
 
 use Crm\ApiModule\Repositories\ApiTokenMetaRepository;
 use Crm\ApiModule\Repositories\ApiTokensRepository;
-use Nette\Application\UI\Form;
+use Crm\ApplicationModule\UI\Form;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\UniqueConstraintViolationException;
 use Nette\Localization\Translator;

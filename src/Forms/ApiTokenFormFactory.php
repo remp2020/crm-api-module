@@ -3,7 +3,7 @@
 namespace Crm\ApiModule\Forms;
 
 use Crm\ApiModule\Repositories\ApiTokensRepository;
-use Nette\Application\UI\Form;
+use Crm\ApplicationModule\UI\Form;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 

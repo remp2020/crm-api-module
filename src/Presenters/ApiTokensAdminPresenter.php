@@ -8,8 +8,8 @@ use Crm\ApiModule\Forms\ApiTokenMetaFormFactory;
 use Crm\ApiModule\Models\Exception\CantDeleteActiveTokenException;
 use Crm\ApiModule\Repositories\ApiTokenMetaRepository;
 use Crm\ApiModule\Repositories\ApiTokensRepository;
+use Crm\ApplicationModule\UI\Form;
 use Nette\Application\BadRequestException;
-use Nette\Application\UI\Form;
 use Nette\DI\Attributes\Inject;
 
 class ApiTokensAdminPresenter extends AdminPresenter

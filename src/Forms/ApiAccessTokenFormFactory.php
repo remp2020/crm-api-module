@@ -4,7 +4,7 @@ namespace Crm\ApiModule\Forms;
 
 use Crm\ApiModule\Repositories\ApiAccessRepository;
 use Crm\ApiModule\Repositories\ApiAccessTokensRepository;
-use Nette\Application\UI\Form;
+use Crm\ApplicationModule\UI\Form;
 use Nette\Database\Table\ActiveRow;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;

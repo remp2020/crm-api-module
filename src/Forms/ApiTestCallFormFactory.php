@@ -8,7 +8,7 @@ use Crm\ApiModule\Models\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Models\Authorization\NoAuthorization;
 use Crm\ApiModule\Models\Router\ApiIdentifier;
 use Crm\ApiModule\Models\Router\ApiRoutesContainer;
-use Nette\Application\UI\Form;
+use Crm\ApplicationModule\UI\Form;
 use Nette\Http\Request;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;

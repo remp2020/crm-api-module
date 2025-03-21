@@ -7,7 +7,7 @@ use Exception;
 /**
  * @deprecated use params defined in tomaj/nette-api package (eg. \Tomaj\NetteApi\Params\GetInputParam or \Tomaj\NetteApi\Params\PostInputParam)
  */
-class InputParam extends \Tomaj\NetteApi\Params\InputParam implements ParamInterface
+class InputParam extends \Tomaj\NetteApi\Params\InputParam
 {
     public function __construct(
         string $type,
@@ -24,14 +24,6 @@ class InputParam extends \Tomaj\NetteApi\Params\InputParam implements ParamInter
             $this->setAvailableValues($availableValues);
         }
         $this->multi = $multi;
-    }
-
-    /**
-     * @deprecated use validate()->isOk()
-     */
-    public function isValid()
-    {
-        return $this->validate()->isOk();
     }
 
     public function getValue()

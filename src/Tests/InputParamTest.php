@@ -28,13 +28,13 @@ class InputParamTest extends TestCase
     public function testRequired()
     {
         $inputParam = new InputParam(InputParam::TYPE_POST, 'missing_input', true);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
         $this->assertTrue($inputParam->isRequired());
         $this->assertNull($inputParam->getValue());
 
         $_POST['valid_input'] = 'valid_value';
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_input', true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertTrue($inputParam->isRequired());
         $this->assertSame($_POST['valid_input'], $inputParam->getValue());
     }
@@ -42,13 +42,13 @@ class InputParamTest extends TestCase
     public function testOptional()
     {
         $inputParam = new InputParam(InputParam::TYPE_POST, 'missing_input', false);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertFalse($inputParam->isRequired());
         $this->assertNull($inputParam->getValue());
 
         $_POST['valid_input'] = 'valid_value';
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_input', false);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertFalse($inputParam->isRequired());
         $this->assertSame($_POST['valid_input'], $inputParam->getValue());
     }
@@ -57,12 +57,12 @@ class InputParamTest extends TestCase
     {
         $_GET['valid_input'] = 'one';
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_input', true);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
         $this->assertNull($inputParam->getValue());
 
         $_POST['valid_input'] = 'one';
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_input', true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertSame($_POST['valid_input'], $inputParam->getValue());
     }
 
@@ -70,12 +70,12 @@ class InputParamTest extends TestCase
     {
         $_POST['valid_input'] = 'one';
         $inputParam = new InputParam(InputParam::TYPE_GET, 'valid_input', true);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
         $this->assertNull($inputParam->getValue());
 
         $_GET['valid_input'] = 'one';
         $inputParam = new InputParam(InputParam::TYPE_GET, 'valid_input', true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertSame($_POST['valid_input'], $inputParam->getValue());
     }
 
@@ -87,11 +87,11 @@ class InputParamTest extends TestCase
         $_POST['invalid_input'] = 'alpha';
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_input', true, $availableValues);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertSame($_POST['valid_input'], $inputParam->getValue());
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_input', true, $availableValues);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
         // InputParam returns value also in case it's not valid
         $this->assertSame($_POST['invalid_input'], $inputParam->getValue());
     }
@@ -103,17 +103,17 @@ class InputParamTest extends TestCase
         $_POST['invalid_input'] = 'alpha';
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_input', false, $availableValues);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertSame($_POST['valid_input'], $inputParam->getValue());
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_input', false, $availableValues);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
         // InputParam returns value also in case it's not valid
         $this->assertSame($_POST['invalid_input'], $inputParam->getValue());
 
         // if optional value is missing, do not validate against available values
         $inputParam = new InputParam(InputParam::TYPE_POST, 'missing_input', false, $availableValues);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertNull($inputParam->getValue());
     }
 
@@ -122,39 +122,39 @@ class InputParamTest extends TestCase
         // test multi value input
         $_POST['valid_multi_input'] = ['one', 'two'];
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_multi_input', true, null, true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertIsArray($inputParam->getValue());
         $this->assertSame($_POST['valid_multi_input'], $inputParam->getValue());
 
         // single value input should be still possible with multi flag
         $_POST['valid_input'] = 'one';
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_input', true, null, true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertIsString($inputParam->getValue());
         $this->assertSame($_POST['valid_input'], $inputParam->getValue());
 
         // missing required multi input should fail
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_multi_input', true, null, true);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
 
         // empty required multi input should be valid; this is what server receives for "invalid_multi_input[]="
         $_POST['invalid_multi_input'] = [''];
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_multi_input', true, null, true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
 
         // empty required multi input should fail when available values are set; empty string is not among allowed values
         $_POST['invalid_multi_input'] = [''];
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_multi_input', true, ['foo', 'bar'], true);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
 
         // empty required multi input should be valid when available values are set with empty string
         $_POST['invalid_multi_input'] = [''];
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_multi_input', true, ['foo', 'bar', ''], true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
 
         // if optional value is missing, do not validate against multi flag
         $inputParam = new InputParam(InputParam::TYPE_POST, 'missing_input', false, null, true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertNull($inputParam->getValue());
     }
 
@@ -166,21 +166,21 @@ class InputParamTest extends TestCase
         $_POST['invalid_2_multi_input'] = [''];
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'valid_multi_input', true, $availableValues, true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertSame($_POST['valid_multi_input'], $inputParam->getValue());
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_multi_input', true, $availableValues, true);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
         // InputParam returns value also in case it's not valid
         $this->assertSame($_POST['invalid_multi_input'], $inputParam->getValue());
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'invalid_2_multi_input', true, $availableValues, true);
-        $this->assertFalse($inputParam->isValid());
+        $this->assertFalse($inputParam->validate()->isOk());
         // InputParam returns value also in case it's not valid
         $this->assertSame($_POST['invalid_2_multi_input'], $inputParam->getValue());
 
         $inputParam = new InputParam(InputParam::TYPE_POST, 'missing_input', false, $availableValues, true);
-        $this->assertTrue($inputParam->isValid());
+        $this->assertTrue($inputParam->validate()->isOk());
         $this->assertNull($inputParam->getValue());
     }
 }

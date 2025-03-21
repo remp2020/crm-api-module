@@ -2,6 +2,8 @@
 
 namespace Crm\ApiModule\Models\Params;
 
+use Tomaj\NetteApi\Params\ParamInterface;
+
 /**
  * @deprecated use \Tomaj\NetteApi\Params\ParamsProcessor
  */

@@ -29,6 +29,8 @@ class Runner
                 return $response;
             }
         } else {
+            // validates API parameters & returns error response (400 bad request) if not valid
+            // (no need to call isError within API class)
             if ($paramsProcessor->isError()) {
                 $response = new JsonApiResponse(Response::S400_BAD_REQUEST, [
                     'status' => 'error',

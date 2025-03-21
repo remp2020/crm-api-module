@@ -29,7 +29,7 @@ class ParamsProcessorTest extends TestCase
         $inputParam1 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_1);
         $inputParam2 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_2);
         $paramsProcessor = new ParamsProcessor([$inputParam1, $inputParam2]);
-        $this->assertFalse($paramsProcessor->hasError());
+        $this->assertFalse($paramsProcessor->isError());
         $this->assertEquals($paramsProcessor->getValues()[self::RNDM_KEY_1], $rndmString1);
         $this->assertEquals($paramsProcessor->getValues()[self::RNDM_KEY_2], $rndmString2);
         $this->assertArrayNotHasKey(self::RNDM_KEY_3, $paramsProcessor->getValues());
@@ -41,7 +41,7 @@ class ParamsProcessorTest extends TestCase
         $inputParam1 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_2);
         $inputParam2 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_3, InputParam::REQUIRED);
         $paramsProcessor = new ParamsProcessor([$inputParam1, $inputParam2]);
-        $this->assertNotFalse($paramsProcessor->hasError());
+        $this->assertTrue($paramsProcessor->isError());
         $this->assertArrayNotHasKey(self::RNDM_KEY_1, $paramsProcessor->getValues());
         $this->assertNull($paramsProcessor->getValues()[self::RNDM_KEY_2]);
         $this->assertNull($paramsProcessor->getValues()[self::RNDM_KEY_3]);

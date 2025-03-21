@@ -1,34 +1,18 @@
 <?php
+declare(strict_types=1);
 
 namespace Crm\ApiModule\Models\Response;
 
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
-use Nette\Http\Response;
 
 class EmptyResponse implements ApiResponseInterface
 {
-    private int $code = Response::S204_NO_CONTENT;
-
-    /**
-     * @deprecated use setCode()
-     */
-    public function setHttpCode($httpCode)
-    {
-        $this->setCode($httpCode);
-    }
+    private int $code = IResponse::S204_NoContent;
 
     public function setCode(int $code)
     {
         $this->code = $code;
-    }
-
-    /**
-     * @deprecated use getCode()
-     */
-    public function getHttpCode()
-    {
-        return $this->getCode();
     }
 
     public function getCode(): int

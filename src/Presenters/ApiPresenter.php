@@ -10,7 +10,6 @@ use Crm\ApiModule\Models\Api\Runner;
 use Crm\ApiModule\Models\Authorization\ApiAuthorizationInterface;
 use Crm\ApiModule\Models\Authorization\BearerTokenAuthorization;
 use Crm\ApiModule\Models\Authorization\TokenParser;
-use Crm\ApiModule\Models\Response\JsonResponse;
 use Crm\ApiModule\Models\Router\ApiIdentifier;
 use Crm\ApiModule\Models\Router\ApiRoutesContainer;
 use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
@@ -208,7 +207,7 @@ class ApiPresenter implements IPresenter
         $ipAddress = \Crm\ApplicationModule\Models\Request::getIp();
         $userAgent = \Crm\ApplicationModule\Models\Request::getUserAgent();
 
-        if ($response instanceof JsonApiResponse || $response instanceof JsonResponse) {
+        if ($response instanceof JsonApiResponse) {
             $responseBody = Json::encode($response->getPayload());
         } else {
             $responseBody = null;

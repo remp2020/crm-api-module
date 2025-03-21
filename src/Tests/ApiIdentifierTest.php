@@ -11,21 +11,21 @@ class ApiIdentifierTest extends TestCase
     public function testSimpleUse()
     {
         $apiVersion = '1';
-        $apiCategory = 'category';
+        $apiPackage = 'package';
         $apiCall = 'call';
-        $apiIdentifier = new ApiIdentifier($apiVersion, $apiCategory, $apiCall);
+        $apiIdentifier = new ApiIdentifier($apiVersion, $apiPackage, $apiCall);
 
         $this->assertEquals($apiVersion, $apiIdentifier->getVersion());
-        $this->assertEquals($apiCategory, $apiIdentifier->getCategory());
-        $this->assertEquals($apiCall, $apiIdentifier->getApiCall());
-        $this->assertEquals("/v{$apiVersion}/{$apiCategory}/{$apiCall}", $apiIdentifier->getApiPath());
+        $this->assertEquals($apiPackage, $apiIdentifier->getPackage());
+        $this->assertEquals($apiCall, $apiIdentifier->getApiAction());
+        $this->assertEquals("/v{$apiVersion}/{$apiPackage}/{$apiCall}", $apiIdentifier->getUrl());
     }
 
     public function testEquals()
     {
-        $apiIdentifier1 = new ApiIdentifier('1', 'category1', 'apiCall1');
-        $apiIdentifier2 = new ApiIdentifier('1', 'category1', 'apiCall1');
-        $apiIdentifier3 = new ApiIdentifier('1', 'category2', 'apiCall1');
+        $apiIdentifier1 = new ApiIdentifier('1', 'package1', 'apiCall1');
+        $apiIdentifier2 = new ApiIdentifier('1', 'package1', 'apiCall1');
+        $apiIdentifier3 = new ApiIdentifier('1', 'package2', 'apiCall1');
 
         $this->assertTrue($apiIdentifier1->equals($apiIdentifier2));
         $this->assertFalse($apiIdentifier1->equals($apiIdentifier3));

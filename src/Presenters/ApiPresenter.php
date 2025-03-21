@@ -25,6 +25,7 @@ use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use Tomaj\Hermes\Emitter;
 use Tomaj\NetteApi\Response\JsonApiResponse;
+use Tomaj\NetteApi\Response\ResponseInterface;
 use Tracy\Debugger;
 
 class ApiPresenter implements IPresenter
@@ -132,8 +133,12 @@ class ApiPresenter implements IPresenter
         return $response;
     }
 
-    private function log($apiIdentifier, $authorization, $response, $handler)
-    {
+    private function log(
+        ApiIdentifier $apiIdentifier,
+        ApiAuthorizationInterface $authorization,
+        ResponseInterface $response,
+        ApiHandlerInterface $handler
+    ) {
         $apiLogEnabled = $this->applicationConfig->get('enable_api_log')
             && $this->apiLoggerConfig->isPathEnabled($apiIdentifier);
 
@@ -202,7 +207,7 @@ class ApiPresenter implements IPresenter
         }
 
         $elapsed = Debugger::timer() * 1000;
-        $path = $apiIdentifier->getApiPath();
+        $path = $apiIdentifier->getUrl();
         $responseCode = $response->getCode();
         $ipAddress = \Crm\ApplicationModule\Models\Request::getIp();
         $userAgent = \Crm\ApplicationModule\Models\Request::getUserAgent();

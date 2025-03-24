@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Crm\ApiModule\Tests;
 
 use Crm\ApiModule\Models\Params\InputParam;
-use Crm\ApiModule\Models\Params\ParamsProcessor;
 use PHPUnit\Framework\TestCase;
+use Tomaj\NetteApi\Params\ParamsProcessor;
 
 class ParamsProcessorTest extends TestCase
 {

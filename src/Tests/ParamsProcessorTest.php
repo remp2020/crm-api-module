@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Crm\ApiModule\Tests;
 
-use Crm\ApiModule\Models\Params\InputParam;
 use PHPUnit\Framework\TestCase;
 use Tomaj\NetteApi\Params\ParamsProcessor;
+use Tomaj\NetteApi\Params\PostInputParam;
 
 class ParamsProcessorTest extends TestCase
 {
@@ -26,8 +26,8 @@ class ParamsProcessorTest extends TestCase
         $_POST[self::RNDM_KEY_1] = $rndmString1;
         $_POST[self::RNDM_KEY_2] = $rndmString2;
         $_POST[self::RNDM_KEY_3] = 'a957kjhasdmj';
-        $inputParam1 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_1);
-        $inputParam2 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_2);
+        $inputParam1 = new PostInputParam(self::RNDM_KEY_1);
+        $inputParam2 = new PostInputParam(self::RNDM_KEY_2);
         $paramsProcessor = new ParamsProcessor([$inputParam1, $inputParam2]);
         $this->assertFalse($paramsProcessor->isError());
         $this->assertEquals($paramsProcessor->getValues()[self::RNDM_KEY_1], $rndmString1);
@@ -38,8 +38,8 @@ class ParamsProcessorTest extends TestCase
     public function testGetErrorMessage()
     {
         $_POST[self::RNDM_KEY_1] = 'asdgaerhgrdh';
-        $inputParam1 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_2);
-        $inputParam2 = new InputParam(InputParam::TYPE_POST, self::RNDM_KEY_3, InputParam::REQUIRED);
+        $inputParam1 = new PostInputParam(self::RNDM_KEY_2);
+        $inputParam2 = (new PostInputParam(self::RNDM_KEY_3))->setRequired();
         $paramsProcessor = new ParamsProcessor([$inputParam1, $inputParam2]);
         $this->assertTrue($paramsProcessor->isError());
         $this->assertArrayNotHasKey(self::RNDM_KEY_1, $paramsProcessor->getValues());

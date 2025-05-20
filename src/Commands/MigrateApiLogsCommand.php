@@ -96,7 +96,7 @@ class MigrateApiLogsCommand extends Command
         $this->fixTableDifferences(
             $apiLogsRepositoryTableName,
             $apiLogsRepositoryV2TableName,
-            $migrationStartTime
+            $migrationStartTime,
         );
 
         $output->writeln('');
@@ -129,7 +129,7 @@ class MigrateApiLogsCommand extends Command
         $this->fixTableDifferences(
             $apiLogsRepositoryTableName . '_old',
             $apiLogsRepositoryTableName,
-            $migrationStartTime
+            $migrationStartTime,
         );
 
         $this->database->query("
@@ -148,7 +148,7 @@ class MigrateApiLogsCommand extends Command
     public function fixTableDifferences(
         string $fromTable,
         string $toTable,
-        DateTime $updatedAfter
+        DateTime $updatedAfter,
     ) {
         $missingIds = $this->database->query("
             SELECT `id` FROM `{$fromTable}`

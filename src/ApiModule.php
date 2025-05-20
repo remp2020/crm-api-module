@@ -61,7 +61,7 @@ class ApiModule extends CrmModule
     public function registerApiCalls(ApiRoutersContainerInterface $apiRoutersContainer)
     {
         $apiRoutersContainer->attachRouter(
-            new ApiRoute(new ApiIdentifier('1', 'token', 'check'), TokenCheckHandler::class, BearerTokenAuthorization::class)
+            new ApiRoute(new ApiIdentifier('1', 'token', 'check'), TokenCheckHandler::class, BearerTokenAuthorization::class),
         );
     }
 
@@ -69,7 +69,7 @@ class ApiModule extends CrmModule
     {
         $router->addRoute(
             '/api/v<version>/<package>[/<apiAction>][/<params>]',
-            'Api:Api:default'
+            'Api:Api:default',
         );
     }
 
@@ -82,7 +82,7 @@ class ApiModule extends CrmModule
     {
         $dispatcher->registerHandler(
             'api-log',
-            $this->getInstance(ApiLogHandler::class)
+            $this->getInstance(ApiLogHandler::class),
         );
     }
 }

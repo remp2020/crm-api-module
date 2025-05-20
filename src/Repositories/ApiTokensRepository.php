@@ -20,7 +20,7 @@ class ApiTokensRepository extends Repository implements TokenRepositoryInterface
     public function __construct(
         Explorer $database,
         Storage $cacheStorage = null,
-        private readonly Emitter $emitter
+        private readonly Emitter $emitter,
     ) {
         parent::__construct($database, $cacheStorage);
     }

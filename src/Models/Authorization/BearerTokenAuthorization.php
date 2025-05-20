@@ -18,7 +18,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
 
     public function __construct(
         ApiTokensRepository $apiTokenRepository,
-        Permissions $permissions
+        Permissions $permissions,
     ) {
         $this->apiTokenRepository = $apiTokenRepository;
         $this->permissions = $permissions;

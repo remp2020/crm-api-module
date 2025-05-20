@@ -27,7 +27,7 @@ class ApiTestCallFormFactory
     public function __construct(
         protected ApiRoutesContainer $apiRoutesContainer,
         private Request $request,
-        private Translator $translator
+        private Translator $translator,
     ) {
     }
 

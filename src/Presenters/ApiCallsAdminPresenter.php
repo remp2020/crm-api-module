@@ -56,13 +56,13 @@ class ApiCallsAdminPresenter extends AdminPresenter
             $this->params['method'],
             $this->params['version'],
             $this->params['package'],
-            $this->params['apiAction'] ?? null
+            $this->params['apiAction'] ?? null,
         );
         return new ApiConsoleControl(
             $this->getHttpRequest(),
             $api->getEndpoint(),
             $api->getHandler(),
-            $api->getAuthorization()
+            $api->getAuthorization(),
         );
     }
 }

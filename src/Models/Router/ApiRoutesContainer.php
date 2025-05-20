@@ -17,7 +17,7 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
 
     public function __construct(
         private Container $container,
-        private LazyApiDecider $apiDecider
+        private LazyApiDecider $apiDecider,
     ) {
     }
 
@@ -53,7 +53,7 @@ class ApiRoutesContainer implements ApiRoutersContainerInterface
             $identifier->getMethod(),
             $identifier->getVersion(),
             $identifier->getPackage(),
-            $identifier->getApiAction()
+            $identifier->getApiAction(),
         );
 
         $handler = $api->getHandler();

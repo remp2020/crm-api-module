@@ -30,7 +30,7 @@ class ConfigsSeeder implements ISeeder
         ConfigsRepository $configsRepository,
         ApiTokensRepository $apiTokensRepository,
         ConfigBuilder $configBuilder,
-        InternalToken $internalToken
+        InternalToken $internalToken,
     ) {
         $this->configCategoriesRepository = $configCategoriesRepository;
         $this->configsRepository = $configsRepository;
@@ -69,7 +69,7 @@ class ConfigsSeeder implements ISeeder
 
             if ($config->category->name != $categoryName) {
                 $this->configsRepository->update($config, [
-                    'config_category_id' => $category->id
+                    'config_category_id' => $category->id,
                 ]);
                 $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
             }
@@ -94,7 +94,7 @@ class ConfigsSeeder implements ISeeder
 
             if ($config->category->name != $categoryName) {
                 $this->configsRepository->update($config, [
-                    'config_category_id' => $category->id
+                    'config_category_id' => $category->id,
                 ]);
                 $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
             }
@@ -119,7 +119,7 @@ class ConfigsSeeder implements ISeeder
 
             if ($config->category->name != $categoryName) {
                 $this->configsRepository->update($config, [
-                    'config_category_id' => $category->id
+                    'config_category_id' => $category->id,
                 ]);
                 $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
             }
@@ -154,7 +154,7 @@ class ConfigsSeeder implements ISeeder
 
             if ($apiToken->category->name != $categoryName) {
                 $this->configsRepository->update($apiToken, [
-                    'config_category_id' => $category->id
+                    'config_category_id' => $category->id,
                 ]);
                 $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
             }

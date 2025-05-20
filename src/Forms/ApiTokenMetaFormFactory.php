@@ -26,7 +26,7 @@ class ApiTokenMetaFormFactory
     public function __construct(
         ApiTokensRepository $apiTokensRepository,
         ApiTokenMetaRepository $apiTokenMetaRepository,
-        Translator $translator
+        Translator $translator,
     ) {
         $this->apiTokensRepository = $apiTokensRepository;
         $this->apiTokenMetaRepository = $apiTokenMetaRepository;
@@ -69,7 +69,7 @@ class ApiTokenMetaFormFactory
                 $this->apiTokenMetaRepository->update($meta, [
                     'key' => $values['key'],
                     'value' => $values['value'],
-                    'updated_at' => new DateTime()
+                    'updated_at' => new DateTime(),
                 ]);
             } catch (UniqueConstraintViolationException $e) {
                 $form->addError('api.admin.api_token_meta.error.duplicate');

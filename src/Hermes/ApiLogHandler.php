@@ -17,7 +17,7 @@ class ApiLogHandler implements HandlerInterface
     public function __construct(
         protected ApiLogsRepository $apiLogsRepository,
         protected ApiTokenStatsRepository $apiTokenStatsRepository,
-        protected ApplicationConfig $applicationConfig
+        protected ApplicationConfig $applicationConfig,
     ) {
     }
 
@@ -33,7 +33,7 @@ class ApiLogHandler implements HandlerInterface
             $payload['responseCode'],
             $payload['elapsed'],
             $payload['ipAddress'],
-            $payload['userAgent']
+            $payload['userAgent'],
         );
 
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');

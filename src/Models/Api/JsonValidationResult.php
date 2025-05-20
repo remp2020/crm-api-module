@@ -18,7 +18,7 @@ class JsonValidationResult
 
     private function __construct(
         private ?\stdClass $parsedObject,
-        private ?JsonApiResponse $errorResponse
+        private ?JsonApiResponse $errorResponse,
     ) {
     }
 

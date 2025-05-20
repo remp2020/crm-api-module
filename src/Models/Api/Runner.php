@@ -35,7 +35,7 @@ class Runner
                 $response = new JsonApiResponse(Response::S400_BAD_REQUEST, [
                     'status' => 'error',
                     'code' => 'invalid_input',
-                    'errors' => $paramsProcessor->getErrors()
+                    'errors' => $paramsProcessor->getErrors(),
                 ]);
                 return $response;
             }

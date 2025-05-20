@@ -12,7 +12,7 @@ class LazyApi
         private EndpointInterface $endpoint,
         private string $handlerClassName,
         private string $authorizationClassName,
-        private ?RateLimitInterface $rateLimit = null
+        private ?RateLimitInterface $rateLimit = null,
     ) {
         $this->rateLimit = $rateLimit ?: new NoRateLimit();
     }

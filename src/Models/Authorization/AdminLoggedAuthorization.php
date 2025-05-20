@@ -22,7 +22,7 @@ class AdminLoggedAuthorization implements ApiAuthorizationInterface
     public function __construct(
         User $user,
         AccessTokensRepository $accessTokensRepository,
-        UsersRepository $usersRepository
+        UsersRepository $usersRepository,
     ) {
         $this->user = $user;
         $this->accessTokensRepository = $accessTokensRepository;

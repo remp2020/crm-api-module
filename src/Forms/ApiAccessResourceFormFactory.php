@@ -22,7 +22,7 @@ class ApiAccessResourceFormFactory
     public function __construct(
         ApiTokensRepository $apiTokensRepository,
         ApiAccessTokensRepository $apiAccessTokensRepository,
-        Translator $translator
+        Translator $translator,
     ) {
         $this->apiTokensRepository = $apiTokensRepository;
         $this->apiAccessTokensRepository = $apiAccessTokensRepository;
@@ -40,7 +40,7 @@ class ApiAccessResourceFormFactory
         $form->addCheckboxList(
             'token_ids',
             $this->translator->translate('api.admin.access.form.tokens'),
-            $this->apiTokensRepository->getTable()->fetchPairs('id', 'name')
+            $this->apiTokensRepository->getTable()->fetchPairs('id', 'name'),
         );
         $defaults = [
             'api_access_id' => $apiAccess->id,
@@ -66,7 +66,7 @@ class ApiAccessResourceFormFactory
     public function formSucceeded($form, $values)
     {
         $this->apiAccessTokensRepository->getTable()->where([
-            'api_access_id' => $values['api_access_id']
+            'api_access_id' => $values['api_access_id'],
         ])->delete();
         foreach ($values['token_ids'] as $tokenId) {
             $this->apiAccessTokensRepository->insert([

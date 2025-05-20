@@ -31,7 +31,7 @@ class UserSourceAccessesRepository extends Repository
             return $this->insert([
                 'user_id' => $userId,
                 'source' => $source,
-                'last_accessed_at' => $lastAccessedDate
+                'last_accessed_at' => $lastAccessedDate,
             ]);
         }
     }

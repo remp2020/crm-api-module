@@ -18,7 +18,7 @@ class GenerateAccessCommand extends Command
 
     public function __construct(
         ApiRoutesContainer $apiRoutesContainer,
-        ApiAccessRepository $apiAccessRepository
+        ApiAccessRepository $apiAccessRepository,
     ) {
         parent::__construct();
         $this->apiRoutesContainer = $apiRoutesContainer;

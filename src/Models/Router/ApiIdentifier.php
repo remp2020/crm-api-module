@@ -10,7 +10,7 @@ class ApiIdentifier extends EndpointIdentifier
         string $version,
         string $package,
         string $apiCall,
-        string $method = 'GET'
+        string $method = 'GET',
     ) {
         parent::__construct($method, $version, $package, $apiCall);
     }

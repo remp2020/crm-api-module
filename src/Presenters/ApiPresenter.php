@@ -39,7 +39,7 @@ class ApiPresenter implements IPresenter
         private Emitter $hermesEmitter,
         private Runner $apiRunner,
         private HttpRequest $httpRequest,
-        private HttpResponse $httpResponse
+        private HttpResponse $httpResponse,
     ) {
     }
 
@@ -63,7 +63,7 @@ class ApiPresenter implements IPresenter
         if ($this->apiHeadersConfig->hasAllowedCredentialsHeader()) {
             $this->httpResponse->addHeader(
                 'Access-Control-Allow-Credentials',
-                'true'
+                'true',
             );
         }
 
@@ -71,18 +71,18 @@ class ApiPresenter implements IPresenter
         if ($this->httpRequest->isMethod('OPTIONS')) {
             $this->httpResponse->addHeader(
                 'Access-Control-Allow-Headers',
-                $this->apiHeadersConfig->getAllowedHeaders()
+                $this->apiHeadersConfig->getAllowedHeaders(),
             );
 
             $this->httpResponse->addHeader(
                 'Access-Control-Allow-Methods',
-                $this->apiHeadersConfig->getAllowedHttpMethods()
+                $this->apiHeadersConfig->getAllowedHttpMethods(),
             );
 
             if ($this->apiHeadersConfig->getAccessControlMaxAge() !== null) {
                 $this->httpResponse->addHeader(
                     'Access-Control-Max-Age',
-                    $this->apiHeadersConfig->getAccessControlMaxAge()
+                    $this->apiHeadersConfig->getAccessControlMaxAge(),
                 );
             }
 
@@ -96,7 +96,7 @@ class ApiPresenter implements IPresenter
 
         if (!isset($version, $category, $action)) {
             $response = new JsonApiResponse(HttpResponse::S404_NOT_FOUND, [
-                'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
+                'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action),
             ]);
             $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
             return $response;
@@ -106,7 +106,7 @@ class ApiPresenter implements IPresenter
         $handler = $this->apiRoutesContainer->getHandler($apiIdentifier);
         if (!$handler) {
             $response = new JsonApiResponse(HttpResponse::S404_NOT_FOUND, [
-                'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action)
+                'error' => sprintf('Unknown api call: version [%s], category [%s], action [%s]', $version, $category, $action),
             ]);
             $this->httpResponse->setCode(HttpResponse::S404_NOT_FOUND);
             return $response;
@@ -137,7 +137,7 @@ class ApiPresenter implements IPresenter
         ApiIdentifier $apiIdentifier,
         ApiAuthorizationInterface $authorization,
         ResponseInterface $response,
-        ApiHandlerInterface $handler
+        ApiHandlerInterface $handler,
     ) {
         $apiLogEnabled = $this->applicationConfig->get('enable_api_log')
             && $this->apiLoggerConfig->isPathEnabled($apiIdentifier);

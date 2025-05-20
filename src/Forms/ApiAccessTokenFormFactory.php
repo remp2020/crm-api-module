@@ -22,7 +22,7 @@ class ApiAccessTokenFormFactory
     public function __construct(
         ApiAccessRepository $apiAccessRepository,
         ApiAccessTokensRepository $apiAccessTokensRepository,
-        Translator $translator
+        Translator $translator,
     ) {
         $this->apiAccessRepository = $apiAccessRepository;
         $this->apiAccessTokensRepository = $apiAccessTokensRepository;
@@ -62,7 +62,7 @@ class ApiAccessTokenFormFactory
     public function formSucceeded($form, $values)
     {
         $this->apiAccessTokensRepository->getTable()->where([
-            'api_token_id' => $values['api_token_id']
+            'api_token_id' => $values['api_token_id'],
         ])->delete();
         foreach ($values['api_access_ids'] as $apiAccessId) {
             $this->apiAccessTokensRepository->insert([

@@ -19,7 +19,7 @@ class ApiTokenFormFactory
 
     public function __construct(
         ApiTokensRepository $apiTokensRepository,
-        Translator $translator
+        Translator $translator,
     ) {
         $this->apiTokensRepository = $apiTokensRepository;
         $this->translator = $translator;

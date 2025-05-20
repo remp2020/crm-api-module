@@ -23,7 +23,7 @@ class InternalToken
         ApiTokensRepository $apiTokensRepository,
         ApiAccessRepository $apiAccessRepository,
         ApiAccessTokensRepository $apiAccessTokensRepository,
-        ConfigsRepository $configsRepository
+        ConfigsRepository $configsRepository,
     ) {
         $this->apiTokensRepository = $apiTokensRepository;
         $this->apiAccessRepository = $apiAccessRepository;

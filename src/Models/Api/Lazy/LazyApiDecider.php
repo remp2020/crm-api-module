@@ -30,7 +30,7 @@ class LazyApiDecider
         $apiAction = $apiAction === '' ? null : $apiAction;
 
         $identifierKey = $this->getEndpointIdentifierString(
-            new ApiIdentifier($version, $package, $apiAction, $method)
+            new ApiIdentifier($version, $package, $apiAction, $method),
         );
         $lazyApi = $this->lazyApis[$identifierKey] ?? null;
 
@@ -38,7 +38,7 @@ class LazyApiDecider
             // Previously our APIs didn't register the method and used GET method as a default. Let's temporarily try to also
             // find the GET-based handler, even if app is looking for POST request.
             $identifierKey = $this->getEndpointIdentifierString(
-                new ApiIdentifier($version, $package, $apiAction, 'GET')
+                new ApiIdentifier($version, $package, $apiAction, 'GET'),
             );
             $lazyApi = $this->lazyApis[$identifierKey] ?? null;
         }

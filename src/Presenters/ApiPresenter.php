@@ -183,7 +183,7 @@ class ApiPresenter implements IPresenter
         ];
 
         $contentTypeHeader = $this->httpRequest->getHeader('Content-Type');
-        $contentType = trim(explode(';', $contentTypeHeader, 2)[0]);
+        $contentType = $contentTypeHeader ? trim(explode(';', $contentTypeHeader, 2)[0]) : null;
 
         if ($contentType === 'application/json') {
             try {

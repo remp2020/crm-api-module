@@ -14,6 +14,8 @@ class ApiLoggerConfig
 
     private string $mode;
 
+    private array $redactedFields = [];
+
     /**
      * @param LoggerEndpointIdentifier[] $endpointIdentifiers
      * @return void
@@ -69,5 +71,18 @@ class ApiLoggerConfig
         }
 
         return !$defaultValueToReturn;
+    }
+
+    /**
+     * @param string[] $fields
+     */
+    public function addRedactedFields(array $fields): void
+    {
+        $this->redactedFields = array_unique(array_merge($this->redactedFields, $fields));
+    }
+
+    public function getRedactedFields(): array
+    {
+        return $this->redactedFields;
     }
 }

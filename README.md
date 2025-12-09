@@ -67,6 +67,15 @@ You can also use wildcards where necessary:
 
 Blacklist and whitelist cannot be combined, the latter configured wins.
 
+By default the API logger redacts standard fields found in GET parameters, POST parameters and JSON payload parameters: `password`, `token` and `auth`. If you need to extend this and redact other parameters, you can extend the redaction:
+
+```neon
+	# ...
+	apiLoggerConfig:
+		setup:
+			- addRedactedFields(['internal_token'])
+```
+
 #### Data retention configuration
 
 You can configure time before which `application:cleanup` deletes old repository data and column which it uses by using (in your project configuration file):

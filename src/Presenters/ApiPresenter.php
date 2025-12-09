@@ -14,6 +14,7 @@ use Crm\ApiModule\Models\Router\ApiIdentifier;
 use Crm\ApiModule\Models\Router\ApiRoutesContainer;
 use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\ApplicationModule\Hermes\LogRedact;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\UsersModule\Models\Auth\UserTokenAuthorization;
 use Nette\Application\IPresenter;
@@ -163,14 +164,15 @@ class ApiPresenter implements IPresenter
             return;
         }
 
-        if (isset($_GET['password'])) {
-            $_GET['password'] = '***';
-        }
-        if (isset($_POST['password'])) {
-            $_POST['password'] = '***';
-        }
+        $postParams = $this->httpRequest->getPost();
+        $queryParams = $this->httpRequest->getUrl()->getQueryParameters();
 
-        $input = ['POST' => $_POST, 'GET' => $_GET, 'RAW' => ''];
+        $redactedFields = $this->apiLoggerConfig->getRedactedFields();
+        $input = [
+            'POST' => LogRedact::redactArray($postParams, $redactedFields),
+            'GET' => LogRedact::redactArray($queryParams, $redactedFields),
+            'RAW' => '',
+        ];
 
         $payload = $this->rawPayload($handler);
 
@@ -179,12 +181,14 @@ class ApiPresenter implements IPresenter
             'application/x-www-form-urlencoded',
             'multipart/form-data',
         ];
-        $contentType = $this->httpRequest->getHeader('Content-Type');
+
+        $contentTypeHeader = $this->httpRequest->getHeader('Content-Type');
+        $contentType = trim(explode(';', $contentTypeHeader, 2)[0]);
 
         if ($contentType === 'application/json') {
             try {
                 // try to store decoded json (it would be double-encoded due to the following lines)
-                $input['JSON'] = Json::decode($payload);
+                $input['JSON'] = LogRedact::redactArray(Json::decode($payload, true), $redactedFields);
             } catch (JsonException $e) {
                 // it's not JSON, log the payload as we received it
                 $input['RAW'] = $payload;

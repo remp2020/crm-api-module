@@ -37,6 +37,8 @@ services:
 
 	apiLoggerConfig:
 		factory: Crm\ApiModule\Models\Api\ApiLoggerConfig
+		setup:
+		    - addRedactedFields(['password', 'token', 'auth'])
 
 	apiRunner: Crm\ApiModule\Models\Api\Runner
 	- Crm\ApiModule\Api\TokenCheckHandler

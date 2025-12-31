@@ -31,7 +31,7 @@ class GenerateAccessCommand extends Command
             ->setDescription('Generate all access data');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var ApiRoute[] $routers */
         $routers = $this->apiRoutesContainer->getRouters();

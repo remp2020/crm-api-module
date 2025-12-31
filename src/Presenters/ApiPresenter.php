@@ -188,7 +188,12 @@ class ApiPresenter implements IPresenter
         if ($contentType === 'application/json') {
             try {
                 // try to store decoded json (it would be double-encoded due to the following lines)
-                $input['JSON'] = LogRedact::redactArray(Json::decode($payload, true), $redactedFields);
+                $decodedPayload = Json::decode($payload, true);
+                if (is_array($decodedPayload)) {
+                    $input['JSON'] = LogRedact::redactArray($decodedPayload, $redactedFields);
+                } else {
+                    $input['RAW'] = $payload;
+                }
             } catch (JsonException $e) {
                 // it's not JSON, log the payload as we received it
                 $input['RAW'] = $payload;

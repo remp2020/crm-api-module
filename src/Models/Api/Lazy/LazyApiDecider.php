@@ -51,7 +51,7 @@ class LazyApiDecider
         return $this->apiDecider->getApi($method, $version, $package, $apiAction);
     }
 
-    public function addApi(EndpointInterface $endpointIdentifier, string $handlerClassName, string $apiAuthorizationClassName, RateLimitInterface $rateLimit = null): self
+    public function addApi(EndpointInterface $endpointIdentifier, string $handlerClassName, string $apiAuthorizationClassName, ?RateLimitInterface $rateLimit = null): self
     {
         $identifierKey = $this->getEndpointIdentifierString($endpointIdentifier);
         $this->lazyApis[$identifierKey] = new LazyApi($endpointIdentifier, $handlerClassName, $apiAuthorizationClassName, $rateLimit);

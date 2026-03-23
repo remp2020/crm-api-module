@@ -24,7 +24,7 @@ class LazyApiDecider
     ) {
     }
 
-    public function getApi(string $method, int $version, string $package, ?string $apiAction = null): Api
+    public function getApi(string $method, string $version, string $package, ?string $apiAction = null): Api
     {
         $method = strtoupper($method);
         $apiAction = $apiAction === '' ? null : $apiAction;

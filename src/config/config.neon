@@ -38,7 +38,7 @@ services:
 	apiLoggerConfig:
 		factory: Crm\ApiModule\Models\Api\ApiLoggerConfig
 		setup:
-		    - addRedactedFields(['password', 'token', 'auth'])
+			- addRedactedFields(['password', 'token', 'auth'])
 
 	apiRunner: Crm\ApiModule\Models\Api\Runner
 	- Crm\ApiModule\Api\TokenCheckHandler
@@ -58,3 +58,5 @@ services:
 	- Crm\ApiModule\Models\Router\ApiRoutesContainer
 	- Crm\ApiModule\Seeders\ConfigsSeeder
 	- Crm\ApiModule\Models\Token\InternalToken
+	netteApiConfigurator: Tomaj\NetteApi\Output\Configurator\DebuggerConfigurator
+	netteApiErrorHandler: Tomaj\NetteApi\Error\DefaultErrorHandler

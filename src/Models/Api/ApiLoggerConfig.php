@@ -47,6 +47,7 @@ class ApiLoggerConfig
         $defaultValueToReturn = match ($this->mode) {
             self::PATH_MODE_BLACKLIST => true,
             self::PATH_MODE_WHITELIST => false,
+            default => throw new \UnexpectedValueException('unexpected mode: ' . $this->mode),
         };
 
         $matchedVersion = $this->pathConfig[$endpointIdentifier->getVersion()]

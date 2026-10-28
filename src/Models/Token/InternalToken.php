@@ -7,6 +7,10 @@ use Crm\ApiModule\Repositories\ApiAccessTokensRepository;
 use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Crm\ApplicationModule\Repositories\ConfigsRepository;
 
+/**
+ * @deprecated admin pages should call APIs authorized by AdminLoggedAuthorization.
+ *             External clients should use their own API token.
+ */
 class InternalToken
 {
     const CONFIG_NAME = "internal_api_token";

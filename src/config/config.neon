@@ -45,6 +45,7 @@ services:
 	- Crm\ApiModule\Models\Authorization\BearerTokenAuthorization
 	- Crm\ApiModule\Models\Authorization\NoAuthorization
 	- Crm\ApiModule\Models\Authorization\AdminLoggedAuthorization
+	- Crm\ApiModule\Models\Authorization\AdminLoggedOrBearerTokenAuthorization
 	- Crm\ApiModule\Models\Authorization\Permissions
 	- Crm\ApiModule\Commands\GenerateAccessCommand
 	- Crm\ApiModule\Commands\MigrateApiLogsCommand

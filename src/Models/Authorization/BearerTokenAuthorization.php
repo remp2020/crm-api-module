@@ -6,7 +6,7 @@ use Crm\ApiModule\Repositories\ApiTokensRepository;
 use Crm\ApplicationModule\Models\Request;
 use Nette\Security\Authorizator;
 
-class BearerTokenAuthorization implements ApiAuthorizationInterface
+class BearerTokenAuthorization implements ApiAuthorizationInterface, TokenAuthorizationInterface, TokenStatsTrackableInterface
 {
     private $apiTokenRepository;
 
@@ -15,6 +15,8 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
     private $errorMessage = null;
 
     private $authorizedData = [];
+
+    private ?string $authorizedToken = null;
 
     public function __construct(
         ApiTokensRepository $apiTokenRepository,
@@ -26,6 +28,8 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
 
     public function authorized($resource = Authorizator::ALL): bool
     {
+        $this->authorizedToken = null;
+
         // TODO:
         $tokenParser = new TokenParser();
         if (!$tokenParser->isOk()) {
@@ -55,6 +59,7 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
         }
 
         $this->authorizedData['token'] = $token;
+        $this->authorizedToken = $tokenParser->getToken();
         return true;
     }
 
@@ -113,5 +118,10 @@ class BearerTokenAuthorization implements ApiAuthorizationInterface
     public function getAuthorizedData()
     {
         return $this->authorizedData;
+    }
+
+    public function getAuthorizedToken(): ?string
+    {
+        return $this->authorizedToken;
     }
 }

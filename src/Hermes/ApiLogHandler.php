@@ -37,8 +37,9 @@ class ApiLogHandler implements HandlerInterface
         );
 
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
-        if ($apiStatsEnabled) {
-            $this->apiTokenStatsRepository->updateStats($payload['token']);//povodna line
+        $trackStats = $payload['trackStats'] ?? true;
+        if ($apiStatsEnabled && $trackStats) {
+            $this->apiTokenStatsRepository->updateStats($payload['token']);
         }
 
         return true;

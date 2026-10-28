@@ -8,15 +8,14 @@ use Crm\ApiModule\Models\Api\ApiHeadersConfig;
 use Crm\ApiModule\Models\Api\ApiLoggerConfig;
 use Crm\ApiModule\Models\Api\Runner;
 use Crm\ApiModule\Models\Authorization\ApiAuthorizationInterface;
-use Crm\ApiModule\Models\Authorization\BearerTokenAuthorization;
-use Crm\ApiModule\Models\Authorization\TokenParser;
+use Crm\ApiModule\Models\Authorization\TokenAuthorizationInterface;
+use Crm\ApiModule\Models\Authorization\TokenStatsTrackableInterface;
 use Crm\ApiModule\Models\Router\ApiIdentifier;
 use Crm\ApiModule\Models\Router\ApiRoutesContainer;
 use Crm\ApiModule\Repositories\ApiTokenStatsRepository;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Hermes\LogRedact;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
-use Crm\UsersModule\Models\Auth\UserTokenAuthorization;
 use Nette\Application\IPresenter;
 use Nette\Application\Request;
 use Nette\Application\Response;
@@ -145,19 +144,16 @@ class ApiPresenter implements IPresenter
 
         $apiStatsEnabled = $this->applicationConfig->get('enable_api_stats');
 
-        $token = '';
-        if ($authorization instanceof BearerTokenAuthorization) {
-            $tokenParser = new TokenParser();
-            $token = $tokenParser->getToken();
-            if (!$apiLogEnabled && $apiStatsEnabled) {
-                // If we don't log API calls, but do log the API stats, update token stats directly. Otherwise, we'll update it asynchronously.
-                $this->apiTokenStatsRepository->updateStats($token);
-            }
+        $token = null;
+        if ($authorization instanceof TokenAuthorizationInterface) {
+            $token = $authorization->getAuthorizedToken();
         }
-        // TODO: [users_module] try to refactor this so ApiModule doesn't have dependency on UsersModule
-        if ($authorization instanceof UserTokenAuthorization) {
-            $tokenParser = new TokenParser();
-            $token = $tokenParser->getToken();
+
+        $trackStats = $authorization instanceof TokenStatsTrackableInterface;
+
+        if ($token && $trackStats && !$apiLogEnabled && $apiStatsEnabled) {
+            // If we don't log API calls, but do log the API stats, update token stats directly. Otherwise, we'll update it asynchronously.
+            $this->apiTokenStatsRepository->updateStats($token);
         }
 
         if (!$apiLogEnabled) {
@@ -228,7 +224,7 @@ class ApiPresenter implements IPresenter
         }
 
         $this->hermesEmitter->emit(new HermesMessage('api-log', [
-            'token' => $token,
+            'token' => $token ?? '',
             'path' => $path,
             'jsonInput' => $jsonInput,
             'responseCode' => $responseCode,
@@ -236,6 +232,7 @@ class ApiPresenter implements IPresenter
             'elapsed' => $elapsed,
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,
+            'trackStats' => $trackStats,
         ]), HermesMessage::PRIORITY_LOW);
     }
 
